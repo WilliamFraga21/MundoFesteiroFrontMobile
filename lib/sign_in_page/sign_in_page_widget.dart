@@ -4,6 +4,8 @@ import '/flutter_flow/flutter_flow_widgets.dart';
 import 'package:flutter/material.dart';
 import 'sign_in_page_model.dart';
 export 'sign_in_page_model.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
 
 class SignInPageWidget extends StatefulWidget {
   const SignInPageWidget({super.key});
@@ -14,6 +16,8 @@ class SignInPageWidget extends StatefulWidget {
 
 class _SignInPageWidgetState extends State<SignInPageWidget> {
   late SignInPageModel _model;
+  late bool _loading;
+  late String _message;
 
   final scaffoldKey = GlobalKey<ScaffoldState>();
 
@@ -30,6 +34,34 @@ class _SignInPageWidgetState extends State<SignInPageWidget> {
 
     _model.textController3 ??= TextEditingController();
     _model.textFieldFocusNode3 ??= FocusNode();
+
+    _message = '';
+  }
+
+  Future<void> createUser() async {
+    var url = Uri.parse('http://localhost:8000/api/user/create');
+    var response = await http.post(
+      url,
+      body: jsonEncode({
+        "name": _model.textController1.text,
+        "email": _model.textController2.text,
+        "password": _model.textController3.text,
+      }),
+      headers: {
+        "Content-Type": "application/json",
+      },
+    );
+
+    if (response.statusCode == 200) {
+      // Usuário criado com sucesso
+      setState(() {
+        _message = 'Conta criada com sucesso!';
+      });
+    } else {
+      setState(() {
+        _message = 'Erro ao criar a conta. Status code: ${response.statusCode}';
+      });
+    }
   }
 
   @override
@@ -57,8 +89,8 @@ class _SignInPageWidgetState extends State<SignInPageWidget> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Padding(
-                  padding:
-                      const EdgeInsetsDirectional.fromSTEB(12.0, 12.0, 12.0, 12.0),
+                  padding: const EdgeInsetsDirectional.fromSTEB(
+                      12.0, 12.0, 12.0, 12.0),
                   child: Container(
                     width: double.infinity,
                     decoration: BoxDecoration(
@@ -92,6 +124,18 @@ class _SignInPageWidgetState extends State<SignInPageWidget> {
                                     fontWeight: FontWeight.w500,
                                   ),
                             ),
+                            if (_message.isNotEmpty)
+                              Padding(
+                                padding:
+                                    const EdgeInsets.symmetric(vertical: 8.0),
+                                child: Text(
+                                  _message,
+                                  style: const TextStyle(
+                                    color: Colors.red,
+                                    fontSize: 14.0,
+                                  ),
+                                ),
+                              ),
                             Padding(
                               padding: const EdgeInsetsDirectional.fromSTEB(
                                   0.0, 0.0, 0.0, 16.0),
@@ -179,7 +223,6 @@ class _SignInPageWidgetState extends State<SignInPageWidget> {
                                 child: TextFormField(
                                   controller: _model.textController2,
                                   focusNode: _model.textFieldFocusNode2,
-                                  autofocus: true,
                                   obscureText: !_model.passwordVisibility1,
                                   decoration: InputDecoration(
                                     labelText: 'Senha',
@@ -271,7 +314,6 @@ class _SignInPageWidgetState extends State<SignInPageWidget> {
                                 child: TextFormField(
                                   controller: _model.textController3,
                                   focusNode: _model.textFieldFocusNode3,
-                                  autofocus: true,
                                   obscureText: !_model.passwordVisibility2,
                                   decoration: InputDecoration(
                                     labelText: 'Confirmar senha',
@@ -362,26 +404,18 @@ class _SignInPageWidgetState extends State<SignInPageWidget> {
                                     0.0, 0.0, 0.0, 16.0),
                                 child: FFButtonWidget(
                                   onPressed: () async {
-                                    context.pushNamed(
-                                      'HomePage',
-                                      extra: <String, dynamic>{
-                                        kTransitionInfoKey: const TransitionInfo(
-                                          hasTransition: true,
-                                          transitionType:
-                                              PageTransitionType.fade,
-                                          duration: Duration(milliseconds: 0),
-                                        ),
-                                      },
-                                    );
+                                    await createUser();
                                   },
                                   text: 'Criar conta',
                                   options: FFButtonOptions(
                                     width: 230.0,
                                     height: 52.0,
-                                    padding: const EdgeInsetsDirectional.fromSTEB(
-                                        0.0, 0.0, 0.0, 0.0),
-                                    iconPadding: const EdgeInsetsDirectional.fromSTEB(
-                                        0.0, 0.0, 0.0, 0.0),
+                                    padding:
+                                        const EdgeInsetsDirectional.fromSTEB(
+                                            0.0, 0.0, 0.0, 0.0),
+                                    iconPadding:
+                                        const EdgeInsetsDirectional.fromSTEB(
+                                            0.0, 0.0, 0.0, 0.0),
                                     color: const Color(0xFF05BD7B),
                                     textStyle: FlutterFlowTheme.of(context)
                                         .titleSmall
@@ -435,7 +469,8 @@ class _SignInPageWidgetState extends State<SignInPageWidget> {
                                       context.pushNamed(
                                         'LoginPage',
                                         extra: <String, dynamic>{
-                                          kTransitionInfoKey: const TransitionInfo(
+                                          kTransitionInfoKey:
+                                              const TransitionInfo(
                                             hasTransition: true,
                                             transitionType:
                                                 PageTransitionType.fade,
