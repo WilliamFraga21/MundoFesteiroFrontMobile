@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
 import '/flutter_flow/flutter_flow_widgets.dart';
@@ -7,6 +9,8 @@ export 'sign_in_page_model.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:intl/intl.dart';
+import 'package:logger/logger.dart';
+import 'dart:developer' as developer;
 
 String getCurrentDate() {
   final now = DateTime.now();
@@ -75,38 +79,35 @@ class _SignInPageWidgetState extends State<SignInPageWidget> {
     _message = '';
   }
 
-  Future<void> createUser() async {
-    var url = Uri.parse('http://localhost:8000/api/user/create');
-    var response = await http.post(
-      url,
-      body: jsonEncode({
-        "name": _model.textController1.text,
-        "email": _model.textController2.text,
-        "contactno": _model.textController3.text,
-        "password": _model.textController4.text,
-        "shippingAddress": _model.textController5.text,
-        "shippingState": _model.textController6.text,
-        "shippingCity": _model.textController7.text,
-        "shippingPincode": _model.textController8.text,
-        "billingAddress": _model.textController9.text,
-        "billingCity": _model.textController10.text,
-        "billingState": _model.textController11.text,
-        "billingPincode": _model.textController12.text,
-        "regDate": regDate,
-      }),
-      headers: {
-        "Content-Type": "application/json",
-      },
-    );
+  var logger = Logger();
 
-    if (response.statusCode == 200) {
-      // Usuário criado com sucesso
+  Future<void> createUser() async {
+    var url = Uri.http('192.168.1.26:8000', '/api/user/create');
+    var response = await http.post(url,
+        body: json.encode({
+          'name': 'WILLIAM',
+          'email': 'williamfragacodadddwdaadawdwawadwanta@gmail.com',
+          'contactno': '11970415085',
+          'password': 'Mamaco1234@',
+          'shippingAddress': 'rua teste',
+          'shippingState': 'São Paulo',
+          'shippingCity': 'São Paulo',
+          'shippingPincode': '55',
+          'billingAddress': 'Rua teste',
+          'billingCity': 'São paulo',
+          'billingState': 'são paulo',
+          'billingPincode': '55',
+          'regDate': '2000-07-21'
+        }));
+
+    if (response.statusCode == 201) {
       setState(() {
         _message = 'Conta criada com sucesso!';
       });
     } else {
       setState(() {
-        _message = 'Erro ao criar a conta. Status code: ${response.statusCode}';
+        _message =
+            'Erro ao criar a conta. Status code: ${response.statusCode}. Message';
       });
     }
   }
@@ -260,6 +261,42 @@ class _SignInPageWidgetState extends State<SignInPageWidget> {
                                       .text, // Definindo o tipo de teclado como texto
                                   validator: _model.textController2Validator
                                       .asValidator(context),
+                                ),
+                              ),
+                            ),
+                            Align(
+                              alignment: const AlignmentDirectional(0.0, 0.0),
+                              child: Padding(
+                                padding: const EdgeInsetsDirectional.fromSTEB(
+                                    0.0, 0.0, 0.0, 16.0),
+                                child: FFButtonWidget(
+                                  onPressed: () async {
+                                    await createUser();
+                                  },
+                                  text: 'Criar conta',
+                                  options: FFButtonOptions(
+                                    width: 230.0,
+                                    height: 52.0,
+                                    padding:
+                                        const EdgeInsetsDirectional.fromSTEB(
+                                            0.0, 0.0, 0.0, 0.0),
+                                    iconPadding:
+                                        const EdgeInsetsDirectional.fromSTEB(
+                                            0.0, 0.0, 0.0, 0.0),
+                                    color: const Color(0xFF05BD7B),
+                                    textStyle: FlutterFlowTheme.of(context)
+                                        .titleSmall
+                                        .override(
+                                          fontFamily: 'Inter',
+                                          color: FlutterFlowTheme.of(context)
+                                              .black600,
+                                          fontSize: 16.0,
+                                          letterSpacing: 0.0,
+                                          fontWeight: FontWeight.w500,
+                                        ),
+                                    elevation: 3.0,
+                                    borderRadius: BorderRadius.circular(40.0),
+                                  ),
                                 ),
                               ),
                             ),
