@@ -1,12 +1,27 @@
-# MundoFesteiroMobileApp
+# Como tratra erro Google do Projeto
 
-A new Flutter project.
+```
+"client_info": {
+        "mobilesdk_app_id": "1:851397253901:android:2744119160339cca30ae44",
+        "android_client_info": {
+          "package_name": "com.mycompany.travelapp"
+        }
+      },
 
-## Getting Started
 
-FlutterFlow projects are built to run on the Flutter _stable_ release.
+Caminho: android/app arquivo 'google-services.json'
 
 
+```
+## Iniciar Projeto
+
+```shell
+
+$ flutter clean
+
+$ flutter pub get
+
+```
 
 ## Como Usar API
 
