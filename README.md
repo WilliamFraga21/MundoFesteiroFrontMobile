@@ -23,6 +23,24 @@ $ flutter pub get
 
 ```
 
+## Iniciar Projeto/Backend
+
+```shell
+
+$ ipconfig
+
+coletar o Endereço IPv4. . . . . . . .  . . . . . . . : 192.168.1.26
+
+Colocar ip no arquivo constants.dart caminho 'lib/constants/constants.dart'
+
+importa o constants em todos os arquivos que vai ser usado API
+
+import 'constants/constants.dart';
+
+para usar a ip do constants:  print(apiUrl); // Acessando a variável global
+
+```
+
 ## Como Usar API
 
 ```
