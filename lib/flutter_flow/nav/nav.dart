@@ -30,32 +30,12 @@ GoRouter createRouter(AppStateNotifier appStateNotifier) => GoRouter(
       initialLocation: '/',
       debugLogDiagnostics: true,
       refreshListenable: appStateNotifier,
-      errorBuilder: (context, state) => appStateNotifier.showSplashImage
-          ? Builder(
-              builder: (context) => Container(
-                color: Colors.black,
-                child: Image.asset(
-                  'assets/images/Captura_de_tela_2024-04-28_192632.png',
-                  fit: BoxFit.contain,
-                ),
-              ),
-            )
-          : const LoginPageWidget(),
+      errorBuilder: (context, state) => const LoginPageWidget(),
       routes: [
         FFRoute(
           name: '_initialize',
           path: '/',
-          builder: (context, _) => appStateNotifier.showSplashImage
-              ? Builder(
-                  builder: (context) => Container(
-                    color: Colors.black,
-                    child: Image.asset(
-                      'assets/images/Captura_de_tela_2024-04-28_192632.png',
-                      fit: BoxFit.contain,
-                    ),
-                  ),
-                )
-              : const LoginPageWidget(),
+          builder: (context, _) => const LoginPageWidget(),
           routes: [
             FFRoute(
               name: 'LoginPage',
@@ -355,4 +335,14 @@ class RootPageContext {
         value: RootPageContext(true, errorRoute),
         child: child,
       );
+}
+
+extension GoRouterLocationExtension on GoRouter {
+  String getCurrentLocation() {
+    final RouteMatch lastMatch = routerDelegate.currentConfiguration.last;
+    final RouteMatchList matchList = lastMatch is ImperativeRouteMatch
+        ? lastMatch.matches
+        : routerDelegate.currentConfiguration;
+    return matchList.uri.toString();
+  }
 }

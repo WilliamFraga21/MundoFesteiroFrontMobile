@@ -54,8 +54,8 @@ class _LoginPageWidgetState extends State<LoginPageWidget> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Padding(
-                  padding:
-                      const EdgeInsetsDirectional.fromSTEB(12.0, 12.0, 12.0, 12.0),
+                  padding: const EdgeInsetsDirectional.fromSTEB(
+                      12.0, 12.0, 12.0, 12.0),
                   child: Container(
                     width: double.infinity,
                     decoration: BoxDecoration(
@@ -194,7 +194,7 @@ class _LoginPageWidgetState extends State<LoginPageWidget> {
                                 child: TextFormField(
                                   controller: _model.textController2,
                                   focusNode: _model.textFieldFocusNode2,
-                                  autofocus: true,
+                                  autofocus: false,
                                   obscureText: !_model.passwordVisibility,
                                   decoration: InputDecoration(
                                     labelText: 'Senha',
@@ -293,7 +293,8 @@ class _LoginPageWidgetState extends State<LoginPageWidget> {
                                     context.pushNamed(
                                       'ForgotPasswordPage',
                                       extra: <String, dynamic>{
-                                        kTransitionInfoKey: const TransitionInfo(
+                                        kTransitionInfoKey:
+                                            const TransitionInfo(
                                           hasTransition: true,
                                           transitionType:
                                               PageTransitionType.fade,
@@ -326,7 +327,8 @@ class _LoginPageWidgetState extends State<LoginPageWidget> {
                                     context.pushNamed(
                                       'HomePage',
                                       extra: <String, dynamic>{
-                                        kTransitionInfoKey: const TransitionInfo(
+                                        kTransitionInfoKey:
+                                            const TransitionInfo(
                                           hasTransition: true,
                                           transitionType:
                                               PageTransitionType.fade,
@@ -339,10 +341,12 @@ class _LoginPageWidgetState extends State<LoginPageWidget> {
                                   options: FFButtonOptions(
                                     width: 230.0,
                                     height: 52.0,
-                                    padding: const EdgeInsetsDirectional.fromSTEB(
-                                        0.0, 0.0, 0.0, 0.0),
-                                    iconPadding: const EdgeInsetsDirectional.fromSTEB(
-                                        0.0, 0.0, 0.0, 0.0),
+                                    padding:
+                                        const EdgeInsetsDirectional.fromSTEB(
+                                            0.0, 0.0, 0.0, 0.0),
+                                    iconPadding:
+                                        const EdgeInsetsDirectional.fromSTEB(
+                                            0.0, 0.0, 0.0, 0.0),
                                     color: const Color(0xFF05BD7B),
                                     textStyle: FlutterFlowTheme.of(context)
                                         .titleSmall
@@ -396,7 +400,8 @@ class _LoginPageWidgetState extends State<LoginPageWidget> {
                                       context.pushNamed(
                                         'SignInPage',
                                         extra: <String, dynamic>{
-                                          kTransitionInfoKey: const TransitionInfo(
+                                          kTransitionInfoKey:
+                                              const TransitionInfo(
                                             hasTransition: true,
                                             transitionType:
                                                 PageTransitionType.fade,

@@ -3,7 +3,7 @@ import 'sign_in_page_widget.dart' show SignInPageWidget;
 import 'package:flutter/material.dart';
 
 class SignInPageModel extends FlutterFlowModel<SignInPageWidget> {
-  /// State fields for stateful widgets in this page.
+  ///  State fields for stateful widgets in this page.
 
   final unfocusNode = FocusNode();
   // State field(s) for TextField widget.
@@ -13,102 +13,62 @@ class SignInPageModel extends FlutterFlowModel<SignInPageWidget> {
   // State field(s) for TextField widget.
   FocusNode? textFieldFocusNode2;
   TextEditingController? textController2;
-  late bool passwordVisibility1;
   String? Function(BuildContext, String?)? textController2Validator;
   // State field(s) for TextField widget.
   FocusNode? textFieldFocusNode3;
   TextEditingController? textController3;
-  late bool passwordVisibility2;
   String? Function(BuildContext, String?)? textController3Validator;
-
   // State field(s) for TextField widget.
   FocusNode? textFieldFocusNode4;
   TextEditingController? textController4;
-
+  String? Function(BuildContext, String?)? textController4Validator;
   // State field(s) for TextField widget.
   FocusNode? textFieldFocusNode5;
   TextEditingController? textController5;
-
+  String? Function(BuildContext, String?)? textController5Validator;
   // State field(s) for TextField widget.
   FocusNode? textFieldFocusNode6;
   TextEditingController? textController6;
-
+  String? Function(BuildContext, String?)? textController6Validator;
   // State field(s) for TextField widget.
   FocusNode? textFieldFocusNode7;
   TextEditingController? textController7;
-
+  String? Function(BuildContext, String?)? textController7Validator;
   // State field(s) for TextField widget.
   FocusNode? textFieldFocusNode8;
   TextEditingController? textController8;
-
+  String? Function(BuildContext, String?)? textController8Validator;
   // State field(s) for TextField widget.
   FocusNode? textFieldFocusNode9;
   TextEditingController? textController9;
-
+  String? Function(BuildContext, String?)? textController9Validator;
   // State field(s) for TextField widget.
   FocusNode? textFieldFocusNode10;
   TextEditingController? textController10;
-
+  String? Function(BuildContext, String?)? textController10Validator;
   // State field(s) for TextField widget.
   FocusNode? textFieldFocusNode11;
   TextEditingController? textController11;
-
+  String? Function(BuildContext, String?)? textController11Validator;
   // State field(s) for TextField widget.
   FocusNode? textFieldFocusNode12;
   TextEditingController? textController12;
-
+  String? Function(BuildContext, String?)? textController12Validator;
   // State field(s) for TextField widget.
   FocusNode? textFieldFocusNode13;
   TextEditingController? textController13;
-
+  late bool passwordVisibility1;
+  String? Function(BuildContext, String?)? textController13Validator;
   // State field(s) for TextField widget.
   FocusNode? textFieldFocusNode14;
   TextEditingController? textController14;
-
-  // State field(s) for TextField widget.
-  FocusNode? textFieldFocusNode15;
-  TextEditingController? textController15;
+  late bool passwordVisibility2;
+  String? Function(BuildContext, String?)? textController14Validator;
 
   @override
   void initState(BuildContext context) {
     passwordVisibility1 = false;
     passwordVisibility2 = false;
-
-    textController4 = TextEditingController();
-    textFieldFocusNode4 = FocusNode();
-
-    textController5 = TextEditingController();
-    textFieldFocusNode5 = FocusNode();
-
-    textController6 = TextEditingController();
-    textFieldFocusNode6 = FocusNode();
-
-    textController7 = TextEditingController();
-    textFieldFocusNode7 = FocusNode();
-
-    textController8 = TextEditingController();
-    textFieldFocusNode8 = FocusNode();
-
-    textController9 = TextEditingController();
-    textFieldFocusNode9 = FocusNode();
-
-    textController10 = TextEditingController();
-    textFieldFocusNode10 = FocusNode();
-
-    textController11 = TextEditingController();
-    textFieldFocusNode11 = FocusNode();
-
-    textController12 = TextEditingController();
-    textFieldFocusNode12 = FocusNode();
-
-    textController13 = TextEditingController();
-    textFieldFocusNode13 = FocusNode();
-
-    textController14 = TextEditingController();
-    textFieldFocusNode14 = FocusNode();
-
-    textController15 = TextEditingController();
-    textFieldFocusNode15 = FocusNode();
   }
 
   @override
@@ -155,8 +115,5 @@ class SignInPageModel extends FlutterFlowModel<SignInPageWidget> {
 
     textFieldFocusNode14?.dispose();
     textController14?.dispose();
-
-    textFieldFocusNode15?.dispose();
-    textController15?.dispose();
   }
 }
