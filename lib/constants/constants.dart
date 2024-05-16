@@ -1,2 +1,2 @@
 // constants.dart
-const String apiUrl = '192.168.1.26:8000';
+const String apiUrl = 'http://192.168.115.182:8000';

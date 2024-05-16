@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import '/flutter_flow/flutter_flow_count_controller.dart';
 import '/flutter_flow/flutter_flow_drop_down.dart';
 import '/flutter_flow/flutter_flow_expanded_image_view.dart';
@@ -11,6 +13,8 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'create_event_page_model.dart';
 export 'create_event_page_model.dart';
+import '../constants/constants.dart';
+import 'package:http/http.dart' as http;
 
 class CreateEventPageWidget extends StatefulWidget {
   const CreateEventPageWidget({super.key});
@@ -21,6 +25,7 @@ class CreateEventPageWidget extends StatefulWidget {
 
 class _CreateEventPageWidgetState extends State<CreateEventPageWidget> {
   late CreateEventPageModel _model;
+  late String _message;
 
   final scaffoldKey = GlobalKey<ScaffoldState>();
 
@@ -67,6 +72,8 @@ class _CreateEventPageWidgetState extends State<CreateEventPageWidget> {
 
     _model.textController13 ??= TextEditingController();
     _model.textFieldFocusNode13 ??= FocusNode();
+
+    _message = '';
   }
 
   @override
@@ -74,6 +81,71 @@ class _CreateEventPageWidgetState extends State<CreateEventPageWidget> {
     _model.dispose();
 
     super.dispose();
+  }
+
+  Future<void> createEvent() async {
+    var url = Uri.parse(apiUrl + '/api/evento/create');
+
+    // Definindo os headers
+    var headers = {
+      'Content-Type': 'application/json',
+      'Authorization':
+          "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6MiwiZW1haWwiOiJkd2Fkd2Fkd2RkZGRkYWR3YUBnbWFpbC5jb20iLCJuYW1lIjoiV0lMTElBTSIsImlhdCI6MTcxNTg4ODczMywiZXhwIjoxNzE2NDQ0Mjg4fQ.BzCOfmwSZPD8jVSo2cdiITCv2zEeDpbuFbpApDZYbIA",
+    };
+
+    var body = json.encode({
+      "nomeEvento": _model.textController2.text,
+      "tipoEvento": _model.textController1.text,
+      "data": _model.textController3.text,
+      "quantidadePessoas": _model.textController4.text,
+      "quantidadeFuncionarios": _model.textController5.text,
+      "statusEvento": _model.textController6.text,
+      "descricaoEvento": _model.textController7.text,
+      "endereco": _model.textController8.text,
+      "bairro": _model.textController9.text,
+      "cidade": _model.textController10.text,
+      "estado": _model.textController11.text,
+      "professions": [
+        {"id": 13, "quantidade": 4},
+        {"id": 16, "quantidade": 99}
+      ]
+    });
+
+    var response = await http.post(
+      url,
+      body: body,
+      headers: headers,
+    );
+
+    if (response.statusCode == 201) {
+      setState(() {
+        _message = 'Evento criado com sucesso!';
+        GoRouter.of(context).go('/homePage');
+      });
+    } else {
+      // Exibir aviso com mensagem da API
+      final responseData = jsonDecode(response.body);
+      final errorMessage = responseData['message'];
+
+      showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: Text('Erro'),
+            content: Text(errorMessage ??
+                'Erro ao criar a conta. Status code: ${response.body}'),
+            actions: [
+              TextButton(
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+                child: Text('OK'),
+              ),
+            ],
+          );
+        },
+      );
+    }
   }
 
   @override
@@ -95,7 +167,8 @@ class _CreateEventPageWidgetState extends State<CreateEventPageWidget> {
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 Padding(
-                  padding: const EdgeInsetsDirectional.fromSTEB(0.0, 50.0, 0.0, 0.0),
+                  padding:
+                      const EdgeInsetsDirectional.fromSTEB(0.0, 50.0, 0.0, 0.0),
                   child: Row(
                     mainAxisSize: MainAxisSize.max,
                     children: [
@@ -149,8 +222,8 @@ class _CreateEventPageWidgetState extends State<CreateEventPageWidget> {
                 Align(
                   alignment: const AlignmentDirectional(0.0, 0.0),
                   child: Padding(
-                    padding:
-                        const EdgeInsetsDirectional.fromSTEB(0.0, 15.0, 0.0, 0.0),
+                    padding: const EdgeInsetsDirectional.fromSTEB(
+                        0.0, 15.0, 0.0, 0.0),
                     child: Text(
                       'Nome do Prestador',
                       style: FlutterFlowTheme.of(context).titleMedium.override(
@@ -163,7 +236,8 @@ class _CreateEventPageWidgetState extends State<CreateEventPageWidget> {
                   ),
                 ),
                 Padding(
-                  padding: const EdgeInsetsDirectional.fromSTEB(0.0, 10.0, 0.0, 0.0),
+                  padding:
+                      const EdgeInsetsDirectional.fromSTEB(0.0, 10.0, 0.0, 0.0),
                   child: InkWell(
                     splashColor: Colors.transparent,
                     focusColor: Colors.transparent,
@@ -236,7 +310,8 @@ class _CreateEventPageWidgetState extends State<CreateEventPageWidget> {
                   ),
                 ),
                 Padding(
-                  padding: const EdgeInsetsDirectional.fromSTEB(0.0, 10.0, 0.0, 0.0),
+                  padding:
+                      const EdgeInsetsDirectional.fromSTEB(0.0, 10.0, 0.0, 0.0),
                   child: InkWell(
                     splashColor: Colors.transparent,
                     focusColor: Colors.transparent,
@@ -300,7 +375,8 @@ class _CreateEventPageWidgetState extends State<CreateEventPageWidget> {
                   ),
                 ),
                 Padding(
-                  padding: const EdgeInsetsDirectional.fromSTEB(0.0, 10.0, 0.0, 0.0),
+                  padding:
+                      const EdgeInsetsDirectional.fromSTEB(0.0, 10.0, 0.0, 0.0),
                   child: InkWell(
                     splashColor: Colors.transparent,
                     focusColor: Colors.transparent,
@@ -373,7 +449,8 @@ class _CreateEventPageWidgetState extends State<CreateEventPageWidget> {
                   ),
                 ),
                 Padding(
-                  padding: const EdgeInsetsDirectional.fromSTEB(0.0, 10.0, 0.0, 0.0),
+                  padding:
+                      const EdgeInsetsDirectional.fromSTEB(0.0, 10.0, 0.0, 0.0),
                   child: InkWell(
                     splashColor: Colors.transparent,
                     focusColor: Colors.transparent,
@@ -446,7 +523,8 @@ class _CreateEventPageWidgetState extends State<CreateEventPageWidget> {
                   ),
                 ),
                 Padding(
-                  padding: const EdgeInsetsDirectional.fromSTEB(0.0, 10.0, 0.0, 0.0),
+                  padding:
+                      const EdgeInsetsDirectional.fromSTEB(0.0, 10.0, 0.0, 0.0),
                   child: InkWell(
                     splashColor: Colors.transparent,
                     focusColor: Colors.transparent,
@@ -519,7 +597,8 @@ class _CreateEventPageWidgetState extends State<CreateEventPageWidget> {
                   ),
                 ),
                 Padding(
-                  padding: const EdgeInsetsDirectional.fromSTEB(0.0, 10.0, 0.0, 0.0),
+                  padding:
+                      const EdgeInsetsDirectional.fromSTEB(0.0, 10.0, 0.0, 0.0),
                   child: InkWell(
                     splashColor: Colors.transparent,
                     focusColor: Colors.transparent,
@@ -584,7 +663,8 @@ class _CreateEventPageWidgetState extends State<CreateEventPageWidget> {
                   ),
                 ),
                 Padding(
-                  padding: const EdgeInsetsDirectional.fromSTEB(0.0, 10.0, 0.0, 0.0),
+                  padding:
+                      const EdgeInsetsDirectional.fromSTEB(0.0, 10.0, 0.0, 0.0),
                   child: InkWell(
                     splashColor: Colors.transparent,
                     focusColor: Colors.transparent,
@@ -660,8 +740,8 @@ class _CreateEventPageWidgetState extends State<CreateEventPageWidget> {
                   child: Align(
                     alignment: const AlignmentDirectional(0.0, 1.0),
                     child: Padding(
-                      padding:
-                          const EdgeInsetsDirectional.fromSTEB(0.0, 10.0, 0.0, 0.0),
+                      padding: const EdgeInsetsDirectional.fromSTEB(
+                          0.0, 10.0, 0.0, 0.0),
                       child: InkWell(
                         splashColor: Colors.transparent,
                         focusColor: Colors.transparent,
@@ -708,10 +788,12 @@ class _CreateEventPageWidgetState extends State<CreateEventPageWidget> {
                             children: [
                               Flexible(
                                 child: Align(
-                                  alignment: const AlignmentDirectional(0.0, 0.0),
+                                  alignment:
+                                      const AlignmentDirectional(0.0, 0.0),
                                   child: Padding(
-                                    padding: const EdgeInsetsDirectional.fromSTEB(
-                                        25.0, 0.0, 0.0, 0.0),
+                                    padding:
+                                        const EdgeInsetsDirectional.fromSTEB(
+                                            25.0, 0.0, 0.0, 0.0),
                                     child: Text(
                                       'Login',
                                       style: FlutterFlowTheme.of(context)
@@ -740,8 +822,8 @@ class _CreateEventPageWidgetState extends State<CreateEventPageWidget> {
                   child: Align(
                     alignment: const AlignmentDirectional(0.0, 1.0),
                     child: Padding(
-                      padding:
-                          const EdgeInsetsDirectional.fromSTEB(0.0, 10.0, 0.0, 30.0),
+                      padding: const EdgeInsetsDirectional.fromSTEB(
+                          0.0, 10.0, 0.0, 30.0),
                       child: InkWell(
                         splashColor: Colors.transparent,
                         focusColor: Colors.transparent,
@@ -788,10 +870,12 @@ class _CreateEventPageWidgetState extends State<CreateEventPageWidget> {
                             children: [
                               Flexible(
                                 child: Align(
-                                  alignment: const AlignmentDirectional(0.0, 0.0),
+                                  alignment:
+                                      const AlignmentDirectional(0.0, 0.0),
                                   child: Padding(
-                                    padding: const EdgeInsetsDirectional.fromSTEB(
-                                        25.0, 0.0, 0.0, 0.0),
+                                    padding:
+                                        const EdgeInsetsDirectional.fromSTEB(
+                                            25.0, 0.0, 0.0, 0.0),
                                     child: Text(
                                       'Logout',
                                       style: FlutterFlowTheme.of(context)
@@ -858,7 +942,8 @@ class _CreateEventPageWidgetState extends State<CreateEventPageWidget> {
               mainAxisSize: MainAxisSize.max,
               children: [
                 Padding(
-                  padding: const EdgeInsetsDirectional.fromSTEB(23.0, 16.0, 0.0, 0.0),
+                  padding: const EdgeInsetsDirectional.fromSTEB(
+                      23.0, 16.0, 0.0, 0.0),
                   child: InkWell(
                     splashColor: Colors.transparent,
                     focusColor: Colors.transparent,
@@ -883,8 +968,8 @@ class _CreateEventPageWidgetState extends State<CreateEventPageWidget> {
                   mainAxisSize: MainAxisSize.max,
                   children: [
                     Padding(
-                      padding:
-                          const EdgeInsetsDirectional.fromSTEB(16.0, 16.0, 0.0, 0.0),
+                      padding: const EdgeInsetsDirectional.fromSTEB(
+                          16.0, 16.0, 0.0, 0.0),
                       child: Text(
                         'Descreva seu Evento',
                         textAlign: TextAlign.center,
@@ -900,159 +985,160 @@ class _CreateEventPageWidgetState extends State<CreateEventPageWidget> {
                 ),
               ],
             ),
-            Stack(
-              children: [
-                Align(
-                  alignment: const AlignmentDirectional(0.0, 0.0),
-                  child: Container(
-                    width: 390.0,
-                    decoration: const BoxDecoration(),
-                    child: Padding(
-                      padding:
-                          const EdgeInsetsDirectional.fromSTEB(8.0, 16.0, 8.0, 0.0),
-                      child: TextFormField(
-                        controller: _model.textController1,
-                        focusNode: _model.textFieldFocusNode1,
-                        autofocus: true,
-                        obscureText: false,
-                        decoration: InputDecoration(
-                          labelText: 'Adicionar foto',
-                          labelStyle:
-                              FlutterFlowTheme.of(context).labelMedium.override(
-                                    fontFamily: 'Outfit',
-                                    color: const Color(0xFF05BD7B),
-                                    fontSize: 16.0,
-                                    letterSpacing: 0.0,
-                                    fontWeight: FontWeight.w500,
-                                  ),
-                          hintStyle:
-                              FlutterFlowTheme.of(context).labelMedium.override(
-                                    fontFamily: 'Outfit',
-                                    letterSpacing: 0.0,
-                                  ),
-                          enabledBorder: OutlineInputBorder(
-                            borderSide: const BorderSide(
-                              color: Color(0xFF05BD7B),
-                              width: 2.0,
-                            ),
-                            borderRadius: BorderRadius.circular(10.0),
-                          ),
-                          focusedBorder: OutlineInputBorder(
-                            borderSide: BorderSide(
-                              color: FlutterFlowTheme.of(context).primary,
-                              width: 2.0,
-                            ),
-                            borderRadius: BorderRadius.circular(10.0),
-                          ),
-                          errorBorder: OutlineInputBorder(
-                            borderSide: BorderSide(
-                              color: FlutterFlowTheme.of(context).error,
-                              width: 2.0,
-                            ),
-                            borderRadius: BorderRadius.circular(10.0),
-                          ),
-                          focusedErrorBorder: OutlineInputBorder(
-                            borderSide: BorderSide(
-                              color: FlutterFlowTheme.of(context).error,
-                              width: 2.0,
-                            ),
-                            borderRadius: BorderRadius.circular(10.0),
-                          ),
-                        ),
-                        style: FlutterFlowTheme.of(context).bodyMedium.override(
-                              fontFamily: 'Outfit',
-                              color: Colors.black,
-                              fontSize: 15.0,
-                              letterSpacing: 0.0,
-                              fontWeight: FontWeight.normal,
-                            ),
-                        validator: _model.textController1Validator
-                            .asValidator(context),
-                      ),
-                    ),
-                  ),
-                ),
-                Align(
-                  alignment: const AlignmentDirectional(0.9, -0.85),
-                  child: Padding(
-                    padding:
-                        const EdgeInsetsDirectional.fromSTEB(0.0, 20.0, 0.0, 0.0),
-                    child: FFButtonWidget(
-                      onPressed: () async {
-                        final selectedMedia = await selectMedia(
-                          maxWidth: 300.00,
-                          maxHeight: 200.00,
-                          includeBlurHash: true,
-                          mediaSource: MediaSource.photoGallery,
-                          multiImage: false,
-                        );
-                        if (selectedMedia != null &&
-                            selectedMedia.every((m) =>
-                                validateFileFormat(m.storagePath, context))) {
-                          setState(() => _model.isDataUploading = true);
-                          var selectedUploadedFiles = <FFUploadedFile>[];
+            // Stack(
+            //   children: [
+            //     Align(
+            //       alignment: const AlignmentDirectional(0.0, 0.0),
+            //       child: Container(
+            //         width: 390.0,
+            //         decoration: const BoxDecoration(),
+            //         child: Padding(
+            //           padding: const EdgeInsetsDirectional.fromSTEB(
+            //               8.0, 16.0, 8.0, 0.0),
+            //           child: TextFormField(
+            //             controller: _model.textController1,
+            //             focusNode: _model.textFieldFocusNode1,
+            //             autofocus: false,
+            //             obscureText: false,
+            //             decoration: InputDecoration(
+            //               labelText: 'Adicionar foto',
+            //               labelStyle:
+            //                   FlutterFlowTheme.of(context).labelMedium.override(
+            //                         fontFamily: 'Outfit',
+            //                         color: const Color(0xFF05BD7B),
+            //                         fontSize: 16.0,
+            //                         letterSpacing: 0.0,
+            //                         fontWeight: FontWeight.w500,
+            //                       ),
+            //               hintStyle:
+            //                   FlutterFlowTheme.of(context).labelMedium.override(
+            //                         fontFamily: 'Outfit',
+            //                         letterSpacing: 0.0,
+            //                       ),
+            //               enabledBorder: OutlineInputBorder(
+            //                 borderSide: const BorderSide(
+            //                   color: Color(0xFF05BD7B),
+            //                   width: 2.0,
+            //                 ),
+            //                 borderRadius: BorderRadius.circular(10.0),
+            //               ),
+            //               focusedBorder: OutlineInputBorder(
+            //                 borderSide: BorderSide(
+            //                   color: FlutterFlowTheme.of(context).primary,
+            //                   width: 2.0,
+            //                 ),
+            //                 borderRadius: BorderRadius.circular(10.0),
+            //               ),
+            //               errorBorder: OutlineInputBorder(
+            //                 borderSide: BorderSide(
+            //                   color: FlutterFlowTheme.of(context).error,
+            //                   width: 2.0,
+            //                 ),
+            //                 borderRadius: BorderRadius.circular(10.0),
+            //               ),
+            //               focusedErrorBorder: OutlineInputBorder(
+            //                 borderSide: BorderSide(
+            //                   color: FlutterFlowTheme.of(context).error,
+            //                   width: 2.0,
+            //                 ),
+            //                 borderRadius: BorderRadius.circular(10.0),
+            //               ),
+            //             ),
+            //             style: FlutterFlowTheme.of(context).bodyMedium.override(
+            //                   fontFamily: 'Outfit',
+            //                   color: Colors.black,
+            //                   fontSize: 15.0,
+            //                   letterSpacing: 0.0,
+            //                   fontWeight: FontWeight.normal,
+            //                 ),
+            //             validator: _model.textController1Validator
+            //                 .asValidator(context),
+            //           ),
+            //         ),
+            //       ),
+            //     ),
+            //     Align(
+            //       alignment: const AlignmentDirectional(0.9, -0.85),
+            //       child: Padding(
+            //         padding: const EdgeInsetsDirectional.fromSTEB(
+            //             0.0, 20.0, 0.0, 0.0),
+            //         child: FFButtonWidget(
+            //           onPressed: () async {
+            //             final selectedMedia = await selectMedia(
+            //               maxWidth: 300.00,
+            //               maxHeight: 200.00,
+            //               includeBlurHash: true,
+            //               mediaSource: MediaSource.photoGallery,
+            //               multiImage: false,
+            //             );
+            //             if (selectedMedia != null &&
+            //                 selectedMedia.every((m) =>
+            //                     validateFileFormat(m.storagePath, context))) {
+            //               setState(() => _model.isDataUploading = true);
+            //               var selectedUploadedFiles = <FFUploadedFile>[];
 
-                          try {
-                            showUploadMessage(
-                              context,
-                              'Uploading file...',
-                              showLoading: true,
-                            );
-                            selectedUploadedFiles = selectedMedia
-                                .map((m) => FFUploadedFile(
-                                      name: m.storagePath.split('/').last,
-                                      bytes: m.bytes,
-                                      height: m.dimensions?.height,
-                                      width: m.dimensions?.width,
-                                      blurHash: m.blurHash,
-                                    ))
-                                .toList();
-                          } finally {
-                            ScaffoldMessenger.of(context).hideCurrentSnackBar();
-                            _model.isDataUploading = false;
-                          }
-                          if (selectedUploadedFiles.length ==
-                              selectedMedia.length) {
-                            setState(() {
-                              _model.uploadedLocalFile =
-                                  selectedUploadedFiles.first;
-                            });
-                            showUploadMessage(context, 'Success!');
-                          } else {
-                            setState(() {});
-                            showUploadMessage(context, 'Failed to upload data');
-                            return;
-                          }
-                        }
-                      },
-                      text: 'Upload',
-                      options: FFButtonOptions(
-                        height: 40.0,
-                        padding: const EdgeInsetsDirectional.fromSTEB(
-                            24.0, 0.0, 24.0, 0.0),
-                        iconPadding:
-                            const EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 0.0, 0.0),
-                        color: const Color(0xFF05BD7B),
-                        textStyle:
-                            FlutterFlowTheme.of(context).titleSmall.override(
-                                  fontFamily: 'Outfit',
-                                  color: Colors.white,
-                                  letterSpacing: 0.0,
-                                ),
-                        elevation: 3.0,
-                        borderSide: const BorderSide(
-                          color: Colors.transparent,
-                          width: 1.0,
-                        ),
-                        borderRadius: BorderRadius.circular(6.0),
-                      ),
-                    ),
-                  ),
-                ),
-              ],
-            ),
+            //               try {
+            //                 showUploadMessage(
+            //                   context,
+            //                   'Uploading file...',
+            //                   showLoading: true,
+            //                 );
+            //                 selectedUploadedFiles = selectedMedia
+            //                     .map((m) => FFUploadedFile(
+            //                           name: m.storagePath.split('/').last,
+            //                           bytes: m.bytes,
+            //                           height: m.dimensions?.height,
+            //                           width: m.dimensions?.width,
+            //                           blurHash: m.blurHash,
+            //                         ))
+            //                     .toList();
+            //               } finally {
+            //                 ScaffoldMessenger.of(context).hideCurrentSnackBar();
+            //                 _model.isDataUploading = false;
+            //               }
+            //               if (selectedUploadedFiles.length ==
+            //                   selectedMedia.length) {
+            //                 setState(() {
+            //                   _model.uploadedLocalFile =
+            //                       selectedUploadedFiles.first;
+            //                 });
+            //                 showUploadMessage(context, 'Success!');
+            //               } else {
+            //                 setState(() {});
+            //                 showUploadMessage(context, 'Failed to upload data');
+            //                 return;
+            //               }
+            //             }
+            //           },
+            //           text: 'Upload',
+            //           options: FFButtonOptions(
+            //             height: 40.0,
+            //             padding: const EdgeInsetsDirectional.fromSTEB(
+            //                 24.0, 0.0, 24.0, 0.0),
+            //             iconPadding: const EdgeInsetsDirectional.fromSTEB(
+            //                 0.0, 0.0, 0.0, 0.0),
+            //             color: const Color(0xFF05BD7B),
+            //             textStyle:
+            //                 FlutterFlowTheme.of(context).titleSmall.override(
+            //                       fontFamily: 'Outfit',
+            //                       color: Colors.white,
+            //                       letterSpacing: 0.0,
+            //                     ),
+            //             elevation: 3.0,
+            //             borderSide: const BorderSide(
+            //               color: Colors.transparent,
+            //               width: 1.0,
+            //             ),
+            //             borderRadius: BorderRadius.circular(6.0),
+            //           ),
+            //         ),
+            //       ),
+            //     ),
+            //   ],
+            // ),
             Padding(
-              padding: const EdgeInsetsDirectional.fromSTEB(8.0, 16.0, 8.0, 0.0),
+              padding:
+                  const EdgeInsetsDirectional.fromSTEB(8.0, 16.0, 8.0, 0.0),
               child: TextFormField(
                 controller: _model.textController2,
                 focusNode: _model.textFieldFocusNode2,
@@ -1111,14 +1197,98 @@ class _CreateEventPageWidgetState extends State<CreateEventPageWidget> {
               ),
             ),
             Padding(
-              padding: const EdgeInsetsDirectional.fromSTEB(8.0, 16.0, 8.0, 0.0),
+              padding:
+                  const EdgeInsetsDirectional.fromSTEB(8.0, 16.0, 8.0, 0.0),
+              child: GestureDetector(
+                onTap: () async {
+                  DateTime? pickedDate = await showDatePicker(
+                    context: context,
+                    initialDate: DateTime.now(),
+                    firstDate: DateTime(2000),
+                    lastDate: DateTime(2101),
+                  );
+
+                  if (pickedDate != null) {
+                    setState(() {
+                      _model.textController3.text =
+                          pickedDate.toString().split(' ')[0];
+                    });
+                  }
+                },
+                child: AbsorbPointer(
+                  child: TextFormField(
+                    controller: _model.textController3,
+                    focusNode: _model.textFieldFocusNode3,
+                    autofocus: false,
+                    obscureText: false,
+                    decoration: InputDecoration(
+                      labelText: 'Data do Evento',
+                      labelStyle:
+                          FlutterFlowTheme.of(context).labelMedium.override(
+                                fontFamily: 'Outfit',
+                                color: const Color(0xFF05BD7B),
+                                fontSize: 16.0,
+                                letterSpacing: 0.0,
+                                fontWeight: FontWeight.w500,
+                              ),
+                      hintStyle:
+                          FlutterFlowTheme.of(context).labelMedium.override(
+                                fontFamily: 'Outfit',
+                                letterSpacing: 0.0,
+                              ),
+                      enabledBorder: OutlineInputBorder(
+                        borderSide: const BorderSide(
+                          color: Color(0xFF05BD7B),
+                          width: 2.0,
+                        ),
+                        borderRadius: BorderRadius.circular(10.0),
+                      ),
+                      focusedBorder: OutlineInputBorder(
+                        borderSide: BorderSide(
+                          color: FlutterFlowTheme.of(context).primary,
+                          width: 2.0,
+                        ),
+                        borderRadius: BorderRadius.circular(10.0),
+                      ),
+                      errorBorder: OutlineInputBorder(
+                        borderSide: BorderSide(
+                          color: FlutterFlowTheme.of(context).error,
+                          width: 2.0,
+                        ),
+                        borderRadius: BorderRadius.circular(10.0),
+                      ),
+                      focusedErrorBorder: OutlineInputBorder(
+                        borderSide: BorderSide(
+                          color: FlutterFlowTheme.of(context).error,
+                          width: 2.0,
+                        ),
+                        borderRadius: BorderRadius.circular(10.0),
+                      ),
+                    ),
+                    style: FlutterFlowTheme.of(context).bodyMedium.override(
+                          fontFamily: 'Outfit',
+                          color: Colors.black,
+                          fontSize: 15.0,
+                          letterSpacing: 0.0,
+                          fontWeight: FontWeight.normal,
+                        ),
+                    validator:
+                        _model.textController3Validator.asValidator(context),
+                  ),
+                ),
+              ),
+            ),
+
+            Padding(
+              padding:
+                  const EdgeInsetsDirectional.fromSTEB(8.0, 16.0, 8.0, 0.0),
               child: TextFormField(
-                controller: _model.textController3,
-                focusNode: _model.textFieldFocusNode3,
-                autofocus: true,
+                controller: _model.textController1,
+                focusNode: _model.textFieldFocusNode1,
+                autofocus: false,
                 obscureText: false,
                 decoration: InputDecoration(
-                  labelText: 'Data do Evento',
+                  labelText: 'Tipo de Evento',
                   labelStyle: FlutterFlowTheme.of(context).labelMedium.override(
                         fontFamily: 'Outfit',
                         color: const Color(0xFF05BD7B),
@@ -1166,63 +1336,65 @@ class _CreateEventPageWidgetState extends State<CreateEventPageWidget> {
                       letterSpacing: 0.0,
                       fontWeight: FontWeight.normal,
                     ),
-                keyboardType: TextInputType.datetime,
-                validator: _model.textController3Validator.asValidator(context),
+                validator: _model.textController1Validator.asValidator(context),
               ),
             ),
+            // Padding(
+            //   padding:
+            //       const EdgeInsetsDirectional.fromSTEB(8.0, 16.0, 8.0, 0.0),
+            //   child: FlutterFlowDropDown<String>(
+            //     multiSelectController: _model.dropDownValueController1 ??=
+            //         FormFieldController<List<String>>(null),
+            //     options: List<String>.from(['1', '2', '3']),
+            //     optionLabels: const [
+            //       'Casamento',
+            //       'Festa infantil',
+            //       'Festa de aniversário'
+            //     ],
+            //     width: 373.0,
+            //     height: 56.0,
+            //     textStyle: FlutterFlowTheme.of(context).bodyMedium.override(
+            //           fontFamily: 'Outfit',
+            //           color: const Color(0xFF05BD7B),
+            //           fontSize: 16.0,
+            //           letterSpacing: 0.0,
+            //           fontWeight: FontWeight.w500,
+            //         ),
+            //     hintText: 'Tipo de evento',
+            //     icon: const Icon(
+            //       Icons.keyboard_arrow_down_rounded,
+            //       color: Color(0xFF05BD7B),
+            //       size: 24.0,
+            //     ),
+            //     fillColor: FlutterFlowTheme.of(context).alternate,
+            //     elevation: 2.0,
+            //     borderColor: const Color(0xFF05BD7B),
+            //     borderWidth: 2.0,
+            //     borderRadius: 8.0,
+            //     margin:
+            //         const EdgeInsetsDirectional.fromSTEB(16.0, 4.0, 16.0, 4.0),
+            //     hidesUnderline: true,
+            //     isOverButton: true,
+            //     isSearchable: false,
+            //     isMultiSelect: true,
+            //     onMultiSelectChanged: (val) =>
+            //         setState(() => _model.dropDownValue1 = val),
+            //     labelText: '',
+            //     labelTextStyle:
+            //         FlutterFlowTheme.of(context).labelMedium.override(
+            //               fontFamily: 'Outfit',
+            //               color: Colors.black,
+            //               letterSpacing: 0.0,
+            //             ),
+            //   ),
+            // ),
             Padding(
-              padding: const EdgeInsetsDirectional.fromSTEB(8.0, 16.0, 8.0, 0.0),
-              child: FlutterFlowDropDown<String>(
-                multiSelectController: _model.dropDownValueController1 ??=
-                    FormFieldController<List<String>>(null),
-                options: List<String>.from(['1', '2', '3']),
-                optionLabels: const [
-                  'Casamento',
-                  'Festa infantil',
-                  'Festa de aniversário'
-                ],
-                width: 373.0,
-                height: 56.0,
-                textStyle: FlutterFlowTheme.of(context).bodyMedium.override(
-                      fontFamily: 'Outfit',
-                      color: const Color(0xFF05BD7B),
-                      fontSize: 16.0,
-                      letterSpacing: 0.0,
-                      fontWeight: FontWeight.w500,
-                    ),
-                hintText: 'Tipo de evento',
-                icon: const Icon(
-                  Icons.keyboard_arrow_down_rounded,
-                  color: Color(0xFF05BD7B),
-                  size: 24.0,
-                ),
-                fillColor: FlutterFlowTheme.of(context).alternate,
-                elevation: 2.0,
-                borderColor: const Color(0xFF05BD7B),
-                borderWidth: 2.0,
-                borderRadius: 8.0,
-                margin: const EdgeInsetsDirectional.fromSTEB(16.0, 4.0, 16.0, 4.0),
-                hidesUnderline: true,
-                isOverButton: true,
-                isSearchable: false,
-                isMultiSelect: true,
-                onMultiSelectChanged: (val) =>
-                    setState(() => _model.dropDownValue1 = val),
-                labelText: '',
-                labelTextStyle:
-                    FlutterFlowTheme.of(context).labelMedium.override(
-                          fontFamily: 'Outfit',
-                          color: Colors.black,
-                          letterSpacing: 0.0,
-                        ),
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsetsDirectional.fromSTEB(8.0, 16.0, 8.0, 0.0),
+              padding:
+                  const EdgeInsetsDirectional.fromSTEB(8.0, 16.0, 8.0, 0.0),
               child: TextFormField(
                 controller: _model.textController4,
                 focusNode: _model.textFieldFocusNode4,
-                autofocus: true,
+                autofocus: false,
                 obscureText: false,
                 decoration: InputDecoration(
                   labelText: 'Quantidade de Convidados',
@@ -1273,18 +1445,20 @@ class _CreateEventPageWidgetState extends State<CreateEventPageWidget> {
                       letterSpacing: 0.0,
                       fontWeight: FontWeight.normal,
                     ),
+                keyboardType: TextInputType.number, // Apenas números
                 validator: _model.textController4Validator.asValidator(context),
               ),
             ),
             Padding(
-              padding: const EdgeInsetsDirectional.fromSTEB(8.0, 16.0, 8.0, 0.0),
+              padding:
+                  const EdgeInsetsDirectional.fromSTEB(8.0, 16.0, 8.0, 0.0),
               child: TextFormField(
-                controller: _model.textController5,
-                focusNode: _model.textFieldFocusNode5,
-                autofocus: true,
+                controller: _model.textController6,
+                focusNode: _model.textFieldFocusNode6,
+                autofocus: false,
                 obscureText: false,
                 decoration: InputDecoration(
-                  labelText: 'CEP',
+                  labelText: 'Status',
                   labelStyle: FlutterFlowTheme.of(context).labelMedium.override(
                         fontFamily: 'Outfit',
                         color: const Color(0xFF05BD7B),
@@ -1332,15 +1506,16 @@ class _CreateEventPageWidgetState extends State<CreateEventPageWidget> {
                       letterSpacing: 0.0,
                       fontWeight: FontWeight.normal,
                     ),
-                validator: _model.textController5Validator.asValidator(context),
+                validator: _model.textController6Validator.asValidator(context),
               ),
             ),
             Padding(
-              padding: const EdgeInsetsDirectional.fromSTEB(8.0, 16.0, 8.0, 0.0),
+              padding:
+                  const EdgeInsetsDirectional.fromSTEB(8.0, 16.0, 8.0, 0.0),
               child: TextFormField(
-                controller: _model.textController6,
-                focusNode: _model.textFieldFocusNode6,
-                autofocus: true,
+                controller: _model.textController10,
+                focusNode: _model.textFieldFocusNode10,
+                autofocus: false,
                 obscureText: false,
                 decoration: InputDecoration(
                   labelText: 'Cidade',
@@ -1395,11 +1570,12 @@ class _CreateEventPageWidgetState extends State<CreateEventPageWidget> {
               ),
             ),
             Padding(
-              padding: const EdgeInsetsDirectional.fromSTEB(8.0, 16.0, 8.0, 0.0),
+              padding:
+                  const EdgeInsetsDirectional.fromSTEB(8.0, 16.0, 8.0, 0.0),
               child: TextFormField(
-                controller: _model.textController7,
-                focusNode: _model.textFieldFocusNode7,
-                autofocus: true,
+                controller: _model.textController11,
+                focusNode: _model.textFieldFocusNode11,
+                autofocus: false,
                 obscureText: false,
                 decoration: InputDecoration(
                   labelText: 'Estado',
@@ -1454,11 +1630,12 @@ class _CreateEventPageWidgetState extends State<CreateEventPageWidget> {
               ),
             ),
             Padding(
-              padding: const EdgeInsetsDirectional.fromSTEB(8.0, 16.0, 8.0, 0.0),
+              padding:
+                  const EdgeInsetsDirectional.fromSTEB(8.0, 16.0, 8.0, 0.0),
               child: TextFormField(
-                controller: _model.textController8,
-                focusNode: _model.textFieldFocusNode8,
-                autofocus: true,
+                controller: _model.textController9,
+                focusNode: _model.textFieldFocusNode9,
+                autofocus: false,
                 obscureText: false,
                 decoration: InputDecoration(
                   labelText: 'Bairro',
@@ -1513,11 +1690,12 @@ class _CreateEventPageWidgetState extends State<CreateEventPageWidget> {
               ),
             ),
             Padding(
-              padding: const EdgeInsetsDirectional.fromSTEB(8.0, 16.0, 8.0, 0.0),
+              padding:
+                  const EdgeInsetsDirectional.fromSTEB(8.0, 16.0, 8.0, 0.0),
               child: TextFormField(
-                controller: _model.textController9,
-                focusNode: _model.textFieldFocusNode9,
-                autofocus: true,
+                controller: _model.textController8,
+                focusNode: _model.textFieldFocusNode8,
+                autofocus: false,
                 obscureText: false,
                 decoration: InputDecoration(
                   labelText: 'Rua',
@@ -1571,72 +1749,74 @@ class _CreateEventPageWidgetState extends State<CreateEventPageWidget> {
                 validator: _model.textController9Validator.asValidator(context),
               ),
             ),
+            // Padding(
+            //   padding:
+            //       const EdgeInsetsDirectional.fromSTEB(8.0, 16.0, 8.0, 0.0),
+            //   child: TextFormField(
+            //     controller: _model.textController10,
+            //     focusNode: _model.textFieldFocusNode10,
+            //     autofocus: false,
+            //     obscureText: false,
+            //     decoration: InputDecoration(
+            //       labelText: 'Número',
+            //       labelStyle: FlutterFlowTheme.of(context).labelMedium.override(
+            //             fontFamily: 'Outfit',
+            //             color: const Color(0xFF05BD7B),
+            //             fontSize: 16.0,
+            //             letterSpacing: 0.0,
+            //             fontWeight: FontWeight.w500,
+            //           ),
+            //       hintStyle: FlutterFlowTheme.of(context).labelMedium.override(
+            //             fontFamily: 'Outfit',
+            //             letterSpacing: 0.0,
+            //           ),
+            //       enabledBorder: OutlineInputBorder(
+            //         borderSide: const BorderSide(
+            //           color: Color(0xFF05BD7B),
+            //           width: 2.0,
+            //         ),
+            //         borderRadius: BorderRadius.circular(10.0),
+            //       ),
+            //       focusedBorder: OutlineInputBorder(
+            //         borderSide: BorderSide(
+            //           color: FlutterFlowTheme.of(context).primary,
+            //           width: 2.0,
+            //         ),
+            //         borderRadius: BorderRadius.circular(10.0),
+            //       ),
+            //       errorBorder: OutlineInputBorder(
+            //         borderSide: BorderSide(
+            //           color: FlutterFlowTheme.of(context).error,
+            //           width: 2.0,
+            //         ),
+            //         borderRadius: BorderRadius.circular(10.0),
+            //       ),
+            //       focusedErrorBorder: OutlineInputBorder(
+            //         borderSide: BorderSide(
+            //           color: FlutterFlowTheme.of(context).error,
+            //           width: 2.0,
+            //         ),
+            //         borderRadius: BorderRadius.circular(10.0),
+            //       ),
+            //     ),
+            //     style: FlutterFlowTheme.of(context).bodyMedium.override(
+            //           fontFamily: 'Outfit',
+            //           color: Colors.black,
+            //           fontSize: 15.0,
+            //           letterSpacing: 0.0,
+            //           fontWeight: FontWeight.normal,
+            //         ),
+            //     validator:
+            //         _model.textController10Validator.asValidator(context),
+            //   ),
+            // ),
             Padding(
-              padding: const EdgeInsetsDirectional.fromSTEB(8.0, 16.0, 8.0, 0.0),
+              padding:
+                  const EdgeInsetsDirectional.fromSTEB(8.0, 16.0, 8.0, 0.0),
               child: TextFormField(
-                controller: _model.textController10,
-                focusNode: _model.textFieldFocusNode10,
-                autofocus: true,
-                obscureText: false,
-                decoration: InputDecoration(
-                  labelText: 'Número',
-                  labelStyle: FlutterFlowTheme.of(context).labelMedium.override(
-                        fontFamily: 'Outfit',
-                        color: const Color(0xFF05BD7B),
-                        fontSize: 16.0,
-                        letterSpacing: 0.0,
-                        fontWeight: FontWeight.w500,
-                      ),
-                  hintStyle: FlutterFlowTheme.of(context).labelMedium.override(
-                        fontFamily: 'Outfit',
-                        letterSpacing: 0.0,
-                      ),
-                  enabledBorder: OutlineInputBorder(
-                    borderSide: const BorderSide(
-                      color: Color(0xFF05BD7B),
-                      width: 2.0,
-                    ),
-                    borderRadius: BorderRadius.circular(10.0),
-                  ),
-                  focusedBorder: OutlineInputBorder(
-                    borderSide: BorderSide(
-                      color: FlutterFlowTheme.of(context).primary,
-                      width: 2.0,
-                    ),
-                    borderRadius: BorderRadius.circular(10.0),
-                  ),
-                  errorBorder: OutlineInputBorder(
-                    borderSide: BorderSide(
-                      color: FlutterFlowTheme.of(context).error,
-                      width: 2.0,
-                    ),
-                    borderRadius: BorderRadius.circular(10.0),
-                  ),
-                  focusedErrorBorder: OutlineInputBorder(
-                    borderSide: BorderSide(
-                      color: FlutterFlowTheme.of(context).error,
-                      width: 2.0,
-                    ),
-                    borderRadius: BorderRadius.circular(10.0),
-                  ),
-                ),
-                style: FlutterFlowTheme.of(context).bodyMedium.override(
-                      fontFamily: 'Outfit',
-                      color: Colors.black,
-                      fontSize: 15.0,
-                      letterSpacing: 0.0,
-                      fontWeight: FontWeight.normal,
-                    ),
-                validator:
-                    _model.textController10Validator.asValidator(context),
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsetsDirectional.fromSTEB(8.0, 16.0, 8.0, 0.0),
-              child: TextFormField(
-                controller: _model.textController11,
-                focusNode: _model.textFieldFocusNode11,
-                autofocus: true,
+                // controller: _model.textController11,
+                // focusNode: _model.textFieldFocusNode11,
+                autofocus: false,
                 obscureText: false,
                 decoration: InputDecoration(
                   labelText: 'Complemento',
@@ -1692,11 +1872,12 @@ class _CreateEventPageWidgetState extends State<CreateEventPageWidget> {
               ),
             ),
             Padding(
-              padding: const EdgeInsetsDirectional.fromSTEB(8.0, 16.0, 8.0, 0.0),
+              padding:
+                  const EdgeInsetsDirectional.fromSTEB(8.0, 16.0, 8.0, 0.0),
               child: TextFormField(
-                controller: _model.textController12,
-                focusNode: _model.textFieldFocusNode12,
-                autofocus: true,
+                controller: _model.textController7,
+                focusNode: _model.textFieldFocusNode7,
+                autofocus: false,
                 obscureText: false,
                 decoration: InputDecoration(
                   labelText: 'Descrição do Evento',
@@ -1753,14 +1934,15 @@ class _CreateEventPageWidgetState extends State<CreateEventPageWidget> {
               ),
             ),
             Padding(
-              padding: const EdgeInsetsDirectional.fromSTEB(8.0, 16.0, 8.0, 0.0),
+              padding:
+                  const EdgeInsetsDirectional.fromSTEB(8.0, 16.0, 8.0, 0.0),
               child: TextFormField(
-                controller: _model.textController13,
-                focusNode: _model.textFieldFocusNode13,
-                autofocus: true,
+                controller: _model.textController5,
+                focusNode: _model.textFieldFocusNode5,
+                autofocus: false,
                 obscureText: false,
                 decoration: InputDecoration(
-                  labelText: 'Quantidade de funcionários',
+                  labelText: 'Quantidade de Funcionários',
                   labelStyle: FlutterFlowTheme.of(context).labelMedium.override(
                         fontFamily: 'Outfit',
                         color: const Color(0xFF05BD7B),
@@ -1770,7 +1952,6 @@ class _CreateEventPageWidgetState extends State<CreateEventPageWidget> {
                       ),
                   hintStyle: FlutterFlowTheme.of(context).labelMedium.override(
                         fontFamily: 'Outfit',
-                        color: Colors.black,
                         letterSpacing: 0.0,
                       ),
                   enabledBorder: OutlineInputBorder(
@@ -1809,12 +1990,13 @@ class _CreateEventPageWidgetState extends State<CreateEventPageWidget> {
                       letterSpacing: 0.0,
                       fontWeight: FontWeight.normal,
                     ),
-                validator:
-                    _model.textController13Validator.asValidator(context),
+                keyboardType: TextInputType.number, // Apenas números
+                validator: _model.textController5Validator.asValidator(context),
               ),
             ),
             Padding(
-              padding: const EdgeInsetsDirectional.fromSTEB(8.0, 16.0, 8.0, 0.0),
+              padding:
+                  const EdgeInsetsDirectional.fromSTEB(8.0, 16.0, 8.0, 0.0),
               child: FlutterFlowDropDown<String>(
                 multiSelectController: _model.dropDownValueController2 ??=
                     FormFieldController<List<String>>(null),
@@ -1840,7 +2022,8 @@ class _CreateEventPageWidgetState extends State<CreateEventPageWidget> {
                 borderColor: const Color(0xFF05BD7B),
                 borderWidth: 2.0,
                 borderRadius: 8.0,
-                margin: const EdgeInsetsDirectional.fromSTEB(16.0, 4.0, 16.0, 4.0),
+                margin:
+                    const EdgeInsetsDirectional.fromSTEB(16.0, 4.0, 16.0, 4.0),
                 hidesUnderline: true,
                 isOverButton: true,
                 isSearchable: false,
@@ -1857,7 +2040,8 @@ class _CreateEventPageWidgetState extends State<CreateEventPageWidget> {
               ),
             ),
             Padding(
-              padding: const EdgeInsetsDirectional.fromSTEB(8.0, 16.0, 8.0, 16.0),
+              padding:
+                  const EdgeInsetsDirectional.fromSTEB(8.0, 16.0, 8.0, 16.0),
               child: Container(
                 width: 100.0,
                 height: 100.0,
@@ -1872,7 +2056,8 @@ class _CreateEventPageWidgetState extends State<CreateEventPageWidget> {
                   ),
                 ),
                 child: Padding(
-                  padding: const EdgeInsetsDirectional.fromSTEB(8.0, 8.0, 12.0, 8.0),
+                  padding:
+                      const EdgeInsetsDirectional.fromSTEB(8.0, 8.0, 12.0, 8.0),
                   child: Row(
                     mainAxisSize: MainAxisSize.max,
                     crossAxisAlignment: CrossAxisAlignment.center,
@@ -1952,13 +2137,14 @@ class _CreateEventPageWidgetState extends State<CreateEventPageWidget> {
               ),
             ),
             Padding(
-              padding: const EdgeInsetsDirectional.fromSTEB(0.0, 16.0, 0.0, 16.0),
+              padding:
+                  const EdgeInsetsDirectional.fromSTEB(0.0, 16.0, 0.0, 16.0),
               child: Row(
                 mainAxisSize: MainAxisSize.max,
                 children: [
                   Padding(
-                    padding:
-                        const EdgeInsetsDirectional.fromSTEB(28.0, 0.0, 0.0, 0.0),
+                    padding: const EdgeInsetsDirectional.fromSTEB(
+                        28.0, 0.0, 0.0, 0.0),
                     child: FFButtonWidget(
                       onPressed: () async {
                         context.safePop();
@@ -1969,8 +2155,8 @@ class _CreateEventPageWidgetState extends State<CreateEventPageWidget> {
                         height: 40.0,
                         padding: const EdgeInsetsDirectional.fromSTEB(
                             24.0, 0.0, 24.0, 0.0),
-                        iconPadding:
-                            const EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 0.0, 0.0),
+                        iconPadding: const EdgeInsetsDirectional.fromSTEB(
+                            0.0, 0.0, 0.0, 0.0),
                         color: const Color(0xFFFF4B26),
                         textStyle:
                             FlutterFlowTheme.of(context).titleSmall.override(
@@ -1988,18 +2174,20 @@ class _CreateEventPageWidgetState extends State<CreateEventPageWidget> {
                     ),
                   ),
                   Padding(
-                    padding:
-                        const EdgeInsetsDirectional.fromSTEB(28.0, 0.0, 0.0, 0.0),
+                    padding: const EdgeInsetsDirectional.fromSTEB(
+                        28.0, 0.0, 0.0, 0.0),
                     child: FFButtonWidget(
-                      onPressed: () async {},
+                      onPressed: () async {
+                        await createEvent();
+                      },
                       text: 'Postar Evento',
                       options: FFButtonOptions(
                         width: 150.0,
                         height: 40.0,
                         padding: const EdgeInsetsDirectional.fromSTEB(
                             24.0, 0.0, 24.0, 0.0),
-                        iconPadding:
-                            const EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 0.0, 0.0),
+                        iconPadding: const EdgeInsetsDirectional.fromSTEB(
+                            0.0, 0.0, 0.0, 0.0),
                         color: const Color(0xFF05BD7B),
                         textStyle:
                             FlutterFlowTheme.of(context).titleSmall.override(

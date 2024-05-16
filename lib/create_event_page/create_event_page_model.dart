@@ -8,12 +8,16 @@ class CreateEventPageModel extends FlutterFlowModel<CreateEventPageWidget> {
 
   final unfocusNode = FocusNode();
   // State field(s) for TextField widget.
+  // FocusNode? textFieldFocusNode1;
+  // TextEditingController? textController1;
+  // String? Function(BuildContext, String?)? textController1Validator;
+  // bool isDataUploading = false;
+  // FFUploadedFile uploadedLocalFile =
+  //     FFUploadedFile(bytes: Uint8List.fromList([]));
+
   FocusNode? textFieldFocusNode1;
   TextEditingController? textController1;
   String? Function(BuildContext, String?)? textController1Validator;
-  bool isDataUploading = false;
-  FFUploadedFile uploadedLocalFile =
-      FFUploadedFile(bytes: Uint8List.fromList([]));
 
   // State field(s) for TextField widget.
   FocusNode? textFieldFocusNode2;
@@ -78,6 +82,9 @@ class CreateEventPageModel extends FlutterFlowModel<CreateEventPageWidget> {
   @override
   void dispose() {
     unfocusNode.dispose();
+    // textFieldFocusNode1?.dispose();
+    // textController1?.dispose();
+
     textFieldFocusNode1?.dispose();
     textController1?.dispose();
 

@@ -9,6 +9,7 @@ import 'sign_in_page_model.dart';
 export 'sign_in_page_model.dart';
 import 'package:http/http.dart' as http;
 import '/flutter_flow/nav/nav.dart';
+import '../constants/constants.dart';
 
 String getCurrentDate() {
   final now = DateTime.now();
@@ -75,7 +76,7 @@ class _SignInPageWidgetState extends State<SignInPageWidget> {
   }
 
   Future<void> createUser() async {
-    var url = Uri.http('192.168.1.28:8000', '/api/user/create');
+    var url = Uri.parse(apiUrl + '/api/user/create');
     var response = await http.post(url,
         body: json.encode({
           'name': _model.textController1.text,
