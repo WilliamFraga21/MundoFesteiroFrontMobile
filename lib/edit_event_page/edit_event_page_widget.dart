@@ -11,6 +11,9 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'edit_event_page_model.dart';
 export 'edit_event_page_model.dart';
+import 'package:http/http.dart' as http;
+import '../constants/constants.dart';
+import 'dart:convert';
 
 class EditEventPageWidget extends StatefulWidget {
   const EditEventPageWidget({super.key});
@@ -19,8 +22,24 @@ class EditEventPageWidget extends StatefulWidget {
   State<EditEventPageWidget> createState() => _EditEventPageWidgetState();
 }
 
+class Profession {
+  int id;
+  String name;
+  int quantidade;
+
+  Profession(this.id, this.name, this.quantidade);
+
+  Map<String, dynamic> toJson() {
+    return {
+      'id': id,
+      'quantidade': quantidade,
+    };
+  }
+}
+
 class _EditEventPageWidgetState extends State<EditEventPageWidget> {
   late EditEventPageModel _model;
+  late String _message;
 
   final scaffoldKey = GlobalKey<ScaffoldState>();
 
@@ -67,6 +86,11 @@ class _EditEventPageWidgetState extends State<EditEventPageWidget> {
 
     _model.textController13 ??= TextEditingController();
     _model.textFieldFocusNode13 ??= FocusNode();
+
+    _message = "";
+
+    dropDownValueController2 = FormFieldController<List<String>>(null);
+    _fetchProfessions();
   }
 
   @override
@@ -75,6 +99,140 @@ class _EditEventPageWidgetState extends State<EditEventPageWidget> {
 
     super.dispose();
   }
+
+  Future<void> editEvent() async {
+    var url = Uri.parse(apiUrl + '/api/evento/update/1');
+
+    // Definindo os headers
+    var headers = {
+      'Content-Type': 'application/json',
+      'Authorization':
+          "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6NCwiZW1haWwiOiJhYWFkZGFAZ21haWwuY29tIiwibmFtZSI6IldJTExJQU0iLCJpYXQiOjE3MTYyMzkyNTMsImV4cCI6MTcxNjc5NDgwOH0.it3Uvu4-_1h8Y3EaJ3ZN_qkYWggBEJyS4kF7NxlQ-9g",
+    };
+
+    final List<Map<String, dynamic>> selectedProfessionsData =
+        selectedProfessions.map((profession) => profession.toJson()).toList();
+
+    var body = json.encode({
+      "nomeEvento": _model.textController2.text,
+      "tipoEvento": _model.textController1.text,
+      "data": _model.textController3.text,
+      "quantidadePessoas": _model.textController4.text,
+      "quantidadeFuncionarios": _model.textController5.text,
+      "statusEvento": _model.textController6.text,
+      "descricaoEvento": _model.textController7.text,
+      "endereco": _model.textController8.text,
+      "bairro": _model.textController9.text,
+      "cidade": _model.textController10.text,
+      "estado": _model.textController11.text,
+      "professions": selectedProfessionsData
+    });
+
+    var response = await http.post(
+      url,
+      body: body,
+      headers: headers,
+    );
+
+    if (response.statusCode == 201) {
+      setState(() {
+        _message = 'Evento criado com sucesso!';
+        GoRouter.of(context).go('/homePage');
+      });
+    } else {
+      // Exibir aviso com mensagem da API
+      final responseData = jsonDecode(response.body);
+      final errorMessage = responseData['message'];
+
+      showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: Text('Erro'),
+            content: Text(errorMessage ??
+                'Erro ao criar a conta. Status code: ${response.body}'),
+            actions: [
+              TextButton(
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+                child: Text('OK'),
+              ),
+            ],
+          );
+        },
+      );
+    }
+  }
+
+  List<Profession> professions = [];
+  List<Profession> selectedProfessions = [];
+  late FormFieldController<List<String>> dropDownValueController2;
+
+  Future<void> _fetchProfessions() async {
+    // final url = apiUrl + '/profissao/getALL'; // Substitua pelo URL correto
+    var url = Uri.parse(apiUrl + '/profissao/getALL');
+    try {
+      final response = await http.get(url);
+      if (response.statusCode == 200) {
+        final List<dynamic> data = json.decode(response.body);
+        final List<Profession> fetchedProfessions = [];
+        for (var item in data) {
+          for (var professionData in item) {
+            final profession =
+                Profession(professionData['id'], professionData['name'], 0);
+            fetchedProfessions.add(profession);
+          }
+        }
+        setState(() {
+          professions = fetchedProfessions;
+        });
+      } else {
+        print(
+            'Falha ao carregar profissões. Código de status: ${response.statusCode}');
+      }
+    } catch (e) {
+      print('Erro ao carregar profissões: $e');
+    }
+  }
+
+  void _updateExperience(int index, int value) {
+    setState(() {
+      selectedProfessions[index].quantidade = value;
+    });
+  }
+
+  void _onMultiSelectChanged(List<String>? selectedNames) {
+    if (selectedNames == null) return;
+    setState(() {
+      selectedProfessions = selectedNames.map((name) {
+        return professions.firstWhere((profession) => profession.name == name);
+      }).toList();
+    });
+  }
+
+  // List<Profession> professions = [
+  //   Profession('Bartender', 0),
+  //   Profession('Servidor', 0),
+  //   Profession('Recepcionista', 0),
+  // ];
+
+  // List<Profession> selectedProfessions = [];
+
+  // void _updateExperience(int index, int value) {
+  //   setState(() {
+  //     selectedProfessions[index].quantidade = value;
+  //   });
+  // }
+
+  // void _onMultiSelectChanged(List<String>? selectedNames) {
+  //   if (selectedNames == null) return;
+  //   setState(() {
+  //     selectedProfessions = selectedNames.map((name) {
+  //       return professions.firstWhere((profession) => profession.name == name);
+  //     }).toList();
+  //   });
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -95,7 +253,8 @@ class _EditEventPageWidgetState extends State<EditEventPageWidget> {
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 Padding(
-                  padding: const EdgeInsetsDirectional.fromSTEB(0.0, 50.0, 0.0, 0.0),
+                  padding:
+                      const EdgeInsetsDirectional.fromSTEB(0.0, 50.0, 0.0, 0.0),
                   child: Row(
                     mainAxisSize: MainAxisSize.max,
                     children: [
@@ -149,8 +308,8 @@ class _EditEventPageWidgetState extends State<EditEventPageWidget> {
                 Align(
                   alignment: const AlignmentDirectional(0.0, 0.0),
                   child: Padding(
-                    padding:
-                        const EdgeInsetsDirectional.fromSTEB(0.0, 15.0, 0.0, 0.0),
+                    padding: const EdgeInsetsDirectional.fromSTEB(
+                        0.0, 15.0, 0.0, 0.0),
                     child: Text(
                       'Nome do Prestador',
                       style: FlutterFlowTheme.of(context).titleMedium.override(
@@ -163,7 +322,8 @@ class _EditEventPageWidgetState extends State<EditEventPageWidget> {
                   ),
                 ),
                 Padding(
-                  padding: const EdgeInsetsDirectional.fromSTEB(0.0, 10.0, 0.0, 0.0),
+                  padding:
+                      const EdgeInsetsDirectional.fromSTEB(0.0, 10.0, 0.0, 0.0),
                   child: InkWell(
                     splashColor: Colors.transparent,
                     focusColor: Colors.transparent,
@@ -236,7 +396,8 @@ class _EditEventPageWidgetState extends State<EditEventPageWidget> {
                   ),
                 ),
                 Padding(
-                  padding: const EdgeInsetsDirectional.fromSTEB(0.0, 10.0, 0.0, 0.0),
+                  padding:
+                      const EdgeInsetsDirectional.fromSTEB(0.0, 10.0, 0.0, 0.0),
                   child: InkWell(
                     splashColor: Colors.transparent,
                     focusColor: Colors.transparent,
@@ -300,7 +461,8 @@ class _EditEventPageWidgetState extends State<EditEventPageWidget> {
                   ),
                 ),
                 Padding(
-                  padding: const EdgeInsetsDirectional.fromSTEB(0.0, 10.0, 0.0, 0.0),
+                  padding:
+                      const EdgeInsetsDirectional.fromSTEB(0.0, 10.0, 0.0, 0.0),
                   child: InkWell(
                     splashColor: Colors.transparent,
                     focusColor: Colors.transparent,
@@ -373,7 +535,8 @@ class _EditEventPageWidgetState extends State<EditEventPageWidget> {
                   ),
                 ),
                 Padding(
-                  padding: const EdgeInsetsDirectional.fromSTEB(0.0, 10.0, 0.0, 0.0),
+                  padding:
+                      const EdgeInsetsDirectional.fromSTEB(0.0, 10.0, 0.0, 0.0),
                   child: InkWell(
                     splashColor: Colors.transparent,
                     focusColor: Colors.transparent,
@@ -446,7 +609,8 @@ class _EditEventPageWidgetState extends State<EditEventPageWidget> {
                   ),
                 ),
                 Padding(
-                  padding: const EdgeInsetsDirectional.fromSTEB(0.0, 10.0, 0.0, 0.0),
+                  padding:
+                      const EdgeInsetsDirectional.fromSTEB(0.0, 10.0, 0.0, 0.0),
                   child: InkWell(
                     splashColor: Colors.transparent,
                     focusColor: Colors.transparent,
@@ -519,7 +683,8 @@ class _EditEventPageWidgetState extends State<EditEventPageWidget> {
                   ),
                 ),
                 Padding(
-                  padding: const EdgeInsetsDirectional.fromSTEB(0.0, 10.0, 0.0, 0.0),
+                  padding:
+                      const EdgeInsetsDirectional.fromSTEB(0.0, 10.0, 0.0, 0.0),
                   child: InkWell(
                     splashColor: Colors.transparent,
                     focusColor: Colors.transparent,
@@ -584,7 +749,8 @@ class _EditEventPageWidgetState extends State<EditEventPageWidget> {
                   ),
                 ),
                 Padding(
-                  padding: const EdgeInsetsDirectional.fromSTEB(0.0, 10.0, 0.0, 0.0),
+                  padding:
+                      const EdgeInsetsDirectional.fromSTEB(0.0, 10.0, 0.0, 0.0),
                   child: InkWell(
                     splashColor: Colors.transparent,
                     focusColor: Colors.transparent,
@@ -660,8 +826,8 @@ class _EditEventPageWidgetState extends State<EditEventPageWidget> {
                   child: Align(
                     alignment: const AlignmentDirectional(0.0, 1.0),
                     child: Padding(
-                      padding:
-                          const EdgeInsetsDirectional.fromSTEB(0.0, 10.0, 0.0, 0.0),
+                      padding: const EdgeInsetsDirectional.fromSTEB(
+                          0.0, 10.0, 0.0, 0.0),
                       child: InkWell(
                         splashColor: Colors.transparent,
                         focusColor: Colors.transparent,
@@ -708,10 +874,12 @@ class _EditEventPageWidgetState extends State<EditEventPageWidget> {
                             children: [
                               Flexible(
                                 child: Align(
-                                  alignment: const AlignmentDirectional(0.0, 0.0),
+                                  alignment:
+                                      const AlignmentDirectional(0.0, 0.0),
                                   child: Padding(
-                                    padding: const EdgeInsetsDirectional.fromSTEB(
-                                        25.0, 0.0, 0.0, 0.0),
+                                    padding:
+                                        const EdgeInsetsDirectional.fromSTEB(
+                                            25.0, 0.0, 0.0, 0.0),
                                     child: Text(
                                       'Login',
                                       style: FlutterFlowTheme.of(context)
@@ -740,8 +908,8 @@ class _EditEventPageWidgetState extends State<EditEventPageWidget> {
                   child: Align(
                     alignment: const AlignmentDirectional(0.0, 1.0),
                     child: Padding(
-                      padding:
-                          const EdgeInsetsDirectional.fromSTEB(0.0, 10.0, 0.0, 30.0),
+                      padding: const EdgeInsetsDirectional.fromSTEB(
+                          0.0, 10.0, 0.0, 30.0),
                       child: InkWell(
                         splashColor: Colors.transparent,
                         focusColor: Colors.transparent,
@@ -788,10 +956,12 @@ class _EditEventPageWidgetState extends State<EditEventPageWidget> {
                             children: [
                               Flexible(
                                 child: Align(
-                                  alignment: const AlignmentDirectional(0.0, 0.0),
+                                  alignment:
+                                      const AlignmentDirectional(0.0, 0.0),
                                   child: Padding(
-                                    padding: const EdgeInsetsDirectional.fromSTEB(
-                                        25.0, 0.0, 0.0, 0.0),
+                                    padding:
+                                        const EdgeInsetsDirectional.fromSTEB(
+                                            25.0, 0.0, 0.0, 0.0),
                                     child: Text(
                                       'Logout',
                                       style: FlutterFlowTheme.of(context)
@@ -861,8 +1031,8 @@ class _EditEventPageWidgetState extends State<EditEventPageWidget> {
                 mainAxisSize: MainAxisSize.max,
                 children: [
                   Padding(
-                    padding:
-                        const EdgeInsetsDirectional.fromSTEB(23.0, 16.0, 0.0, 0.0),
+                    padding: const EdgeInsetsDirectional.fromSTEB(
+                        23.0, 16.0, 0.0, 0.0),
                     child: InkWell(
                       splashColor: Colors.transparent,
                       focusColor: Colors.transparent,
@@ -884,8 +1054,8 @@ class _EditEventPageWidgetState extends State<EditEventPageWidget> {
                 mainAxisSize: MainAxisSize.max,
                 children: [
                   Padding(
-                    padding:
-                        const EdgeInsetsDirectional.fromSTEB(16.0, 16.0, 0.0, 0.0),
+                    padding: const EdgeInsetsDirectional.fromSTEB(
+                        16.0, 16.0, 0.0, 0.0),
                     child: Text(
                       'Detalhes do evento',
                       textAlign: TextAlign.center,
@@ -922,164 +1092,165 @@ class _EditEventPageWidgetState extends State<EditEventPageWidget> {
                   ),
                 ],
               ),
-              Stack(
-                children: [
-                  Align(
-                    alignment: const AlignmentDirectional(0.0, 0.0),
-                    child: Container(
-                      width: 390.0,
-                      decoration: const BoxDecoration(),
-                      child: Padding(
-                        padding:
-                            const EdgeInsetsDirectional.fromSTEB(8.0, 16.0, 8.0, 0.0),
-                        child: TextFormField(
-                          controller: _model.textController1,
-                          focusNode: _model.textFieldFocusNode1,
-                          autofocus: true,
-                          obscureText: false,
-                          decoration: InputDecoration(
-                            labelText: 'Adicionar foto',
-                            labelStyle: FlutterFlowTheme.of(context)
-                                .labelMedium
-                                .override(
-                                  fontFamily: 'Outfit',
-                                  color: const Color(0xFF05BD7B),
-                                  fontSize: 16.0,
-                                  letterSpacing: 0.0,
-                                  fontWeight: FontWeight.w500,
-                                ),
-                            hintStyle: FlutterFlowTheme.of(context)
-                                .labelMedium
-                                .override(
-                                  fontFamily: 'Outfit',
-                                  letterSpacing: 0.0,
-                                ),
-                            enabledBorder: OutlineInputBorder(
-                              borderSide: const BorderSide(
-                                color: Color(0xFF05BD7B),
-                                width: 2.0,
-                              ),
-                              borderRadius: BorderRadius.circular(10.0),
-                            ),
-                            focusedBorder: OutlineInputBorder(
-                              borderSide: BorderSide(
-                                color: FlutterFlowTheme.of(context).primary,
-                                width: 2.0,
-                              ),
-                              borderRadius: BorderRadius.circular(10.0),
-                            ),
-                            errorBorder: OutlineInputBorder(
-                              borderSide: BorderSide(
-                                color: FlutterFlowTheme.of(context).error,
-                                width: 2.0,
-                              ),
-                              borderRadius: BorderRadius.circular(10.0),
-                            ),
-                            focusedErrorBorder: OutlineInputBorder(
-                              borderSide: BorderSide(
-                                color: FlutterFlowTheme.of(context).error,
-                                width: 2.0,
-                              ),
-                              borderRadius: BorderRadius.circular(10.0),
-                            ),
-                          ),
-                          style:
-                              FlutterFlowTheme.of(context).bodyMedium.override(
-                                    fontFamily: 'Outfit',
-                                    color: Colors.black,
-                                    fontSize: 15.0,
-                                    letterSpacing: 0.0,
-                                    fontWeight: FontWeight.normal,
-                                  ),
-                          validator: _model.textController1Validator
-                              .asValidator(context),
-                        ),
-                      ),
-                    ),
-                  ),
-                  Align(
-                    alignment: const AlignmentDirectional(0.9, -0.85),
-                    child: Padding(
-                      padding:
-                          const EdgeInsetsDirectional.fromSTEB(0.0, 20.0, 0.0, 0.0),
-                      child: FFButtonWidget(
-                        onPressed: () async {
-                          final selectedMedia = await selectMedia(
-                            maxWidth: 300.00,
-                            maxHeight: 200.00,
-                            includeBlurHash: true,
-                            mediaSource: MediaSource.photoGallery,
-                            multiImage: false,
-                          );
-                          if (selectedMedia != null &&
-                              selectedMedia.every((m) =>
-                                  validateFileFormat(m.storagePath, context))) {
-                            setState(() => _model.isDataUploading = true);
-                            var selectedUploadedFiles = <FFUploadedFile>[];
+              // Stack(
+              //   children: [
+              //     Align(
+              //       alignment: const AlignmentDirectional(0.0, 0.0),
+              //       child: Container(
+              //         width: 390.0,
+              //         decoration: const BoxDecoration(),
+              //         child: Padding(
+              //           padding: const EdgeInsetsDirectional.fromSTEB(
+              //               8.0, 16.0, 8.0, 0.0),
+              //           child: TextFormField(
+              //             controller: _model.textController1,
+              //             focusNode: _model.textFieldFocusNode1,
+              //             autofocus: true,
+              //             obscureText: false,
+              //             decoration: InputDecoration(
+              //               labelText: 'Adicionar foto',
+              //               labelStyle: FlutterFlowTheme.of(context)
+              //                   .labelMedium
+              //                   .override(
+              //                     fontFamily: 'Outfit',
+              //                     color: const Color(0xFF05BD7B),
+              //                     fontSize: 16.0,
+              //                     letterSpacing: 0.0,
+              //                     fontWeight: FontWeight.w500,
+              //                   ),
+              //               hintStyle: FlutterFlowTheme.of(context)
+              //                   .labelMedium
+              //                   .override(
+              //                     fontFamily: 'Outfit',
+              //                     letterSpacing: 0.0,
+              //                   ),
+              //               enabledBorder: OutlineInputBorder(
+              //                 borderSide: const BorderSide(
+              //                   color: Color(0xFF05BD7B),
+              //                   width: 2.0,
+              //                 ),
+              //                 borderRadius: BorderRadius.circular(10.0),
+              //               ),
+              //               focusedBorder: OutlineInputBorder(
+              //                 borderSide: BorderSide(
+              //                   color: FlutterFlowTheme.of(context).primary,
+              //                   width: 2.0,
+              //                 ),
+              //                 borderRadius: BorderRadius.circular(10.0),
+              //               ),
+              //               errorBorder: OutlineInputBorder(
+              //                 borderSide: BorderSide(
+              //                   color: FlutterFlowTheme.of(context).error,
+              //                   width: 2.0,
+              //                 ),
+              //                 borderRadius: BorderRadius.circular(10.0),
+              //               ),
+              //               focusedErrorBorder: OutlineInputBorder(
+              //                 borderSide: BorderSide(
+              //                   color: FlutterFlowTheme.of(context).error,
+              //                   width: 2.0,
+              //                 ),
+              //                 borderRadius: BorderRadius.circular(10.0),
+              //               ),
+              //             ),
+              //             style:
+              //                 FlutterFlowTheme.of(context).bodyMedium.override(
+              //                       fontFamily: 'Outfit',
+              //                       color: Colors.black,
+              //                       fontSize: 15.0,
+              //                       letterSpacing: 0.0,
+              //                       fontWeight: FontWeight.normal,
+              //                     ),
+              //             validator: _model.textController1Validator
+              //                 .asValidator(context),
+              //           ),
+              //         ),
+              //       ),
+              //     ),
+              //     Align(
+              //       alignment: const AlignmentDirectional(0.9, -0.85),
+              //       child: Padding(
+              //         padding: const EdgeInsetsDirectional.fromSTEB(
+              //             0.0, 20.0, 0.0, 0.0),
+              //         child: FFButtonWidget(
+              //           onPressed: () async {
+              //             final selectedMedia = await selectMedia(
+              //               maxWidth: 300.00,
+              //               maxHeight: 200.00,
+              //               includeBlurHash: true,
+              //               mediaSource: MediaSource.photoGallery,
+              //               multiImage: false,
+              //             );
+              //             if (selectedMedia != null &&
+              //                 selectedMedia.every((m) =>
+              //                     validateFileFormat(m.storagePath, context))) {
+              //               setState(() => _model.isDataUploading = true);
+              //               var selectedUploadedFiles = <FFUploadedFile>[];
 
-                            try {
-                              showUploadMessage(
-                                context,
-                                'Uploading file...',
-                                showLoading: true,
-                              );
-                              selectedUploadedFiles = selectedMedia
-                                  .map((m) => FFUploadedFile(
-                                        name: m.storagePath.split('/').last,
-                                        bytes: m.bytes,
-                                        height: m.dimensions?.height,
-                                        width: m.dimensions?.width,
-                                        blurHash: m.blurHash,
-                                      ))
-                                  .toList();
-                            } finally {
-                              ScaffoldMessenger.of(context)
-                                  .hideCurrentSnackBar();
-                              _model.isDataUploading = false;
-                            }
-                            if (selectedUploadedFiles.length ==
-                                selectedMedia.length) {
-                              setState(() {
-                                _model.uploadedLocalFile =
-                                    selectedUploadedFiles.first;
-                              });
-                              showUploadMessage(context, 'Success!');
-                            } else {
-                              setState(() {});
-                              showUploadMessage(
-                                  context, 'Failed to upload data');
-                              return;
-                            }
-                          }
-                        },
-                        text: 'Upload',
-                        options: FFButtonOptions(
-                          height: 40.0,
-                          padding: const EdgeInsetsDirectional.fromSTEB(
-                              24.0, 0.0, 24.0, 0.0),
-                          iconPadding: const EdgeInsetsDirectional.fromSTEB(
-                              0.0, 0.0, 0.0, 0.0),
-                          color: const Color(0xFF05BD7B),
-                          textStyle:
-                              FlutterFlowTheme.of(context).titleSmall.override(
-                                    fontFamily: 'Outfit',
-                                    color: Colors.white,
-                                    letterSpacing: 0.0,
-                                  ),
-                          elevation: 3.0,
-                          borderSide: const BorderSide(
-                            color: Colors.transparent,
-                            width: 1.0,
-                          ),
-                          borderRadius: BorderRadius.circular(6.0),
-                        ),
-                      ),
-                    ),
-                  ),
-                ],
-              ),
+              //               try {
+              //                 showUploadMessage(
+              //                   context,
+              //                   'Uploading file...',
+              //                   showLoading: true,
+              //                 );
+              //                 selectedUploadedFiles = selectedMedia
+              //                     .map((m) => FFUploadedFile(
+              //                           name: m.storagePath.split('/').last,
+              //                           bytes: m.bytes,
+              //                           height: m.dimensions?.height,
+              //                           width: m.dimensions?.width,
+              //                           blurHash: m.blurHash,
+              //                         ))
+              //                     .toList();
+              //               } finally {
+              //                 ScaffoldMessenger.of(context)
+              //                     .hideCurrentSnackBar();
+              //                 _model.isDataUploading = false;
+              //               }
+              //               if (selectedUploadedFiles.length ==
+              //                   selectedMedia.length) {
+              //                 setState(() {
+              //                   _model.uploadedLocalFile =
+              //                       selectedUploadedFiles.first;
+              //                 });
+              //                 showUploadMessage(context, 'Success!');
+              //               } else {
+              //                 setState(() {});
+              //                 showUploadMessage(
+              //                     context, 'Failed to upload data');
+              //                 return;
+              //               }
+              //             }
+              //           },
+              //           text: 'Upload',
+              //           options: FFButtonOptions(
+              //             height: 40.0,
+              //             padding: const EdgeInsetsDirectional.fromSTEB(
+              //                 24.0, 0.0, 24.0, 0.0),
+              //             iconPadding: const EdgeInsetsDirectional.fromSTEB(
+              //                 0.0, 0.0, 0.0, 0.0),
+              //             color: const Color(0xFF05BD7B),
+              //             textStyle:
+              //                 FlutterFlowTheme.of(context).titleSmall.override(
+              //                       fontFamily: 'Outfit',
+              //                       color: Colors.white,
+              //                       letterSpacing: 0.0,
+              //                     ),
+              //             elevation: 3.0,
+              //             borderSide: const BorderSide(
+              //               color: Colors.transparent,
+              //               width: 1.0,
+              //             ),
+              //             borderRadius: BorderRadius.circular(6.0),
+              //           ),
+              //         ),
+              //       ),
+              //     ),
+              //   ],
+              // ),
               Padding(
-                padding: const EdgeInsetsDirectional.fromSTEB(8.0, 16.0, 8.0, 0.0),
+                padding:
+                    const EdgeInsetsDirectional.fromSTEB(8.0, 16.0, 8.0, 0.0),
                 child: TextFormField(
                   controller: _model.textController2,
                   focusNode: _model.textFieldFocusNode2,
@@ -1141,14 +1312,97 @@ class _EditEventPageWidgetState extends State<EditEventPageWidget> {
                 ),
               ),
               Padding(
-                padding: const EdgeInsetsDirectional.fromSTEB(8.0, 16.0, 8.0, 0.0),
+                padding:
+                    const EdgeInsetsDirectional.fromSTEB(8.0, 16.0, 8.0, 0.0),
+                child: GestureDetector(
+                  onTap: () async {
+                    DateTime? pickedDate = await showDatePicker(
+                      context: context,
+                      initialDate: DateTime.now(),
+                      firstDate: DateTime(2000),
+                      lastDate: DateTime(2101),
+                    );
+
+                    if (pickedDate != null) {
+                      setState(() {
+                        _model.textController3.text =
+                            pickedDate.toString().split(' ')[0];
+                      });
+                    }
+                  },
+                  child: AbsorbPointer(
+                    child: TextFormField(
+                      controller: _model.textController3,
+                      focusNode: _model.textFieldFocusNode3,
+                      autofocus: false,
+                      obscureText: false,
+                      decoration: InputDecoration(
+                        labelText: 'Data do Evento',
+                        labelStyle:
+                            FlutterFlowTheme.of(context).labelMedium.override(
+                                  fontFamily: 'Outfit',
+                                  color: const Color(0xFF05BD7B),
+                                  fontSize: 16.0,
+                                  letterSpacing: 0.0,
+                                  fontWeight: FontWeight.w500,
+                                ),
+                        hintStyle:
+                            FlutterFlowTheme.of(context).labelMedium.override(
+                                  fontFamily: 'Outfit',
+                                  letterSpacing: 0.0,
+                                ),
+                        enabledBorder: OutlineInputBorder(
+                          borderSide: const BorderSide(
+                            color: Color(0xFF05BD7B),
+                            width: 2.0,
+                          ),
+                          borderRadius: BorderRadius.circular(10.0),
+                        ),
+                        focusedBorder: OutlineInputBorder(
+                          borderSide: BorderSide(
+                            color: FlutterFlowTheme.of(context).primary,
+                            width: 2.0,
+                          ),
+                          borderRadius: BorderRadius.circular(10.0),
+                        ),
+                        errorBorder: OutlineInputBorder(
+                          borderSide: BorderSide(
+                            color: FlutterFlowTheme.of(context).error,
+                            width: 2.0,
+                          ),
+                          borderRadius: BorderRadius.circular(10.0),
+                        ),
+                        focusedErrorBorder: OutlineInputBorder(
+                          borderSide: BorderSide(
+                            color: FlutterFlowTheme.of(context).error,
+                            width: 2.0,
+                          ),
+                          borderRadius: BorderRadius.circular(10.0),
+                        ),
+                      ),
+                      style: FlutterFlowTheme.of(context).bodyMedium.override(
+                            fontFamily: 'Outfit',
+                            color: Colors.black,
+                            fontSize: 15.0,
+                            letterSpacing: 0.0,
+                            fontWeight: FontWeight.normal,
+                          ),
+                      validator:
+                          _model.textController3Validator.asValidator(context),
+                    ),
+                  ),
+                ),
+              ),
+              Padding(
+                padding:
+                    const EdgeInsetsDirectional.fromSTEB(8.0, 16.0, 8.0, 0.0),
                 child: TextFormField(
-                  controller: _model.textController3,
-                  focusNode: _model.textFieldFocusNode3,
-                  autofocus: true,
+                  controller: _model.textController1,
+                  focusNode: _model.textFieldFocusNode1,
+                  autofocus: false,
                   obscureText: false,
                   decoration: InputDecoration(
-                    labelText: 'Data do Evento',
+                    labelText: 'Tipo de Evento',
                     labelStyle:
                         FlutterFlowTheme.of(context).labelMedium.override(
                               fontFamily: 'Outfit',
@@ -1198,13 +1452,13 @@ class _EditEventPageWidgetState extends State<EditEventPageWidget> {
                         letterSpacing: 0.0,
                         fontWeight: FontWeight.normal,
                       ),
-                  keyboardType: TextInputType.datetime,
                   validator:
-                      _model.textController3Validator.asValidator(context),
+                      _model.textController1Validator.asValidator(context),
                 ),
               ),
               Padding(
-                padding: const EdgeInsetsDirectional.fromSTEB(8.0, 16.0, 8.0, 0.0),
+                padding:
+                    const EdgeInsetsDirectional.fromSTEB(8.0, 16.0, 8.0, 0.0),
                 child: FlutterFlowDropDown<String>(
                   multiSelectController: _model.dropDownValueController1 ??=
                       FormFieldController<List<String>>(null),
@@ -1234,7 +1488,8 @@ class _EditEventPageWidgetState extends State<EditEventPageWidget> {
                   borderColor: const Color(0xFF05BD7B),
                   borderWidth: 2.0,
                   borderRadius: 8.0,
-                  margin: const EdgeInsetsDirectional.fromSTEB(16.0, 4.0, 16.0, 4.0),
+                  margin: const EdgeInsetsDirectional.fromSTEB(
+                      16.0, 4.0, 16.0, 4.0),
                   hidesUnderline: true,
                   isOverButton: true,
                   isSearchable: false,
@@ -1251,11 +1506,12 @@ class _EditEventPageWidgetState extends State<EditEventPageWidget> {
                 ),
               ),
               Padding(
-                padding: const EdgeInsetsDirectional.fromSTEB(8.0, 16.0, 8.0, 0.0),
+                padding:
+                    const EdgeInsetsDirectional.fromSTEB(8.0, 16.0, 8.0, 0.0),
                 child: TextFormField(
                   controller: _model.textController4,
                   focusNode: _model.textFieldFocusNode4,
-                  autofocus: true,
+                  autofocus: false,
                   obscureText: false,
                   decoration: InputDecoration(
                     labelText: 'Quantidade de Convidados',
@@ -1308,81 +1564,21 @@ class _EditEventPageWidgetState extends State<EditEventPageWidget> {
                         letterSpacing: 0.0,
                         fontWeight: FontWeight.normal,
                       ),
+                  keyboardType: TextInputType.number, // Apenas números
                   validator:
                       _model.textController4Validator.asValidator(context),
                 ),
               ),
               Padding(
-                padding: const EdgeInsetsDirectional.fromSTEB(8.0, 16.0, 8.0, 0.0),
-                child: TextFormField(
-                  controller: _model.textController5,
-                  focusNode: _model.textFieldFocusNode5,
-                  autofocus: true,
-                  obscureText: false,
-                  decoration: InputDecoration(
-                    labelText: 'CEP',
-                    labelStyle:
-                        FlutterFlowTheme.of(context).labelMedium.override(
-                              fontFamily: 'Outfit',
-                              color: const Color(0xFF05BD7B),
-                              fontSize: 16.0,
-                              letterSpacing: 0.0,
-                              fontWeight: FontWeight.w500,
-                            ),
-                    hintStyle:
-                        FlutterFlowTheme.of(context).labelMedium.override(
-                              fontFamily: 'Outfit',
-                              letterSpacing: 0.0,
-                            ),
-                    enabledBorder: OutlineInputBorder(
-                      borderSide: const BorderSide(
-                        color: Color(0xFF05BD7B),
-                        width: 2.0,
-                      ),
-                      borderRadius: BorderRadius.circular(10.0),
-                    ),
-                    focusedBorder: OutlineInputBorder(
-                      borderSide: BorderSide(
-                        color: FlutterFlowTheme.of(context).primary,
-                        width: 2.0,
-                      ),
-                      borderRadius: BorderRadius.circular(10.0),
-                    ),
-                    errorBorder: OutlineInputBorder(
-                      borderSide: BorderSide(
-                        color: FlutterFlowTheme.of(context).error,
-                        width: 2.0,
-                      ),
-                      borderRadius: BorderRadius.circular(10.0),
-                    ),
-                    focusedErrorBorder: OutlineInputBorder(
-                      borderSide: BorderSide(
-                        color: FlutterFlowTheme.of(context).error,
-                        width: 2.0,
-                      ),
-                      borderRadius: BorderRadius.circular(10.0),
-                    ),
-                  ),
-                  style: FlutterFlowTheme.of(context).bodyMedium.override(
-                        fontFamily: 'Outfit',
-                        color: Colors.black,
-                        fontSize: 15.0,
-                        letterSpacing: 0.0,
-                        fontWeight: FontWeight.normal,
-                      ),
-                  validator:
-                      _model.textController5Validator.asValidator(context),
-                ),
-              ),
-              Padding(
-                padding: const EdgeInsetsDirectional.fromSTEB(8.0, 16.0, 8.0, 0.0),
+                padding:
+                    const EdgeInsetsDirectional.fromSTEB(8.0, 16.0, 8.0, 0.0),
                 child: TextFormField(
                   controller: _model.textController6,
                   focusNode: _model.textFieldFocusNode6,
-                  autofocus: true,
+                  autofocus: false,
                   obscureText: false,
                   decoration: InputDecoration(
-                    labelText: 'Cidade',
+                    labelText: 'Status',
                     labelStyle:
                         FlutterFlowTheme.of(context).labelMedium.override(
                               fontFamily: 'Outfit',
@@ -1437,14 +1633,15 @@ class _EditEventPageWidgetState extends State<EditEventPageWidget> {
                 ),
               ),
               Padding(
-                padding: const EdgeInsetsDirectional.fromSTEB(8.0, 16.0, 8.0, 0.0),
+                padding:
+                    const EdgeInsetsDirectional.fromSTEB(8.0, 16.0, 8.0, 0.0),
                 child: TextFormField(
-                  controller: _model.textController7,
-                  focusNode: _model.textFieldFocusNode7,
+                  // controller: _model.textController5,
+                  // focusNode: _model.textFieldFocusNode5,
                   autofocus: true,
                   obscureText: false,
                   decoration: InputDecoration(
-                    labelText: 'Estado',
+                    labelText: 'CEP',
                     labelStyle:
                         FlutterFlowTheme.of(context).labelMedium.override(
                               fontFamily: 'Outfit',
@@ -1494,143 +1691,20 @@ class _EditEventPageWidgetState extends State<EditEventPageWidget> {
                         letterSpacing: 0.0,
                         fontWeight: FontWeight.normal,
                       ),
-                  validator:
-                      _model.textController7Validator.asValidator(context),
+                  // validator:
+                  //     _model.textController5Validator.asValidator(context),
                 ),
               ),
               Padding(
-                padding: const EdgeInsetsDirectional.fromSTEB(8.0, 16.0, 8.0, 0.0),
-                child: TextFormField(
-                  controller: _model.textController8,
-                  focusNode: _model.textFieldFocusNode8,
-                  autofocus: true,
-                  obscureText: false,
-                  decoration: InputDecoration(
-                    labelText: 'Bairro',
-                    labelStyle:
-                        FlutterFlowTheme.of(context).labelMedium.override(
-                              fontFamily: 'Outfit',
-                              color: const Color(0xFF05BD7B),
-                              fontSize: 16.0,
-                              letterSpacing: 0.0,
-                              fontWeight: FontWeight.w500,
-                            ),
-                    hintStyle:
-                        FlutterFlowTheme.of(context).labelMedium.override(
-                              fontFamily: 'Outfit',
-                              letterSpacing: 0.0,
-                            ),
-                    enabledBorder: OutlineInputBorder(
-                      borderSide: const BorderSide(
-                        color: Color(0xFF05BD7B),
-                        width: 2.0,
-                      ),
-                      borderRadius: BorderRadius.circular(10.0),
-                    ),
-                    focusedBorder: OutlineInputBorder(
-                      borderSide: BorderSide(
-                        color: FlutterFlowTheme.of(context).primary,
-                        width: 2.0,
-                      ),
-                      borderRadius: BorderRadius.circular(10.0),
-                    ),
-                    errorBorder: OutlineInputBorder(
-                      borderSide: BorderSide(
-                        color: FlutterFlowTheme.of(context).error,
-                        width: 2.0,
-                      ),
-                      borderRadius: BorderRadius.circular(10.0),
-                    ),
-                    focusedErrorBorder: OutlineInputBorder(
-                      borderSide: BorderSide(
-                        color: FlutterFlowTheme.of(context).error,
-                        width: 2.0,
-                      ),
-                      borderRadius: BorderRadius.circular(10.0),
-                    ),
-                  ),
-                  style: FlutterFlowTheme.of(context).bodyMedium.override(
-                        fontFamily: 'Outfit',
-                        color: Colors.black,
-                        fontSize: 15.0,
-                        letterSpacing: 0.0,
-                        fontWeight: FontWeight.normal,
-                      ),
-                  validator:
-                      _model.textController8Validator.asValidator(context),
-                ),
-              ),
-              Padding(
-                padding: const EdgeInsetsDirectional.fromSTEB(8.0, 16.0, 8.0, 0.0),
-                child: TextFormField(
-                  controller: _model.textController9,
-                  focusNode: _model.textFieldFocusNode9,
-                  autofocus: true,
-                  obscureText: false,
-                  decoration: InputDecoration(
-                    labelText: 'Rua',
-                    labelStyle:
-                        FlutterFlowTheme.of(context).labelMedium.override(
-                              fontFamily: 'Outfit',
-                              color: const Color(0xFF05BD7B),
-                              fontSize: 16.0,
-                              letterSpacing: 0.0,
-                              fontWeight: FontWeight.w500,
-                            ),
-                    hintStyle:
-                        FlutterFlowTheme.of(context).labelMedium.override(
-                              fontFamily: 'Outfit',
-                              letterSpacing: 0.0,
-                            ),
-                    enabledBorder: OutlineInputBorder(
-                      borderSide: const BorderSide(
-                        color: Color(0xFF05BD7B),
-                        width: 2.0,
-                      ),
-                      borderRadius: BorderRadius.circular(10.0),
-                    ),
-                    focusedBorder: OutlineInputBorder(
-                      borderSide: BorderSide(
-                        color: FlutterFlowTheme.of(context).primary,
-                        width: 2.0,
-                      ),
-                      borderRadius: BorderRadius.circular(10.0),
-                    ),
-                    errorBorder: OutlineInputBorder(
-                      borderSide: BorderSide(
-                        color: FlutterFlowTheme.of(context).error,
-                        width: 2.0,
-                      ),
-                      borderRadius: BorderRadius.circular(10.0),
-                    ),
-                    focusedErrorBorder: OutlineInputBorder(
-                      borderSide: BorderSide(
-                        color: FlutterFlowTheme.of(context).error,
-                        width: 2.0,
-                      ),
-                      borderRadius: BorderRadius.circular(10.0),
-                    ),
-                  ),
-                  style: FlutterFlowTheme.of(context).bodyMedium.override(
-                        fontFamily: 'Outfit',
-                        color: Colors.black,
-                        fontSize: 15.0,
-                        letterSpacing: 0.0,
-                        fontWeight: FontWeight.normal,
-                      ),
-                  validator:
-                      _model.textController9Validator.asValidator(context),
-                ),
-              ),
-              Padding(
-                padding: const EdgeInsetsDirectional.fromSTEB(8.0, 16.0, 8.0, 0.0),
+                padding:
+                    const EdgeInsetsDirectional.fromSTEB(8.0, 16.0, 8.0, 0.0),
                 child: TextFormField(
                   controller: _model.textController10,
                   focusNode: _model.textFieldFocusNode10,
                   autofocus: true,
                   obscureText: false,
                   decoration: InputDecoration(
-                    labelText: 'Número',
+                    labelText: 'Cidade',
                     labelStyle:
                         FlutterFlowTheme.of(context).labelMedium.override(
                               fontFamily: 'Outfit',
@@ -1685,10 +1759,263 @@ class _EditEventPageWidgetState extends State<EditEventPageWidget> {
                 ),
               ),
               Padding(
-                padding: const EdgeInsetsDirectional.fromSTEB(8.0, 16.0, 8.0, 0.0),
+                padding:
+                    const EdgeInsetsDirectional.fromSTEB(8.0, 16.0, 8.0, 0.0),
                 child: TextFormField(
                   controller: _model.textController11,
                   focusNode: _model.textFieldFocusNode11,
+                  autofocus: true,
+                  obscureText: false,
+                  decoration: InputDecoration(
+                    labelText: 'Estado',
+                    labelStyle:
+                        FlutterFlowTheme.of(context).labelMedium.override(
+                              fontFamily: 'Outfit',
+                              color: const Color(0xFF05BD7B),
+                              fontSize: 16.0,
+                              letterSpacing: 0.0,
+                              fontWeight: FontWeight.w500,
+                            ),
+                    hintStyle:
+                        FlutterFlowTheme.of(context).labelMedium.override(
+                              fontFamily: 'Outfit',
+                              letterSpacing: 0.0,
+                            ),
+                    enabledBorder: OutlineInputBorder(
+                      borderSide: const BorderSide(
+                        color: Color(0xFF05BD7B),
+                        width: 2.0,
+                      ),
+                      borderRadius: BorderRadius.circular(10.0),
+                    ),
+                    focusedBorder: OutlineInputBorder(
+                      borderSide: BorderSide(
+                        color: FlutterFlowTheme.of(context).primary,
+                        width: 2.0,
+                      ),
+                      borderRadius: BorderRadius.circular(10.0),
+                    ),
+                    errorBorder: OutlineInputBorder(
+                      borderSide: BorderSide(
+                        color: FlutterFlowTheme.of(context).error,
+                        width: 2.0,
+                      ),
+                      borderRadius: BorderRadius.circular(10.0),
+                    ),
+                    focusedErrorBorder: OutlineInputBorder(
+                      borderSide: BorderSide(
+                        color: FlutterFlowTheme.of(context).error,
+                        width: 2.0,
+                      ),
+                      borderRadius: BorderRadius.circular(10.0),
+                    ),
+                  ),
+                  style: FlutterFlowTheme.of(context).bodyMedium.override(
+                        fontFamily: 'Outfit',
+                        color: Colors.black,
+                        fontSize: 15.0,
+                        letterSpacing: 0.0,
+                        fontWeight: FontWeight.normal,
+                      ),
+                  validator:
+                      _model.textController11Validator.asValidator(context),
+                ),
+              ),
+              Padding(
+                padding:
+                    const EdgeInsetsDirectional.fromSTEB(8.0, 16.0, 8.0, 0.0),
+                child: TextFormField(
+                  controller: _model.textController9,
+                  focusNode: _model.textFieldFocusNode9,
+                  autofocus: true,
+                  obscureText: false,
+                  decoration: InputDecoration(
+                    labelText: 'Bairro',
+                    labelStyle:
+                        FlutterFlowTheme.of(context).labelMedium.override(
+                              fontFamily: 'Outfit',
+                              color: const Color(0xFF05BD7B),
+                              fontSize: 16.0,
+                              letterSpacing: 0.0,
+                              fontWeight: FontWeight.w500,
+                            ),
+                    hintStyle:
+                        FlutterFlowTheme.of(context).labelMedium.override(
+                              fontFamily: 'Outfit',
+                              letterSpacing: 0.0,
+                            ),
+                    enabledBorder: OutlineInputBorder(
+                      borderSide: const BorderSide(
+                        color: Color(0xFF05BD7B),
+                        width: 2.0,
+                      ),
+                      borderRadius: BorderRadius.circular(10.0),
+                    ),
+                    focusedBorder: OutlineInputBorder(
+                      borderSide: BorderSide(
+                        color: FlutterFlowTheme.of(context).primary,
+                        width: 2.0,
+                      ),
+                      borderRadius: BorderRadius.circular(10.0),
+                    ),
+                    errorBorder: OutlineInputBorder(
+                      borderSide: BorderSide(
+                        color: FlutterFlowTheme.of(context).error,
+                        width: 2.0,
+                      ),
+                      borderRadius: BorderRadius.circular(10.0),
+                    ),
+                    focusedErrorBorder: OutlineInputBorder(
+                      borderSide: BorderSide(
+                        color: FlutterFlowTheme.of(context).error,
+                        width: 2.0,
+                      ),
+                      borderRadius: BorderRadius.circular(10.0),
+                    ),
+                  ),
+                  style: FlutterFlowTheme.of(context).bodyMedium.override(
+                        fontFamily: 'Outfit',
+                        color: Colors.black,
+                        fontSize: 15.0,
+                        letterSpacing: 0.0,
+                        fontWeight: FontWeight.normal,
+                      ),
+                  validator:
+                      _model.textController9Validator.asValidator(context),
+                ),
+              ),
+              Padding(
+                padding:
+                    const EdgeInsetsDirectional.fromSTEB(8.0, 16.0, 8.0, 0.0),
+                child: TextFormField(
+                  controller: _model.textController8,
+                  focusNode: _model.textFieldFocusNode8,
+                  autofocus: true,
+                  obscureText: false,
+                  decoration: InputDecoration(
+                    labelText: 'Rua',
+                    labelStyle:
+                        FlutterFlowTheme.of(context).labelMedium.override(
+                              fontFamily: 'Outfit',
+                              color: const Color(0xFF05BD7B),
+                              fontSize: 16.0,
+                              letterSpacing: 0.0,
+                              fontWeight: FontWeight.w500,
+                            ),
+                    hintStyle:
+                        FlutterFlowTheme.of(context).labelMedium.override(
+                              fontFamily: 'Outfit',
+                              letterSpacing: 0.0,
+                            ),
+                    enabledBorder: OutlineInputBorder(
+                      borderSide: const BorderSide(
+                        color: Color(0xFF05BD7B),
+                        width: 2.0,
+                      ),
+                      borderRadius: BorderRadius.circular(10.0),
+                    ),
+                    focusedBorder: OutlineInputBorder(
+                      borderSide: BorderSide(
+                        color: FlutterFlowTheme.of(context).primary,
+                        width: 2.0,
+                      ),
+                      borderRadius: BorderRadius.circular(10.0),
+                    ),
+                    errorBorder: OutlineInputBorder(
+                      borderSide: BorderSide(
+                        color: FlutterFlowTheme.of(context).error,
+                        width: 2.0,
+                      ),
+                      borderRadius: BorderRadius.circular(10.0),
+                    ),
+                    focusedErrorBorder: OutlineInputBorder(
+                      borderSide: BorderSide(
+                        color: FlutterFlowTheme.of(context).error,
+                        width: 2.0,
+                      ),
+                      borderRadius: BorderRadius.circular(10.0),
+                    ),
+                  ),
+                  style: FlutterFlowTheme.of(context).bodyMedium.override(
+                        fontFamily: 'Outfit',
+                        color: Colors.black,
+                        fontSize: 15.0,
+                        letterSpacing: 0.0,
+                        fontWeight: FontWeight.normal,
+                      ),
+                  validator:
+                      _model.textController8Validator.asValidator(context),
+                ),
+              ),
+              // Padding(
+              //   padding:
+              //       const EdgeInsetsDirectional.fromSTEB(8.0, 16.0, 8.0, 0.0),
+              //   child: TextFormField(
+              //     controller: _model.textController10,
+              //     focusNode: _model.textFieldFocusNode10,
+              //     autofocus: true,
+              //     obscureText: false,
+              //     decoration: InputDecoration(
+              //       labelText: 'Número',
+              //       labelStyle:
+              //           FlutterFlowTheme.of(context).labelMedium.override(
+              //                 fontFamily: 'Outfit',
+              //                 color: const Color(0xFF05BD7B),
+              //                 fontSize: 16.0,
+              //                 letterSpacing: 0.0,
+              //                 fontWeight: FontWeight.w500,
+              //               ),
+              //       hintStyle:
+              //           FlutterFlowTheme.of(context).labelMedium.override(
+              //                 fontFamily: 'Outfit',
+              //                 letterSpacing: 0.0,
+              //               ),
+              //       enabledBorder: OutlineInputBorder(
+              //         borderSide: const BorderSide(
+              //           color: Color(0xFF05BD7B),
+              //           width: 2.0,
+              //         ),
+              //         borderRadius: BorderRadius.circular(10.0),
+              //       ),
+              //       focusedBorder: OutlineInputBorder(
+              //         borderSide: BorderSide(
+              //           color: FlutterFlowTheme.of(context).primary,
+              //           width: 2.0,
+              //         ),
+              //         borderRadius: BorderRadius.circular(10.0),
+              //       ),
+              //       errorBorder: OutlineInputBorder(
+              //         borderSide: BorderSide(
+              //           color: FlutterFlowTheme.of(context).error,
+              //           width: 2.0,
+              //         ),
+              //         borderRadius: BorderRadius.circular(10.0),
+              //       ),
+              //       focusedErrorBorder: OutlineInputBorder(
+              //         borderSide: BorderSide(
+              //           color: FlutterFlowTheme.of(context).error,
+              //           width: 2.0,
+              //         ),
+              //         borderRadius: BorderRadius.circular(10.0),
+              //       ),
+              //     ),
+              //     style: FlutterFlowTheme.of(context).bodyMedium.override(
+              //           fontFamily: 'Outfit',
+              //           color: Colors.black,
+              //           fontSize: 15.0,
+              //           letterSpacing: 0.0,
+              //           fontWeight: FontWeight.normal,
+              //         ),
+              //     validator:
+              //         _model.textController10Validator.asValidator(context),
+              //   ),
+              // ),
+              Padding(
+                padding:
+                    const EdgeInsetsDirectional.fromSTEB(8.0, 16.0, 8.0, 0.0),
+                child: TextFormField(
+                  // controller: _model.textController11,
+                  // focusNode: _model.textFieldFocusNode11,
                   autofocus: true,
                   obscureText: false,
                   decoration: InputDecoration(
@@ -1747,10 +2074,11 @@ class _EditEventPageWidgetState extends State<EditEventPageWidget> {
                 ),
               ),
               Padding(
-                padding: const EdgeInsetsDirectional.fromSTEB(8.0, 16.0, 8.0, 0.0),
+                padding:
+                    const EdgeInsetsDirectional.fromSTEB(8.0, 16.0, 8.0, 0.0),
                 child: TextFormField(
-                  controller: _model.textController12,
-                  focusNode: _model.textFieldFocusNode12,
+                  controller: _model.textController7,
+                  focusNode: _model.textFieldFocusNode7,
                   autofocus: true,
                   obscureText: false,
                   decoration: InputDecoration(
@@ -1806,18 +2134,19 @@ class _EditEventPageWidgetState extends State<EditEventPageWidget> {
                         fontWeight: FontWeight.normal,
                       ),
                   validator:
-                      _model.textController12Validator.asValidator(context),
+                      _model.textController7Validator.asValidator(context),
                 ),
               ),
               Padding(
-                padding: const EdgeInsetsDirectional.fromSTEB(8.0, 16.0, 8.0, 0.0),
+                padding:
+                    const EdgeInsetsDirectional.fromSTEB(8.0, 16.0, 8.0, 0.0),
                 child: TextFormField(
-                  controller: _model.textController13,
-                  focusNode: _model.textFieldFocusNode13,
-                  autofocus: true,
+                  controller: _model.textController5,
+                  focusNode: _model.textFieldFocusNode5,
+                  autofocus: false,
                   obscureText: false,
                   decoration: InputDecoration(
-                    labelText: 'Quantidade de funcionários',
+                    labelText: 'Quantidade de Funcionários',
                     labelStyle:
                         FlutterFlowTheme.of(context).labelMedium.override(
                               fontFamily: 'Outfit',
@@ -1829,7 +2158,6 @@ class _EditEventPageWidgetState extends State<EditEventPageWidget> {
                     hintStyle:
                         FlutterFlowTheme.of(context).labelMedium.override(
                               fontFamily: 'Outfit',
-                              color: Colors.black,
                               letterSpacing: 0.0,
                             ),
                     enabledBorder: OutlineInputBorder(
@@ -1868,17 +2196,21 @@ class _EditEventPageWidgetState extends State<EditEventPageWidget> {
                         letterSpacing: 0.0,
                         fontWeight: FontWeight.normal,
                       ),
+                  keyboardType: TextInputType.number, // Apenas números
                   validator:
-                      _model.textController13Validator.asValidator(context),
+                      _model.textController5Validator.asValidator(context),
                 ),
               ),
               Padding(
-                padding: const EdgeInsetsDirectional.fromSTEB(8.0, 16.0, 8.0, 0.0),
+                padding:
+                    const EdgeInsetsDirectional.fromSTEB(8.0, 16.0, 8.0, 0.0),
                 child: FlutterFlowDropDown<String>(
                   multiSelectController: _model.dropDownValueController2 ??=
                       FormFieldController<List<String>>(null),
-                  options: List<String>.from(['1', '2', '3']),
-                  optionLabels: const ['Bartender', 'Servidor', 'Recepcionista'],
+                  options:
+                      professions.map((profession) => profession.name).toList(),
+                  optionLabels:
+                      professions.map((profession) => profession.name).toList(),
                   width: 373.0,
                   height: 56.0,
                   textStyle: FlutterFlowTheme.of(context).bodyMedium.override(
@@ -1888,7 +2220,7 @@ class _EditEventPageWidgetState extends State<EditEventPageWidget> {
                         letterSpacing: 0.0,
                         fontWeight: FontWeight.w500,
                       ),
-                  hintText: 'Selecionar Serviços',
+                  hintText: 'Selecionar Serviços1234',
                   icon: const Icon(
                     Icons.keyboard_arrow_down_rounded,
                     color: Color(0xFF05BD7B),
@@ -1899,13 +2231,13 @@ class _EditEventPageWidgetState extends State<EditEventPageWidget> {
                   borderColor: const Color(0xFF05BD7B),
                   borderWidth: 2.0,
                   borderRadius: 8.0,
-                  margin: const EdgeInsetsDirectional.fromSTEB(16.0, 4.0, 16.0, 4.0),
+                  margin: const EdgeInsetsDirectional.fromSTEB(
+                      16.0, 4.0, 16.0, 4.0),
                   hidesUnderline: true,
                   isOverButton: true,
                   isSearchable: false,
                   isMultiSelect: true,
-                  onMultiSelectChanged: (val) =>
-                      setState(() => _model.dropDownValue2 = val),
+                  onMultiSelectChanged: _onMultiSelectChanged,
                   labelText: '',
                   labelTextStyle:
                       FlutterFlowTheme.of(context).labelMedium.override(
@@ -1915,106 +2247,72 @@ class _EditEventPageWidgetState extends State<EditEventPageWidget> {
                           ),
                 ),
               ),
-              Padding(
-                padding: const EdgeInsetsDirectional.fromSTEB(8.0, 16.0, 8.0, 16.0),
-                child: Container(
-                  width: 100.0,
-                  height: 100.0,
-                  constraints: const BoxConstraints(
-                    maxHeight: 56.0,
-                  ),
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(8.0),
-                    border: Border.all(
-                      color: const Color(0xFF05BD7B),
-                      width: 2.0,
+              const SizedBox(height: 20),
+              const Text('Profissões Selecionadas:'),
+              Column(
+                children: selectedProfessions.map((Profession profession) {
+                  int index = selectedProfessions.indexOf(profession);
+                  return Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 6.0),
+                    child: Container(
+                      width: 373.0,
+                      height: 80.0,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(8.0),
+                        border: Border.all(
+                          color: const Color(0xFF05BD7B),
+                          width: 2.0,
+                        ),
+                      ),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          // ClipRRect(
+                          //   borderRadius: BorderRadius.circular(8.0),
+                          //   child: Image.network(
+                          //     'https://cdn-icons-png.flaticon.com/256/2654/2654013.png',
+                          //     width: 50.0,
+                          //     height: 50.0,
+                          //     fit: BoxFit.cover,
+                          //   ),
+                          // ),
+                          const SizedBox(width: 20),
+                          Text(
+                            profession.name,
+                            style: const TextStyle(
+                                color: Color(0xFF05BD7B)), // Cor do texto preto
+                          ),
+                          const SizedBox(width: 20),
+                          IconButton(
+                            onPressed: () {
+                              setState(() {
+                                selectedProfessions.removeAt(index);
+                              });
+                            },
+                            icon: const Icon(Icons.delete),
+                            color: Colors.red,
+                          ),
+                          const Text('Exp:'),
+                          const SizedBox(width: 10),
+                          _buildIconButton(Icons.remove, () {
+                            if (profession.quantidade > 0) {
+                              _updateExperience(
+                                  index, profession.quantidade - 1);
+                            }
+                          }),
+                          Text('${profession.quantidade} anos'),
+                          _buildIconButton(Icons.add, () {
+                            _updateExperience(index, profession.quantidade + 1);
+                          }),
+                        ],
+                      ),
                     ),
-                  ),
-                  child: Padding(
-                    padding:
-                        const EdgeInsetsDirectional.fromSTEB(8.0, 8.0, 12.0, 8.0),
-                    child: Row(
-                      mainAxisSize: MainAxisSize.max,
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        ClipRRect(
-                          borderRadius: BorderRadius.circular(8.0),
-                          child: Image.network(
-                            'https://cdn-icons-png.flaticon.com/256/2654/2654013.png',
-                            fit: BoxFit.cover,
-                          ),
-                        ),
-                        Align(
-                          alignment: const AlignmentDirectional(-1.0, 0.0),
-                          child: Padding(
-                            padding: const EdgeInsetsDirectional.fromSTEB(
-                                16.0, 0.0, 0.0, 0.0),
-                            child: Text(
-                              'Bartender',
-                              style: FlutterFlowTheme.of(context)
-                                  .bodyLarge
-                                  .override(
-                                    fontFamily: 'Outfit',
-                                    color: Colors.black,
-                                    letterSpacing: 0.0,
-                                  ),
-                            ),
-                          ),
-                        ),
-                        Flexible(
-                          child: Align(
-                            alignment: const AlignmentDirectional(1.0, 0.0),
-                            child: Container(
-                              width: 160.0,
-                              height: 50.0,
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(8.0),
-                                shape: BoxShape.rectangle,
-                                border: Border.all(
-                                  color: const Color(0xFF05BD7B),
-                                  width: 2.0,
-                                ),
-                              ),
-                              child: FlutterFlowCountController(
-                                decrementIconBuilder: (enabled) => FaIcon(
-                                  FontAwesomeIcons.minus,
-                                  color: enabled
-                                      ? FlutterFlowTheme.of(context)
-                                          .secondaryText
-                                      : const Color(0xFF05BD7B),
-                                  size: 20.0,
-                                ),
-                                incrementIconBuilder: (enabled) => FaIcon(
-                                  FontAwesomeIcons.plus,
-                                  color: enabled
-                                      ? FlutterFlowTheme.of(context).primary
-                                      : const Color(0xFF05BD7B),
-                                  size: 20.0,
-                                ),
-                                countBuilder: (count) => Text(
-                                  count.toString(),
-                                  style: FlutterFlowTheme.of(context)
-                                      .titleLarge
-                                      .override(
-                                        fontFamily: 'Outfit',
-                                        letterSpacing: 0.0,
-                                      ),
-                                ),
-                                count: _model.countControllerValue ??= 0,
-                                updateCount: (count) => setState(
-                                    () => _model.countControllerValue = count),
-                                stepSize: 1,
-                              ),
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
+                  );
+                }).toList(),
               ),
               Padding(
-                padding: const EdgeInsetsDirectional.fromSTEB(8.0, 0.0, 8.0, 16.0),
+                padding:
+                    const EdgeInsetsDirectional.fromSTEB(8.0, 0.0, 8.0, 16.0),
                 child: Container(
                   width: 100.0,
                   height: 100.0,
@@ -2029,8 +2327,8 @@ class _EditEventPageWidgetState extends State<EditEventPageWidget> {
                     ),
                   ),
                   child: Padding(
-                    padding:
-                        const EdgeInsetsDirectional.fromSTEB(8.0, 8.0, 12.0, 8.0),
+                    padding: const EdgeInsetsDirectional.fromSTEB(
+                        8.0, 8.0, 12.0, 8.0),
                     child: Row(
                       mainAxisSize: MainAxisSize.max,
                       crossAxisAlignment: CrossAxisAlignment.center,
@@ -2069,7 +2367,8 @@ class _EditEventPageWidgetState extends State<EditEventPageWidget> {
                 ),
               ),
               Padding(
-                padding: const EdgeInsetsDirectional.fromSTEB(8.0, 0.0, 8.0, 16.0),
+                padding:
+                    const EdgeInsetsDirectional.fromSTEB(8.0, 0.0, 8.0, 16.0),
                 child: Container(
                   width: 100.0,
                   height: 100.0,
@@ -2085,8 +2384,8 @@ class _EditEventPageWidgetState extends State<EditEventPageWidget> {
                     ),
                   ),
                   child: Padding(
-                    padding:
-                        const EdgeInsetsDirectional.fromSTEB(8.0, 8.0, 12.0, 8.0),
+                    padding: const EdgeInsetsDirectional.fromSTEB(
+                        8.0, 8.0, 12.0, 8.0),
                     child: Row(
                       mainAxisSize: MainAxisSize.max,
                       crossAxisAlignment: CrossAxisAlignment.center,
@@ -2125,13 +2424,14 @@ class _EditEventPageWidgetState extends State<EditEventPageWidget> {
                 ),
               ),
               Padding(
-                padding: const EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 0.0, 16.0),
+                padding:
+                    const EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 0.0, 16.0),
                 child: Row(
                   mainAxisSize: MainAxisSize.max,
                   children: [
                     Padding(
-                      padding:
-                          const EdgeInsetsDirectional.fromSTEB(28.0, 0.0, 0.0, 0.0),
+                      padding: const EdgeInsetsDirectional.fromSTEB(
+                          28.0, 0.0, 0.0, 0.0),
                       child: FFButtonWidget(
                         onPressed: () async {
                           context.safePop();
@@ -2161,10 +2461,12 @@ class _EditEventPageWidgetState extends State<EditEventPageWidget> {
                       ),
                     ),
                     Padding(
-                      padding:
-                          const EdgeInsetsDirectional.fromSTEB(28.0, 0.0, 0.0, 0.0),
+                      padding: const EdgeInsetsDirectional.fromSTEB(
+                          28.0, 0.0, 0.0, 0.0),
                       child: FFButtonWidget(
-                        onPressed: () async {},
+                        onPressed: () async {
+                          editEvent();
+                        },
                         text: 'Atualizar',
                         options: FFButtonOptions(
                           width: 150.0,
@@ -2194,6 +2496,25 @@ class _EditEventPageWidgetState extends State<EditEventPageWidget> {
               ),
             ],
           ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildIconButton(IconData icon, VoidCallback onPressed) {
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: Container(
+        width: 36.0,
+        height: 36.0,
+        decoration: BoxDecoration(
+          color: const Color(0xFF05BD7B),
+          borderRadius: BorderRadius.circular(8.0),
+        ),
+        child: IconButton(
+          onPressed: onPressed,
+          icon: Icon(icon),
+          color: Colors.white,
         ),
       ),
     );
