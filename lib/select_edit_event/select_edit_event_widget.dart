@@ -220,8 +220,7 @@ class _SelectEditEventWidgetState extends State<SelectEditEventWidget> {
 
     var headers = {
       'Content-Type': 'application/json',
-      'Authorization':
-          "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6NSwiZW1haWwiOiJodGh0aHRodGh0aHRAZ21haWwuY29tIiwibmFtZSI6IldJTExJQU0iLCJpYXQiOjE3MTY0MDAzOTAsImV4cCI6MTcxNjk1NTk0NX0.gLekLNO10pQj1U--vMBVQ_E5GAdVL8yvUibNXifQjqY",
+      'Authorization': "Bearer $token",
     };
 
     var response = await http.get(url, headers: headers);

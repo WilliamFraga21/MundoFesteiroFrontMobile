@@ -117,13 +117,12 @@ class _EditEventPageWidgetState extends State<EditEventPageWidget> {
   }
 
   Future<void> editEvent() async {
-    var url = Uri.parse(apiUrl + '/api/evento/update/1');
+    var url = Uri.parse(apiUrl + '/api/evento/update/6');
 
     // Definindo os headers
     var headers = {
       'Content-Type': 'application/json',
-      'Authorization':
-          "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6NCwiZW1haWwiOiJhYWFkZGFAZ21haWwuY29tIiwibmFtZSI6IldJTExJQU0iLCJpYXQiOjE3MTYyMzkyNTMsImV4cCI6MTcxNjc5NDgwOH0.it3Uvu4-_1h8Y3EaJ3ZN_qkYWggBEJyS4kF7NxlQ-9g",
+      'Authorization': "Bearer $token",
     };
 
     final List<Map<String, dynamic>> selectedProfessionsData =
@@ -2247,7 +2246,7 @@ class _EditEventPageWidgetState extends State<EditEventPageWidget> {
                         letterSpacing: 0.0,
                         fontWeight: FontWeight.w500,
                       ),
-                  hintText: 'Selecionar Serviços1234',
+                  hintText: 'Selecionar Serviços',
                   icon: const Icon(
                     Icons.keyboard_arrow_down_rounded,
                     color: Color(0xFF05BD7B),
@@ -2282,7 +2281,7 @@ class _EditEventPageWidgetState extends State<EditEventPageWidget> {
                   return Padding(
                     padding: const EdgeInsets.symmetric(vertical: 6.0),
                     child: Container(
-                      width: 373.0,
+                      width: 395.0,
                       height: 80.0,
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(8.0),
@@ -2303,12 +2302,7 @@ class _EditEventPageWidgetState extends State<EditEventPageWidget> {
                           //     fit: BoxFit.cover,
                           //   ),
                           // ),
-                          const SizedBox(width: 20),
-                          Text(
-                            profession.name,
-                            style: const TextStyle(
-                                color: Color(0xFF05BD7B)), // Cor do texto preto
-                          ),
+
                           const SizedBox(width: 20),
                           IconButton(
                             onPressed: () {
@@ -2319,7 +2313,14 @@ class _EditEventPageWidgetState extends State<EditEventPageWidget> {
                             icon: const Icon(Icons.delete),
                             color: Colors.red,
                           ),
-                          const Text('Exp:'),
+                          const SizedBox(width: 20),
+                          Text(
+                            profession.name,
+                            style: const TextStyle(
+                                color: Color(0xFF05BD7B)), // Cor do texto preto
+                          ),
+                          const SizedBox(width: 20),
+                          const Text('Qtd:'),
                           const SizedBox(width: 10),
                           _buildIconButton(Icons.remove, () {
                             if (profession.quantidade > 0) {
@@ -2327,7 +2328,7 @@ class _EditEventPageWidgetState extends State<EditEventPageWidget> {
                                   index, profession.quantidade - 1);
                             }
                           }),
-                          Text('${profession.quantidade} anos'),
+                          Text('${profession.quantidade}'),
                           _buildIconButton(Icons.add, () {
                             _updateExperience(index, profession.quantidade + 1);
                           }),

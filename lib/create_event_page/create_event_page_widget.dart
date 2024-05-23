@@ -23,6 +23,21 @@ class CreateEventPageWidget extends StatefulWidget {
   State<CreateEventPageWidget> createState() => _CreateEventPageWidgetState();
 }
 
+class Profession {
+  int id;
+  String name;
+  int quantidade;
+
+  Profession(this.id, this.name, this.quantidade);
+
+  Map<String, dynamic> toJson() {
+    return {
+      'id': id,
+      'quantidade': quantidade,
+    };
+  }
+}
+
 class _CreateEventPageWidgetState extends State<CreateEventPageWidget> {
   late CreateEventPageModel _model;
   late String _message;
@@ -74,6 +89,9 @@ class _CreateEventPageWidgetState extends State<CreateEventPageWidget> {
     _model.textFieldFocusNode13 ??= FocusNode();
 
     _message = '';
+
+    dropDownValueController2 = FormFieldController<List<String>>(null);
+    _fetchProfessions();
   }
 
   @override
@@ -89,9 +107,11 @@ class _CreateEventPageWidgetState extends State<CreateEventPageWidget> {
     // Definindo os headers
     var headers = {
       'Content-Type': 'application/json',
-      'Authorization':
-          "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6MiwiZW1haWwiOiJkd2Fkd2Fkd2RkZGRkYWR3YUBnbWFpbC5jb20iLCJuYW1lIjoiV0lMTElBTSIsImlhdCI6MTcxNTg4ODczMywiZXhwIjoxNzE2NDQ0Mjg4fQ.BzCOfmwSZPD8jVSo2cdiITCv2zEeDpbuFbpApDZYbIA",
+      'Authorization': "Bearer $token",
     };
+
+    final List<Map<String, dynamic>> selectedProfessionsData =
+        selectedProfessions.map((profession) => profession.toJson()).toList();
 
     var body = json.encode({
       "nomeEvento": _model.textController2.text,
@@ -105,10 +125,7 @@ class _CreateEventPageWidgetState extends State<CreateEventPageWidget> {
       "bairro": _model.textController9.text,
       "cidade": _model.textController10.text,
       "estado": _model.textController11.text,
-      "professions": [
-        {"id": 13, "quantidade": 4},
-        {"id": 16, "quantidade": 99}
-      ]
+      "professions": selectedProfessionsData,
     });
 
     var response = await http.post(
@@ -146,6 +163,52 @@ class _CreateEventPageWidgetState extends State<CreateEventPageWidget> {
         },
       );
     }
+  }
+
+  List<Profession> professions = [];
+  List<Profession> selectedProfessions = [];
+  late FormFieldController<List<String>> dropDownValueController2;
+
+  Future<void> _fetchProfessions() async {
+    // final url = apiUrl + '/profissao/getALL'; // Substitua pelo URL correto
+    var url = Uri.parse(apiUrl + '/profissao/getALL');
+    try {
+      final response = await http.get(url);
+      if (response.statusCode == 200) {
+        final List<dynamic> data = json.decode(response.body);
+        final List<Profession> fetchedProfessions = [];
+        for (var item in data) {
+          for (var professionData in item) {
+            final profession =
+                Profession(professionData['id'], professionData['name'], 0);
+            fetchedProfessions.add(profession);
+          }
+        }
+        setState(() {
+          professions = fetchedProfessions;
+        });
+      } else {
+        print(
+            'Falha ao carregar profissões. Código de status: ${response.statusCode}');
+      }
+    } catch (e) {
+      print('Erro ao carregar profissões: $e');
+    }
+  }
+
+  void _updateExperience(int index, int value) {
+    setState(() {
+      selectedProfessions[index].quantidade = value;
+    });
+  }
+
+  void _onMultiSelectChanged(List<String>? selectedNames) {
+    if (selectedNames == null) return;
+    setState(() {
+      selectedProfessions = selectedNames.map((name) {
+        return professions.firstWhere((profession) => profession.name == name);
+      }).toList();
+    });
   }
 
   @override
@@ -2000,8 +2063,10 @@ class _CreateEventPageWidgetState extends State<CreateEventPageWidget> {
               child: FlutterFlowDropDown<String>(
                 multiSelectController: _model.dropDownValueController2 ??=
                     FormFieldController<List<String>>(null),
-                options: List<String>.from(['1', '2', '3']),
-                optionLabels: const ['Bartender', 'Servidor', 'Recepcionista'],
+                options:
+                    professions.map((profession) => profession.name).toList(),
+                optionLabels:
+                    professions.map((profession) => profession.name).toList(),
                 width: 373.0,
                 height: 56.0,
                 textStyle: FlutterFlowTheme.of(context).bodyMedium.override(
@@ -2028,8 +2093,7 @@ class _CreateEventPageWidgetState extends State<CreateEventPageWidget> {
                 isOverButton: true,
                 isSearchable: false,
                 isMultiSelect: true,
-                onMultiSelectChanged: (val) =>
-                    setState(() => _model.dropDownValue2 = val),
+                onMultiSelectChanged: _onMultiSelectChanged,
                 labelText: '',
                 labelTextStyle:
                     FlutterFlowTheme.of(context).labelMedium.override(
@@ -2039,102 +2103,69 @@ class _CreateEventPageWidgetState extends State<CreateEventPageWidget> {
                         ),
               ),
             ),
-            Padding(
-              padding:
-                  const EdgeInsetsDirectional.fromSTEB(8.0, 16.0, 8.0, 16.0),
-              child: Container(
-                width: 100.0,
-                height: 100.0,
-                constraints: const BoxConstraints(
-                  maxHeight: 56.0,
-                ),
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(8.0),
-                  border: Border.all(
-                    color: const Color(0xFF05BD7B),
-                    width: 2.0,
+            const SizedBox(height: 20),
+            const Text('Profissões Selecionadas:'),
+            Column(
+              children: selectedProfessions.map((Profession profession) {
+                int index = selectedProfessions.indexOf(profession);
+                return Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 6.0),
+                  child: Container(
+                    width: 395.0,
+                    height: 80.0,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(8.0),
+                      border: Border.all(
+                        color: const Color(0xFF05BD7B),
+                        width: 2.0,
+                      ),
+                    ),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        // ClipRRect(
+                        //   borderRadius: BorderRadius.circular(8.0),
+                        //   child: Image.network(
+                        //     'https://cdn-icons-png.flaticon.com/256/2654/2654013.png',
+                        //     width: 50.0,
+                        //     height: 50.0,
+                        //     fit: BoxFit.cover,
+                        //   ),
+                        // ),
+
+                        const SizedBox(width: 20),
+                        IconButton(
+                          onPressed: () {
+                            setState(() {
+                              selectedProfessions.removeAt(index);
+                            });
+                          },
+                          icon: const Icon(Icons.delete),
+                          color: Colors.red,
+                        ),
+                        const SizedBox(width: 20),
+                        Text(
+                          profession.name,
+                          style: const TextStyle(
+                              color: Color(0xFF05BD7B)), // Cor do texto preto
+                        ),
+                        const SizedBox(width: 20),
+                        const Text('Qtd:'),
+                        const SizedBox(width: 10),
+                        _buildIconButton(Icons.remove, () {
+                          if (profession.quantidade > 0) {
+                            _updateExperience(index, profession.quantidade - 1);
+                          }
+                        }),
+                        Text('${profession.quantidade}'),
+                        _buildIconButton(Icons.add, () {
+                          _updateExperience(index, profession.quantidade + 1);
+                        }),
+                      ],
+                    ),
                   ),
-                ),
-                child: Padding(
-                  padding:
-                      const EdgeInsetsDirectional.fromSTEB(8.0, 8.0, 12.0, 8.0),
-                  child: Row(
-                    mainAxisSize: MainAxisSize.max,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      ClipRRect(
-                        borderRadius: BorderRadius.circular(8.0),
-                        child: Image.network(
-                          'https://cdn-icons-png.flaticon.com/256/2654/2654013.png',
-                          fit: BoxFit.cover,
-                        ),
-                      ),
-                      Align(
-                        alignment: const AlignmentDirectional(-1.0, 0.0),
-                        child: Padding(
-                          padding: const EdgeInsetsDirectional.fromSTEB(
-                              16.0, 0.0, 0.0, 0.0),
-                          child: Text(
-                            'Bartender',
-                            style:
-                                FlutterFlowTheme.of(context).bodyLarge.override(
-                                      fontFamily: 'Outfit',
-                                      color: Colors.black,
-                                      letterSpacing: 0.0,
-                                    ),
-                          ),
-                        ),
-                      ),
-                      Flexible(
-                        child: Align(
-                          alignment: const AlignmentDirectional(1.0, 0.0),
-                          child: Container(
-                            width: 160.0,
-                            height: 50.0,
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(8.0),
-                              shape: BoxShape.rectangle,
-                              border: Border.all(
-                                color: const Color(0xFF05BD7B),
-                                width: 2.0,
-                              ),
-                            ),
-                            child: FlutterFlowCountController(
-                              decrementIconBuilder: (enabled) => FaIcon(
-                                FontAwesomeIcons.minus,
-                                color: enabled
-                                    ? FlutterFlowTheme.of(context).secondaryText
-                                    : const Color(0xFF05BD7B),
-                                size: 20.0,
-                              ),
-                              incrementIconBuilder: (enabled) => FaIcon(
-                                FontAwesomeIcons.plus,
-                                color: enabled
-                                    ? FlutterFlowTheme.of(context).primary
-                                    : const Color(0xFF05BD7B),
-                                size: 20.0,
-                              ),
-                              countBuilder: (count) => Text(
-                                count.toString(),
-                                style: FlutterFlowTheme.of(context)
-                                    .titleLarge
-                                    .override(
-                                      fontFamily: 'Outfit',
-                                      letterSpacing: 0.0,
-                                    ),
-                              ),
-                              count: _model.countControllerValue ??= 0,
-                              updateCount: (count) => setState(
-                                  () => _model.countControllerValue = count),
-                              stepSize: 1,
-                            ),
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ),
+                );
+              }).toList(),
             ),
             Padding(
               padding:
@@ -2208,6 +2239,25 @@ class _CreateEventPageWidgetState extends State<CreateEventPageWidget> {
               ),
             ),
           ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildIconButton(IconData icon, VoidCallback onPressed) {
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: Container(
+        width: 36.0,
+        height: 36.0,
+        decoration: BoxDecoration(
+          color: const Color(0xFF05BD7B),
+          borderRadius: BorderRadius.circular(8.0),
+        ),
+        child: IconButton(
+          onPressed: onPressed,
+          icon: Icon(icon),
+          color: Colors.white,
         ),
       ),
     );
