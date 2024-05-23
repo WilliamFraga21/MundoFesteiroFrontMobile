@@ -4,6 +4,9 @@ import '/flutter_flow/flutter_flow_widgets.dart';
 import 'package:flutter/material.dart';
 import 'login_page_model.dart';
 export 'login_page_model.dart';
+import '../constants/constants.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
 
 class LoginPageWidget extends StatefulWidget {
   const LoginPageWidget({super.key});
@@ -35,6 +38,51 @@ class _LoginPageWidgetState extends State<LoginPageWidget> {
 
     super.dispose();
   }
+Future<void> login() async {
+  var url = Uri.parse(apiUrl + '/auth/login');
+  var response = await http.post(url,
+      body: json.encode({
+        'email': _model.textController1.text,
+        'password': _model.textController2.text,
+      }));
+
+  if (response.statusCode == 200) {
+    // Autenticação bem-sucedida, redirecione para a página inicial
+    final responseData = jsonDecode(response.body);
+    token = responseData['token'];
+    setState(() {
+      GoRouter.of(context).go('/homePage');
+    });
+  } else {
+    // Exibir mensagem de erro
+    final responseData = jsonDecode(response.body);
+    final List<dynamic> errorMessages = responseData['error']['message'];
+
+    // Concatenar as mensagens de erro em uma única string
+    final errorMessage = errorMessages.join('\n');
+
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('Erro'),
+          content: Text(errorMessage.isNotEmpty
+              ? errorMessage
+              : 'Erro ao fazer login. Status code: ${response.statusCode}'),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              child: Text('OK'),
+            ),
+          ],
+        );
+      },
+    );
+  }
+}
+
 
   @override
   Widget build(BuildContext context) {
@@ -324,18 +372,7 @@ class _LoginPageWidgetState extends State<LoginPageWidget> {
                                     0.0, 0.0, 0.0, 16.0),
                                 child: FFButtonWidget(
                                   onPressed: () async {
-                                    context.pushNamed(
-                                      'HomePage',
-                                      extra: <String, dynamic>{
-                                        kTransitionInfoKey:
-                                            const TransitionInfo(
-                                          hasTransition: true,
-                                          transitionType:
-                                              PageTransitionType.fade,
-                                          duration: Duration(milliseconds: 0),
-                                        ),
-                                      },
-                                    );
+                                    await login();
                                   },
                                   text: 'Logar',
                                   options: FFButtonOptions(
