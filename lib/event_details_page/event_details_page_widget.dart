@@ -10,9 +10,14 @@ import 'package:mapbox_search/mapbox_search.dart' as mapbox;
 import 'package:flutter/material.dart';
 import 'event_details_page_model.dart';
 export 'event_details_page_model.dart';
+import '../search_event_page/search_event_page_widget.dart';
 
 class EventDetailsPageWidget extends StatefulWidget {
-  const EventDetailsPageWidget({super.key});
+  // const EventDetailsPageWidget({super.key});
+
+  EventoModel data;
+
+  EventDetailsPageWidget({Key? key, required this.data}) : super(key: key);
 
   @override
   State<EventDetailsPageWidget> createState() => _EventDetailsPageWidgetState();
@@ -67,7 +72,8 @@ class _EventDetailsPageWidgetState extends State<EventDetailsPageWidget> {
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 Padding(
-                  padding: const EdgeInsetsDirectional.fromSTEB(0.0, 50.0, 0.0, 0.0),
+                  padding:
+                      const EdgeInsetsDirectional.fromSTEB(0.0, 50.0, 0.0, 0.0),
                   child: Row(
                     mainAxisSize: MainAxisSize.max,
                     children: [
@@ -121,8 +127,8 @@ class _EventDetailsPageWidgetState extends State<EventDetailsPageWidget> {
                 Align(
                   alignment: const AlignmentDirectional(0.0, 0.0),
                   child: Padding(
-                    padding:
-                        const EdgeInsetsDirectional.fromSTEB(0.0, 15.0, 0.0, 0.0),
+                    padding: const EdgeInsetsDirectional.fromSTEB(
+                        0.0, 15.0, 0.0, 0.0),
                     child: Text(
                       'Nome do Prestador',
                       style: FlutterFlowTheme.of(context).titleMedium.override(
@@ -135,7 +141,8 @@ class _EventDetailsPageWidgetState extends State<EventDetailsPageWidget> {
                   ),
                 ),
                 Padding(
-                  padding: const EdgeInsetsDirectional.fromSTEB(0.0, 10.0, 0.0, 0.0),
+                  padding:
+                      const EdgeInsetsDirectional.fromSTEB(0.0, 10.0, 0.0, 0.0),
                   child: InkWell(
                     splashColor: Colors.transparent,
                     focusColor: Colors.transparent,
@@ -208,7 +215,8 @@ class _EventDetailsPageWidgetState extends State<EventDetailsPageWidget> {
                   ),
                 ),
                 Padding(
-                  padding: const EdgeInsetsDirectional.fromSTEB(0.0, 10.0, 0.0, 0.0),
+                  padding:
+                      const EdgeInsetsDirectional.fromSTEB(0.0, 10.0, 0.0, 0.0),
                   child: InkWell(
                     splashColor: Colors.transparent,
                     focusColor: Colors.transparent,
@@ -272,7 +280,8 @@ class _EventDetailsPageWidgetState extends State<EventDetailsPageWidget> {
                   ),
                 ),
                 Padding(
-                  padding: const EdgeInsetsDirectional.fromSTEB(0.0, 10.0, 0.0, 0.0),
+                  padding:
+                      const EdgeInsetsDirectional.fromSTEB(0.0, 10.0, 0.0, 0.0),
                   child: InkWell(
                     splashColor: Colors.transparent,
                     focusColor: Colors.transparent,
@@ -345,7 +354,8 @@ class _EventDetailsPageWidgetState extends State<EventDetailsPageWidget> {
                   ),
                 ),
                 Padding(
-                  padding: const EdgeInsetsDirectional.fromSTEB(0.0, 10.0, 0.0, 0.0),
+                  padding:
+                      const EdgeInsetsDirectional.fromSTEB(0.0, 10.0, 0.0, 0.0),
                   child: InkWell(
                     splashColor: Colors.transparent,
                     focusColor: Colors.transparent,
@@ -418,7 +428,8 @@ class _EventDetailsPageWidgetState extends State<EventDetailsPageWidget> {
                   ),
                 ),
                 Padding(
-                  padding: const EdgeInsetsDirectional.fromSTEB(0.0, 10.0, 0.0, 0.0),
+                  padding:
+                      const EdgeInsetsDirectional.fromSTEB(0.0, 10.0, 0.0, 0.0),
                   child: InkWell(
                     splashColor: Colors.transparent,
                     focusColor: Colors.transparent,
@@ -491,7 +502,8 @@ class _EventDetailsPageWidgetState extends State<EventDetailsPageWidget> {
                   ),
                 ),
                 Padding(
-                  padding: const EdgeInsetsDirectional.fromSTEB(0.0, 10.0, 0.0, 0.0),
+                  padding:
+                      const EdgeInsetsDirectional.fromSTEB(0.0, 10.0, 0.0, 0.0),
                   child: InkWell(
                     splashColor: Colors.transparent,
                     focusColor: Colors.transparent,
@@ -556,7 +568,8 @@ class _EventDetailsPageWidgetState extends State<EventDetailsPageWidget> {
                   ),
                 ),
                 Padding(
-                  padding: const EdgeInsetsDirectional.fromSTEB(0.0, 10.0, 0.0, 0.0),
+                  padding:
+                      const EdgeInsetsDirectional.fromSTEB(0.0, 10.0, 0.0, 0.0),
                   child: InkWell(
                     splashColor: Colors.transparent,
                     focusColor: Colors.transparent,
@@ -632,8 +645,8 @@ class _EventDetailsPageWidgetState extends State<EventDetailsPageWidget> {
                   child: Align(
                     alignment: const AlignmentDirectional(0.0, 1.0),
                     child: Padding(
-                      padding:
-                          const EdgeInsetsDirectional.fromSTEB(0.0, 10.0, 0.0, 0.0),
+                      padding: const EdgeInsetsDirectional.fromSTEB(
+                          0.0, 10.0, 0.0, 0.0),
                       child: InkWell(
                         splashColor: Colors.transparent,
                         focusColor: Colors.transparent,
@@ -680,10 +693,12 @@ class _EventDetailsPageWidgetState extends State<EventDetailsPageWidget> {
                             children: [
                               Flexible(
                                 child: Align(
-                                  alignment: const AlignmentDirectional(0.0, 0.0),
+                                  alignment:
+                                      const AlignmentDirectional(0.0, 0.0),
                                   child: Padding(
-                                    padding: const EdgeInsetsDirectional.fromSTEB(
-                                        25.0, 0.0, 0.0, 0.0),
+                                    padding:
+                                        const EdgeInsetsDirectional.fromSTEB(
+                                            25.0, 0.0, 0.0, 0.0),
                                     child: Text(
                                       'Login',
                                       style: FlutterFlowTheme.of(context)
@@ -712,8 +727,8 @@ class _EventDetailsPageWidgetState extends State<EventDetailsPageWidget> {
                   child: Align(
                     alignment: const AlignmentDirectional(0.0, 1.0),
                     child: Padding(
-                      padding:
-                          const EdgeInsetsDirectional.fromSTEB(0.0, 10.0, 0.0, 30.0),
+                      padding: const EdgeInsetsDirectional.fromSTEB(
+                          0.0, 10.0, 0.0, 30.0),
                       child: InkWell(
                         splashColor: Colors.transparent,
                         focusColor: Colors.transparent,
@@ -760,10 +775,12 @@ class _EventDetailsPageWidgetState extends State<EventDetailsPageWidget> {
                             children: [
                               Flexible(
                                 child: Align(
-                                  alignment: const AlignmentDirectional(0.0, 0.0),
+                                  alignment:
+                                      const AlignmentDirectional(0.0, 0.0),
                                   child: Padding(
-                                    padding: const EdgeInsetsDirectional.fromSTEB(
-                                        25.0, 0.0, 0.0, 0.0),
+                                    padding:
+                                        const EdgeInsetsDirectional.fromSTEB(
+                                            25.0, 0.0, 0.0, 0.0),
                                     child: Text(
                                       'Logout',
                                       style: FlutterFlowTheme.of(context)
@@ -837,8 +854,8 @@ class _EventDetailsPageWidgetState extends State<EventDetailsPageWidget> {
                 mainAxisSize: MainAxisSize.max,
                 children: [
                   Padding(
-                    padding:
-                        const EdgeInsetsDirectional.fromSTEB(23.0, 16.0, 0.0, 0.0),
+                    padding: const EdgeInsetsDirectional.fromSTEB(
+                        23.0, 16.0, 0.0, 0.0),
                     child: InkWell(
                       splashColor: Colors.transparent,
                       focusColor: Colors.transparent,
@@ -857,9 +874,10 @@ class _EventDetailsPageWidgetState extends State<EventDetailsPageWidget> {
                 ],
               ),
               Padding(
-                padding: const EdgeInsetsDirectional.fromSTEB(8.0, 16.0, 8.0, 16.0),
+                padding:
+                    const EdgeInsetsDirectional.fromSTEB(8.0, 16.0, 8.0, 16.0),
                 child: Text(
-                  'Nome do Evento',
+                  '${widget.data.evento.nomeEvento}',
                   style: FlutterFlowTheme.of(context).titleLarge.override(
                         fontFamily: 'Outfit',
                         color: const Color(0xFF05BD7B),
@@ -869,7 +887,8 @@ class _EventDetailsPageWidgetState extends State<EventDetailsPageWidget> {
                 ),
               ),
               Padding(
-                padding: const EdgeInsetsDirectional.fromSTEB(20.0, 0.0, 26.0, 0.0),
+                padding:
+                    const EdgeInsetsDirectional.fromSTEB(20.0, 0.0, 26.0, 0.0),
                 child: Row(
                   mainAxisSize: MainAxisSize.max,
                   children: [
@@ -895,16 +914,52 @@ class _EventDetailsPageWidgetState extends State<EventDetailsPageWidget> {
                 children: [
                   Expanded(
                     child: Padding(
-                      padding:
-                          const EdgeInsetsDirectional.fromSTEB(8.0, 16.0, 8.0, 0.0),
+                      padding: const EdgeInsetsDirectional.fromSTEB(
+                          8.0, 16.0, 8.0, 0.0),
+                      child: Container(
+                        decoration: BoxDecoration(
+                          border: Border.all(
+                            color: Color(0xFF05BD7B),
+                            width: 2.0,
+                          ),
+                          borderRadius: BorderRadius.circular(10.0),
+                        ),
+                        child: Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Text(
+                            '${widget.data.evento.descricaoEvento}',
+                            style: FlutterFlowTheme.of(context)
+                                .bodyMedium
+                                .override(
+                                  fontFamily: 'Outfit',
+                                  color: const Color(0xFF05BD7B),
+                                  fontSize: 16.0,
+                                  letterSpacing: 0.0,
+                                  fontWeight: FontWeight.w500,
+                                ),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+              Row(
+                mainAxisSize: MainAxisSize.max,
+                children: [
+                  Expanded(
+                    child: Padding(
+                      padding: const EdgeInsetsDirectional.fromSTEB(
+                          8.0, 16.0, 8.0, 0.0),
                       child: TextFormField(
                         controller: _model.textController1,
                         focusNode: _model.textFieldFocusNode1,
                         autofocus: true,
                         textCapitalization: TextCapitalization.none,
                         obscureText: false,
+                        enabled: false, // Desativa o campo de texto
                         decoration: InputDecoration(
-                          labelText: 'Descrição do Evento',
+                          labelText: '${widget.data.evento.data}',
                           labelStyle:
                               FlutterFlowTheme.of(context).labelMedium.override(
                                     fontFamily: 'Outfit',
@@ -919,6 +974,14 @@ class _EventDetailsPageWidgetState extends State<EventDetailsPageWidget> {
                                     letterSpacing: 0.0,
                                   ),
                           enabledBorder: OutlineInputBorder(
+                            borderSide: const BorderSide(
+                              color: Color(0xFF05BD7B),
+                              width: 2.0,
+                            ),
+                            borderRadius: BorderRadius.circular(10.0),
+                          ),
+                          disabledBorder: OutlineInputBorder(
+                            // Adiciona a borda quando desativado
                             borderSide: const BorderSide(
                               color: Color(0xFF05BD7B),
                               width: 2.0,
@@ -954,8 +1017,6 @@ class _EventDetailsPageWidgetState extends State<EventDetailsPageWidget> {
                               letterSpacing: 0.0,
                               fontWeight: FontWeight.normal,
                             ),
-                        validator: _model.textController1Validator
-                            .asValidator(context),
                       ),
                     ),
                   ),
@@ -966,16 +1027,17 @@ class _EventDetailsPageWidgetState extends State<EventDetailsPageWidget> {
                 children: [
                   Expanded(
                     child: Padding(
-                      padding:
-                          const EdgeInsetsDirectional.fromSTEB(8.0, 16.0, 8.0, 0.0),
+                      padding: const EdgeInsetsDirectional.fromSTEB(
+                          8.0, 16.0, 8.0, 0.0),
                       child: TextFormField(
-                        controller: _model.textController2,
-                        focusNode: _model.textFieldFocusNode2,
+                        controller: _model.textController1,
+                        focusNode: _model.textFieldFocusNode1,
                         autofocus: true,
                         textCapitalization: TextCapitalization.none,
                         obscureText: false,
+                        enabled: false, // Desativa o campo de texto
                         decoration: InputDecoration(
-                          labelText: 'Data do Evento',
+                          labelText: '${widget.data.evento.tipoEvento}',
                           labelStyle:
                               FlutterFlowTheme.of(context).labelMedium.override(
                                     fontFamily: 'Outfit',
@@ -990,6 +1052,14 @@ class _EventDetailsPageWidgetState extends State<EventDetailsPageWidget> {
                                     letterSpacing: 0.0,
                                   ),
                           enabledBorder: OutlineInputBorder(
+                            borderSide: const BorderSide(
+                              color: Color(0xFF05BD7B),
+                              width: 2.0,
+                            ),
+                            borderRadius: BorderRadius.circular(10.0),
+                          ),
+                          disabledBorder: OutlineInputBorder(
+                            // Adiciona a borda quando desativado
                             borderSide: const BorderSide(
                               color: Color(0xFF05BD7B),
                               width: 2.0,
@@ -1025,8 +1095,6 @@ class _EventDetailsPageWidgetState extends State<EventDetailsPageWidget> {
                               letterSpacing: 0.0,
                               fontWeight: FontWeight.normal,
                             ),
-                        validator: _model.textController2Validator
-                            .asValidator(context),
                       ),
                     ),
                   ),
@@ -1037,16 +1105,17 @@ class _EventDetailsPageWidgetState extends State<EventDetailsPageWidget> {
                 children: [
                   Expanded(
                     child: Padding(
-                      padding:
-                          const EdgeInsetsDirectional.fromSTEB(8.0, 16.0, 8.0, 0.0),
+                      padding: const EdgeInsetsDirectional.fromSTEB(
+                          8.0, 16.0, 8.0, 0.0),
                       child: TextFormField(
-                        controller: _model.textController3,
-                        focusNode: _model.textFieldFocusNode3,
+                        controller: _model.textController1,
+                        focusNode: _model.textFieldFocusNode1,
                         autofocus: true,
                         textCapitalization: TextCapitalization.none,
                         obscureText: false,
+                        enabled: false, // Desativa o campo de texto
                         decoration: InputDecoration(
-                          labelText: 'Tipo do Evento',
+                          labelText: '${widget.data.evento.quantidadePessoas}',
                           labelStyle:
                               FlutterFlowTheme.of(context).labelMedium.override(
                                     fontFamily: 'Outfit',
@@ -1061,6 +1130,14 @@ class _EventDetailsPageWidgetState extends State<EventDetailsPageWidget> {
                                     letterSpacing: 0.0,
                                   ),
                           enabledBorder: OutlineInputBorder(
+                            borderSide: const BorderSide(
+                              color: Color(0xFF05BD7B),
+                              width: 2.0,
+                            ),
+                            borderRadius: BorderRadius.circular(10.0),
+                          ),
+                          disabledBorder: OutlineInputBorder(
+                            // Adiciona a borda quando desativado
                             borderSide: const BorderSide(
                               color: Color(0xFF05BD7B),
                               width: 2.0,
@@ -1096,86 +1173,14 @@ class _EventDetailsPageWidgetState extends State<EventDetailsPageWidget> {
                               letterSpacing: 0.0,
                               fontWeight: FontWeight.normal,
                             ),
-                        validator: _model.textController3Validator
-                            .asValidator(context),
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-              Row(
-                mainAxisSize: MainAxisSize.max,
-                children: [
-                  Expanded(
-                    child: Padding(
-                      padding:
-                          const EdgeInsetsDirectional.fromSTEB(8.0, 16.0, 8.0, 0.0),
-                      child: TextFormField(
-                        controller: _model.textController4,
-                        focusNode: _model.textFieldFocusNode4,
-                        autofocus: true,
-                        textCapitalization: TextCapitalization.none,
-                        obscureText: false,
-                        decoration: InputDecoration(
-                          labelText: 'Quantidade de pessoas',
-                          labelStyle:
-                              FlutterFlowTheme.of(context).labelMedium.override(
-                                    fontFamily: 'Outfit',
-                                    color: const Color(0xFF05BD7B),
-                                    fontSize: 16.0,
-                                    letterSpacing: 0.0,
-                                    fontWeight: FontWeight.w500,
-                                  ),
-                          hintStyle:
-                              FlutterFlowTheme.of(context).labelMedium.override(
-                                    fontFamily: 'Outfit',
-                                    letterSpacing: 0.0,
-                                  ),
-                          enabledBorder: OutlineInputBorder(
-                            borderSide: const BorderSide(
-                              color: Color(0xFF05BD7B),
-                              width: 2.0,
-                            ),
-                            borderRadius: BorderRadius.circular(10.0),
-                          ),
-                          focusedBorder: OutlineInputBorder(
-                            borderSide: BorderSide(
-                              color: FlutterFlowTheme.of(context).primary,
-                              width: 2.0,
-                            ),
-                            borderRadius: BorderRadius.circular(10.0),
-                          ),
-                          errorBorder: OutlineInputBorder(
-                            borderSide: BorderSide(
-                              color: FlutterFlowTheme.of(context).error,
-                              width: 2.0,
-                            ),
-                            borderRadius: BorderRadius.circular(10.0),
-                          ),
-                          focusedErrorBorder: OutlineInputBorder(
-                            borderSide: BorderSide(
-                              color: FlutterFlowTheme.of(context).error,
-                              width: 2.0,
-                            ),
-                            borderRadius: BorderRadius.circular(10.0),
-                          ),
-                        ),
-                        style: FlutterFlowTheme.of(context).bodyMedium.override(
-                              fontFamily: 'Outfit',
-                              color: Colors.black,
-                              fontSize: 15.0,
-                              letterSpacing: 0.0,
-                              fontWeight: FontWeight.normal,
-                            ),
-                        validator: _model.textController4Validator
-                            .asValidator(context),
                       ),
                     ),
                   ),
                 ],
               ),
               Padding(
-                padding: const EdgeInsetsDirectional.fromSTEB(25.0, 16.0, 0.0, 16.0),
+                padding:
+                    const EdgeInsetsDirectional.fromSTEB(25.0, 16.0, 0.0, 16.0),
                 child: Text(
                   'Local do evento',
                   style: FlutterFlowTheme.of(context).bodyLarge.override(
@@ -1186,38 +1191,87 @@ class _EventDetailsPageWidgetState extends State<EventDetailsPageWidget> {
                       ),
                 ),
               ),
-              const Row(
+              Row(
                 mainAxisSize: MainAxisSize.max,
                 children: [
                   Expanded(
-                    child: Align(
-                      alignment: AlignmentDirectional(0.0, 0.0),
-                      child: FlutterFlowStaticMap(
-                        location: LatLng(9.341465, -79.891704),
-                        apiKey: 'ENTER_YOUR_MAPBOX_API_KEY_HERE',
-                        style: mapbox.MapBoxStyle.Light,
-                        width: 300.0,
-                        height: 300.0,
-                        fit: BoxFit.cover,
-                        borderRadius: BorderRadius.only(
-                          bottomLeft: Radius.circular(0.0),
-                          bottomRight: Radius.circular(0.0),
-                          topLeft: Radius.circular(0.0),
-                          topRight: Radius.circular(0.0),
+                    child: Padding(
+                      padding: const EdgeInsetsDirectional.fromSTEB(
+                          8.0, 0.0, 8.0, 0.0),
+                      child: Container(
+                        decoration: BoxDecoration(
+                          border: Border.all(
+                            color: Color(0xFF05BD7B),
+                            width: 2.0,
+                          ),
+                          borderRadius: BorderRadius.circular(10.0),
                         ),
-                        zoom: 12,
-                        tilt: 0,
-                        rotation: 0,
+                        child: Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Text(
+                            '${widget.data.localidadeEvento.endereco}, ${widget.data.localidadeEvento.bairro}, ${widget.data.localidadeEvento.cidade} - ${widget.data.localidadeEvento.estado}',
+                            style: FlutterFlowTheme.of(context)
+                                .bodyMedium
+                                .override(
+                                  fontFamily: 'Outfit',
+                                  color: const Color(0xFF05BD7B),
+                                  fontSize: 16.0,
+                                  letterSpacing: 0.0,
+                                  fontWeight: FontWeight.w500,
+                                ),
+                          ),
+                        ),
                       ),
                     ),
                   ),
                 ],
               ),
+
+              // Padding(
+              //   padding:
+              //       const EdgeInsetsDirectional.fromSTEB(25.0, 16.0, 0.0, 16.0),
+              //   child: Text(
+              //     'Local do evento',
+              //     style: FlutterFlowTheme.of(context).bodyLarge.override(
+              //           fontFamily: 'Outfit',
+              //           color: const Color(0xFF05BD7B),
+              //           letterSpacing: 0.0,
+              //           fontWeight: FontWeight.w600,
+              //         ),
+              //   ),
+              // ),
+              // const Row(
+              //   mainAxisSize: MainAxisSize.max,
+              //   children: [
+              //     Expanded(
+              //       child: Align(
+              //         alignment: AlignmentDirectional(0.0, 0.0),
+              //         child: FlutterFlowStaticMap(
+              //           location: LatLng(9.341465, -79.891704),
+              //           apiKey: 'ENTER_YOUR_MAPBOX_API_KEY_HERE',
+              //           style: mapbox.MapBoxStyle.Light,
+              //           width: 300.0,
+              //           height: 300.0,
+              //           fit: BoxFit.cover,
+              //           borderRadius: BorderRadius.only(
+              //             bottomLeft: Radius.circular(0.0),
+              //             bottomRight: Radius.circular(0.0),
+              //             topLeft: Radius.circular(0.0),
+              //             topRight: Radius.circular(0.0),
+              //           ),
+              //           zoom: 12,
+              //           tilt: 0,
+              //           rotation: 0,
+              //         ),
+              //       ),
+              //     ),
+              //   ],
+              // ),
               Align(
                 alignment: const AlignmentDirectional(-1.0, 0.0),
                 child: Padding(
-                  padding:
-                      const EdgeInsetsDirectional.fromSTEB(25.0, 16.0, 0.0, 16.0),
+                  padding: const EdgeInsetsDirectional.fromSTEB(
+                      25.0, 16.0, 0.0, 16.0),
                   child: Text(
                     'Serviços solicitados',
                     style: FlutterFlowTheme.of(context).bodyLarge.override(
@@ -1234,8 +1288,8 @@ class _EventDetailsPageWidgetState extends State<EventDetailsPageWidget> {
                 children: [
                   Expanded(
                     child: Padding(
-                      padding:
-                          const EdgeInsetsDirectional.fromSTEB(16.0, 8.0, 16.0, 0.0),
+                      padding: const EdgeInsetsDirectional.fromSTEB(
+                          16.0, 8.0, 16.0, 0.0),
                       child: Container(
                         width: double.infinity,
                         decoration: BoxDecoration(
@@ -1276,8 +1330,9 @@ class _EventDetailsPageWidgetState extends State<EventDetailsPageWidget> {
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   Padding(
-                                    padding: const EdgeInsetsDirectional.fromSTEB(
-                                        16.0, 0.0, 0.0, 0.0),
+                                    padding:
+                                        const EdgeInsetsDirectional.fromSTEB(
+                                            16.0, 0.0, 0.0, 0.0),
                                     child: Text(
                                       'Bartender',
                                       style: FlutterFlowTheme.of(context)
@@ -1324,8 +1379,8 @@ class _EventDetailsPageWidgetState extends State<EventDetailsPageWidget> {
                 children: [
                   Expanded(
                     child: Padding(
-                      padding:
-                          const EdgeInsetsDirectional.fromSTEB(16.0, 8.0, 16.0, 0.0),
+                      padding: const EdgeInsetsDirectional.fromSTEB(
+                          16.0, 8.0, 16.0, 0.0),
                       child: Container(
                         width: double.infinity,
                         decoration: BoxDecoration(
@@ -1366,8 +1421,9 @@ class _EventDetailsPageWidgetState extends State<EventDetailsPageWidget> {
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   Padding(
-                                    padding: const EdgeInsetsDirectional.fromSTEB(
-                                        16.0, 0.0, 0.0, 0.0),
+                                    padding:
+                                        const EdgeInsetsDirectional.fromSTEB(
+                                            16.0, 0.0, 0.0, 0.0),
                                     child: Text(
                                       'Servidor',
                                       style: FlutterFlowTheme.of(context)
@@ -1410,14 +1466,15 @@ class _EventDetailsPageWidgetState extends State<EventDetailsPageWidget> {
                 ],
               ),
               Padding(
-                padding: const EdgeInsetsDirectional.fromSTEB(24.0, 0.0, 24.0, 0.0),
+                padding:
+                    const EdgeInsetsDirectional.fromSTEB(24.0, 0.0, 24.0, 0.0),
                 child: Row(
                   mainAxisSize: MainAxisSize.max,
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Padding(
-                      padding:
-                          const EdgeInsetsDirectional.fromSTEB(0.0, 16.0, 0.0, 0.0),
+                      padding: const EdgeInsetsDirectional.fromSTEB(
+                          0.0, 16.0, 0.0, 0.0),
                       child: FFButtonWidget(
                         onPressed: () {
                           print('Button pressed ...');
@@ -1452,13 +1509,17 @@ class _EventDetailsPageWidgetState extends State<EventDetailsPageWidget> {
                 mainAxisSize: MainAxisSize.max,
                 children: [
                   Padding(
-                    padding:
-                        const EdgeInsetsDirectional.fromSTEB(8.0, 16.0, 8.0, 0.0),
+                    padding: const EdgeInsetsDirectional.fromSTEB(
+                        8.0, 16.0, 8.0, 0.0),
                     child: FlutterFlowDropDown<String>(
                       multiSelectController: _model.dropDownValueController ??=
                           FormFieldController<List<String>>(null),
                       options: List<String>.from(['1', '2', '3']),
-                      optionLabels: const ['Bartender', 'Servidor', 'Recepcionista'],
+                      optionLabels: const [
+                        'Bartender',
+                        'Servidor',
+                        'Recepcionista'
+                      ],
                       width: 373.0,
                       height: 56.0,
                       textStyle:
@@ -1480,8 +1541,8 @@ class _EventDetailsPageWidgetState extends State<EventDetailsPageWidget> {
                       borderColor: const Color(0xFF05BD7B),
                       borderWidth: 2.0,
                       borderRadius: 8.0,
-                      margin:
-                          const EdgeInsetsDirectional.fromSTEB(16.0, 4.0, 16.0, 4.0),
+                      margin: const EdgeInsetsDirectional.fromSTEB(
+                          16.0, 4.0, 16.0, 4.0),
                       hidesUnderline: true,
                       isOverButton: true,
                       isSearchable: false,
@@ -1500,7 +1561,8 @@ class _EventDetailsPageWidgetState extends State<EventDetailsPageWidget> {
                 ],
               ),
               Padding(
-                padding: const EdgeInsetsDirectional.fromSTEB(0.0, 16.0, 0.0, 0.0),
+                padding:
+                    const EdgeInsetsDirectional.fromSTEB(0.0, 16.0, 0.0, 0.0),
                 child: Row(
                   mainAxisSize: MainAxisSize.max,
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -1518,8 +1580,8 @@ class _EventDetailsPageWidgetState extends State<EventDetailsPageWidget> {
                         height: 40.0,
                         padding: const EdgeInsetsDirectional.fromSTEB(
                             24.0, 0.0, 24.0, 0.0),
-                        iconPadding:
-                            const EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 0.0, 0.0),
+                        iconPadding: const EdgeInsetsDirectional.fromSTEB(
+                            0.0, 0.0, 0.0, 0.0),
                         color: const Color(0xFFFF1418),
                         textStyle:
                             FlutterFlowTheme.of(context).titleSmall.override(
@@ -1548,8 +1610,8 @@ class _EventDetailsPageWidgetState extends State<EventDetailsPageWidget> {
                         height: 40.0,
                         padding: const EdgeInsetsDirectional.fromSTEB(
                             24.0, 0.0, 24.0, 0.0),
-                        iconPadding:
-                            const EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 0.0, 0.0),
+                        iconPadding: const EdgeInsetsDirectional.fromSTEB(
+                            0.0, 0.0, 0.0, 0.0),
                         color: const Color(0xFF0BD83E),
                         textStyle:
                             FlutterFlowTheme.of(context).titleSmall.override(

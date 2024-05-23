@@ -92,11 +92,11 @@ GoRouter createRouter(AppStateNotifier appStateNotifier) => GoRouter(
                   ? const NavBarPage(initialPage: 'HomePage')
                   : const HomePageWidget(),
             ),
-            FFRoute(
-              name: 'EventDetailsPage',
-              path: 'eventDetailsPage',
-              builder: (context, params) => const EventDetailsPageWidget(),
-            ),
+            // FFRoute(
+            //   name: 'EventDetailsPage',
+            //   path: 'eventDetailsPage',
+            //   builder: (context, params) => const EventDetailsPageWidget(),
+            // ),
             FFRoute(
               name: 'EditCurriculum',
               path: 'editCurriculum',
