@@ -65,7 +65,8 @@ GoRouter createRouter(AppStateNotifier appStateNotifier) => GoRouter(
             FFRoute(
               name: 'PerfilProfissionalPage',
               path: 'perfilProfissionalPage',
-              builder: (context, params) => const PerfilProfissionalPageWidget(),
+              builder: (context, params) =>
+                  const PerfilProfissionalPageWidget(),
             ),
             FFRoute(
               name: 'CreateEventPage',
@@ -109,7 +110,8 @@ GoRouter createRouter(AppStateNotifier appStateNotifier) => GoRouter(
             FFRoute(
               name: 'SearchEmergencyProfissional',
               path: 'searchEmergencyProfissional',
-              builder: (context, params) => const SearchEmergencyProfissionalWidget(),
+              builder: (context, params) =>
+                  const SearchEmergencyProfissionalWidget(),
             ),
             FFRoute(
               name: 'SelectEditEvent',
@@ -118,11 +120,11 @@ GoRouter createRouter(AppStateNotifier appStateNotifier) => GoRouter(
                   ? const NavBarPage(initialPage: 'SelectEditEvent')
                   : const SelectEditEventWidget(),
             ),
-            FFRoute(
-              name: 'EditEventPage',
-              path: 'editEventPage',
-              builder: (context, params) => const EditEventPageWidget(),
-            ),
+            // FFRoute(
+            //   name: 'EditEventPage',
+            //   path: 'editEventPage',
+            //   builder: (context, params) => const EditEventPageWidget(),
+            // ),
             FFRoute(
               name: 'SelectCategoryService',
               path: 'selectCategoryService',
@@ -136,7 +138,8 @@ GoRouter createRouter(AppStateNotifier appStateNotifier) => GoRouter(
             FFRoute(
               name: 'ProfessionalEventHiring',
               path: 'professionalEventHiring',
-              builder: (context, params) => const ProfessionalEventHiringWidget(),
+              builder: (context, params) =>
+                  const ProfessionalEventHiringWidget(),
             ),
             FFRoute(
               name: 'EvendCandidacy',
@@ -146,7 +149,8 @@ GoRouter createRouter(AppStateNotifier appStateNotifier) => GoRouter(
             FFRoute(
               name: 'CategoryEventCandidacy',
               path: 'categoryEventCandidacy',
-              builder: (context, params) => const CategoryEventCandidacyWidget(),
+              builder: (context, params) =>
+                  const CategoryEventCandidacyWidget(),
             )
           ].map((r) => r.toRoute(appStateNotifier)).toList(),
         ),
@@ -314,7 +318,8 @@ class TransitionInfo {
   final Duration duration;
   final Alignment? alignment;
 
-  static TransitionInfo appDefault() => const TransitionInfo(hasTransition: false);
+  static TransitionInfo appDefault() =>
+      const TransitionInfo(hasTransition: false);
 }
 
 class RootPageContext {

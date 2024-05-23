@@ -13,10 +13,15 @@ import 'edit_event_page_model.dart';
 export 'edit_event_page_model.dart';
 import 'package:http/http.dart' as http;
 import '../constants/constants.dart';
+import '../select_edit_event/select_edit_event_widget.dart';
 import 'dart:convert';
 
 class EditEventPageWidget extends StatefulWidget {
-  const EditEventPageWidget({super.key});
+  // const EditEventPageWidget({super.key});
+
+  EventoModel data;
+
+  EditEventPageWidget({Key? key, required this.data}) : super(key: key);
 
   @override
   State<EditEventPageWidget> createState() => _EditEventPageWidgetState();
@@ -48,37 +53,48 @@ class _EditEventPageWidgetState extends State<EditEventPageWidget> {
     super.initState();
     _model = createModel(context, () => EditEventPageModel());
 
-    _model.textController1 ??= TextEditingController();
+    _model.textController1 ??=
+        TextEditingController(text: '${widget.data.evento.tipoEvento}');
     _model.textFieldFocusNode1 ??= FocusNode();
 
-    _model.textController2 ??= TextEditingController();
+    _model.textController2 ??=
+        TextEditingController(text: '${widget.data.evento.nomeEvento}');
     _model.textFieldFocusNode2 ??= FocusNode();
 
-    _model.textController3 ??= TextEditingController();
+    _model.textController3 ??=
+        TextEditingController(text: '${widget.data.evento.data}');
     _model.textFieldFocusNode3 ??= FocusNode();
 
-    _model.textController4 ??= TextEditingController();
+    _model.textController4 ??=
+        TextEditingController(text: '${widget.data.evento.quantidadePessoas}');
     _model.textFieldFocusNode4 ??= FocusNode();
 
-    _model.textController5 ??= TextEditingController();
+    _model.textController5 ??= TextEditingController(
+        text: '${widget.data.evento.quantidadeFuncionarios}');
     _model.textFieldFocusNode5 ??= FocusNode();
 
-    _model.textController6 ??= TextEditingController();
+    _model.textController6 ??=
+        TextEditingController(text: '${widget.data.evento.statusEvento}');
     _model.textFieldFocusNode6 ??= FocusNode();
 
-    _model.textController7 ??= TextEditingController();
+    _model.textController7 ??=
+        TextEditingController(text: '${widget.data.evento.descricaoEvento}');
     _model.textFieldFocusNode7 ??= FocusNode();
 
-    _model.textController8 ??= TextEditingController();
+    _model.textController8 ??=
+        TextEditingController(text: '${widget.data.localidadeEvento.endereco}');
     _model.textFieldFocusNode8 ??= FocusNode();
 
-    _model.textController9 ??= TextEditingController();
+    _model.textController9 ??=
+        TextEditingController(text: '${widget.data.localidadeEvento.bairro}');
     _model.textFieldFocusNode9 ??= FocusNode();
 
-    _model.textController10 ??= TextEditingController();
+    _model.textController10 ??=
+        TextEditingController(text: '${widget.data.localidadeEvento.cidade}');
     _model.textFieldFocusNode10 ??= FocusNode();
 
-    _model.textController11 ??= TextEditingController();
+    _model.textController11 ??=
+        TextEditingController(text: '${widget.data.localidadeEvento.estado}');
     _model.textFieldFocusNode11 ??= FocusNode();
 
     _model.textController12 ??= TextEditingController();
@@ -1393,6 +1409,17 @@ class _EditEventPageWidgetState extends State<EditEventPageWidget> {
                   ),
                 ),
               ),
+              // Padding(
+              //   padding:
+              //       const EdgeInsetsDirectional.fromSTEB(8.0, 16.0, 8.0, 0.0),
+              //   child: Text(
+              //     '${widget.data.evento.id}',
+              //     style: FlutterFlowTheme.of(context).titleLarge.override(
+              //           fontFamily: 'Outfit',
+              //           letterSpacing: 0.0,
+              //         ),
+              //   ),
+              // ),
               Padding(
                 padding:
                     const EdgeInsetsDirectional.fromSTEB(8.0, 16.0, 8.0, 0.0),
@@ -1514,7 +1541,7 @@ class _EditEventPageWidgetState extends State<EditEventPageWidget> {
                   autofocus: false,
                   obscureText: false,
                   decoration: InputDecoration(
-                    labelText: 'Quantidade de Convidados',
+                    labelText: 'dwadwadwadwafwad',
                     labelStyle:
                         FlutterFlowTheme.of(context).labelMedium.override(
                               fontFamily: 'Outfit',
