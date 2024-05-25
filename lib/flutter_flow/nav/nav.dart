@@ -62,12 +62,12 @@ GoRouter createRouter(AppStateNotifier appStateNotifier) => GoRouter(
               path: 'profissionalsPage',
               builder: (context, params) => const ProfissionalsPageWidget(),
             ),
-            FFRoute(
-              name: 'PerfilProfissionalPage',
-              path: 'perfilProfissionalPage',
-              builder: (context, params) =>
-                  const PerfilProfissionalPageWidget(),
-            ),
+            // FFRoute(
+            //   name: 'PerfilProfissionalPage',
+            //   path: 'perfilProfissionalPage',
+            //   builder: (context, params) =>
+            //       const PerfilProfissionalPageWidget(),
+            // ),
             FFRoute(
               name: 'CreateEventPage',
               path: 'createEventPage',

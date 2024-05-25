@@ -6,10 +6,15 @@ import '/flutter_flow/flutter_flow_widgets.dart';
 import 'package:flutter/material.dart';
 import 'perfil_profissional_page_model.dart';
 export 'perfil_profissional_page_model.dart';
+import '../profissionals_page/profissionals_page_widget.dart';
 
 class PerfilProfissionalPageWidget extends StatefulWidget {
-  const PerfilProfissionalPageWidget({super.key});
+  // const PerfilProfissionalPageWidget({super.key});
 
+  PrestadorModel data;
+
+  PerfilProfissionalPageWidget({Key? key, required this.data})
+      : super(key: key);
   @override
   State<PerfilProfissionalPageWidget> createState() =>
       _PerfilProfissionalPageWidgetState();
@@ -53,7 +58,8 @@ class _PerfilProfissionalPageWidgetState
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 Padding(
-                  padding: const EdgeInsetsDirectional.fromSTEB(0.0, 50.0, 0.0, 0.0),
+                  padding:
+                      const EdgeInsetsDirectional.fromSTEB(0.0, 50.0, 0.0, 0.0),
                   child: Row(
                     mainAxisSize: MainAxisSize.max,
                     children: [
@@ -107,8 +113,8 @@ class _PerfilProfissionalPageWidgetState
                 Align(
                   alignment: const AlignmentDirectional(0.0, 0.0),
                   child: Padding(
-                    padding:
-                        const EdgeInsetsDirectional.fromSTEB(0.0, 15.0, 0.0, 0.0),
+                    padding: const EdgeInsetsDirectional.fromSTEB(
+                        0.0, 15.0, 0.0, 0.0),
                     child: Text(
                       'Nome do Prestador',
                       style: FlutterFlowTheme.of(context).titleMedium.override(
@@ -121,7 +127,8 @@ class _PerfilProfissionalPageWidgetState
                   ),
                 ),
                 Padding(
-                  padding: const EdgeInsetsDirectional.fromSTEB(0.0, 10.0, 0.0, 0.0),
+                  padding:
+                      const EdgeInsetsDirectional.fromSTEB(0.0, 10.0, 0.0, 0.0),
                   child: InkWell(
                     splashColor: Colors.transparent,
                     focusColor: Colors.transparent,
@@ -194,7 +201,8 @@ class _PerfilProfissionalPageWidgetState
                   ),
                 ),
                 Padding(
-                  padding: const EdgeInsetsDirectional.fromSTEB(0.0, 10.0, 0.0, 0.0),
+                  padding:
+                      const EdgeInsetsDirectional.fromSTEB(0.0, 10.0, 0.0, 0.0),
                   child: InkWell(
                     splashColor: Colors.transparent,
                     focusColor: Colors.transparent,
@@ -258,7 +266,8 @@ class _PerfilProfissionalPageWidgetState
                   ),
                 ),
                 Padding(
-                  padding: const EdgeInsetsDirectional.fromSTEB(0.0, 10.0, 0.0, 0.0),
+                  padding:
+                      const EdgeInsetsDirectional.fromSTEB(0.0, 10.0, 0.0, 0.0),
                   child: InkWell(
                     splashColor: Colors.transparent,
                     focusColor: Colors.transparent,
@@ -331,7 +340,8 @@ class _PerfilProfissionalPageWidgetState
                   ),
                 ),
                 Padding(
-                  padding: const EdgeInsetsDirectional.fromSTEB(0.0, 10.0, 0.0, 0.0),
+                  padding:
+                      const EdgeInsetsDirectional.fromSTEB(0.0, 10.0, 0.0, 0.0),
                   child: InkWell(
                     splashColor: Colors.transparent,
                     focusColor: Colors.transparent,
@@ -404,7 +414,8 @@ class _PerfilProfissionalPageWidgetState
                   ),
                 ),
                 Padding(
-                  padding: const EdgeInsetsDirectional.fromSTEB(0.0, 10.0, 0.0, 0.0),
+                  padding:
+                      const EdgeInsetsDirectional.fromSTEB(0.0, 10.0, 0.0, 0.0),
                   child: InkWell(
                     splashColor: Colors.transparent,
                     focusColor: Colors.transparent,
@@ -477,7 +488,8 @@ class _PerfilProfissionalPageWidgetState
                   ),
                 ),
                 Padding(
-                  padding: const EdgeInsetsDirectional.fromSTEB(0.0, 10.0, 0.0, 0.0),
+                  padding:
+                      const EdgeInsetsDirectional.fromSTEB(0.0, 10.0, 0.0, 0.0),
                   child: InkWell(
                     splashColor: Colors.transparent,
                     focusColor: Colors.transparent,
@@ -542,7 +554,8 @@ class _PerfilProfissionalPageWidgetState
                   ),
                 ),
                 Padding(
-                  padding: const EdgeInsetsDirectional.fromSTEB(0.0, 10.0, 0.0, 0.0),
+                  padding:
+                      const EdgeInsetsDirectional.fromSTEB(0.0, 10.0, 0.0, 0.0),
                   child: InkWell(
                     splashColor: Colors.transparent,
                     focusColor: Colors.transparent,
@@ -618,8 +631,8 @@ class _PerfilProfissionalPageWidgetState
                   child: Align(
                     alignment: const AlignmentDirectional(0.0, 1.0),
                     child: Padding(
-                      padding:
-                          const EdgeInsetsDirectional.fromSTEB(0.0, 10.0, 0.0, 0.0),
+                      padding: const EdgeInsetsDirectional.fromSTEB(
+                          0.0, 10.0, 0.0, 0.0),
                       child: InkWell(
                         splashColor: Colors.transparent,
                         focusColor: Colors.transparent,
@@ -666,10 +679,12 @@ class _PerfilProfissionalPageWidgetState
                             children: [
                               Flexible(
                                 child: Align(
-                                  alignment: const AlignmentDirectional(0.0, 0.0),
+                                  alignment:
+                                      const AlignmentDirectional(0.0, 0.0),
                                   child: Padding(
-                                    padding: const EdgeInsetsDirectional.fromSTEB(
-                                        25.0, 0.0, 0.0, 0.0),
+                                    padding:
+                                        const EdgeInsetsDirectional.fromSTEB(
+                                            25.0, 0.0, 0.0, 0.0),
                                     child: Text(
                                       'Login',
                                       style: FlutterFlowTheme.of(context)
@@ -698,8 +713,8 @@ class _PerfilProfissionalPageWidgetState
                   child: Align(
                     alignment: const AlignmentDirectional(0.0, 1.0),
                     child: Padding(
-                      padding:
-                          const EdgeInsetsDirectional.fromSTEB(0.0, 10.0, 0.0, 30.0),
+                      padding: const EdgeInsetsDirectional.fromSTEB(
+                          0.0, 10.0, 0.0, 30.0),
                       child: InkWell(
                         splashColor: Colors.transparent,
                         focusColor: Colors.transparent,
@@ -746,10 +761,12 @@ class _PerfilProfissionalPageWidgetState
                             children: [
                               Flexible(
                                 child: Align(
-                                  alignment: const AlignmentDirectional(0.0, 0.0),
+                                  alignment:
+                                      const AlignmentDirectional(0.0, 0.0),
                                   child: Padding(
-                                    padding: const EdgeInsetsDirectional.fromSTEB(
-                                        25.0, 0.0, 0.0, 0.0),
+                                    padding:
+                                        const EdgeInsetsDirectional.fromSTEB(
+                                            25.0, 0.0, 0.0, 0.0),
                                     child: Text(
                                       'Logout',
                                       style: FlutterFlowTheme.of(context)
@@ -815,7 +832,8 @@ class _PerfilProfissionalPageWidgetState
             scrollDirection: Axis.vertical,
             children: [
               Padding(
-                padding: const EdgeInsetsDirectional.fromSTEB(0.0, 16.0, 320.0, 16.0),
+                padding: const EdgeInsetsDirectional.fromSTEB(
+                    0.0, 16.0, 320.0, 16.0),
                 child: InkWell(
                   splashColor: Colors.transparent,
                   focusColor: Colors.transparent,
@@ -832,7 +850,8 @@ class _PerfilProfissionalPageWidgetState
                 ),
               ),
               Padding(
-                padding: const EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 0.0, 20.0),
+                padding:
+                    const EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 0.0, 20.0),
                 child: InkWell(
                   splashColor: Colors.transparent,
                   focusColor: Colors.transparent,
@@ -874,7 +893,8 @@ class _PerfilProfissionalPageWidgetState
                 ),
               ),
               Padding(
-                padding: const EdgeInsetsDirectional.fromSTEB(8.0, 0.0, 8.0, 8.0),
+                padding:
+                    const EdgeInsetsDirectional.fromSTEB(8.0, 0.0, 8.0, 8.0),
                 child: Container(
                   width: double.infinity,
                   decoration: BoxDecoration(
@@ -887,7 +907,7 @@ class _PerfilProfissionalPageWidgetState
                       mainAxisSize: MainAxisSize.max,
                       children: [
                         Text(
-                          'Cantor e DJ',
+                          '${widget.data.profession}',
                           style:
                               FlutterFlowTheme.of(context).bodyMedium.override(
                                     fontFamily: 'Outfit',
@@ -898,7 +918,7 @@ class _PerfilProfissionalPageWidgetState
                           padding: const EdgeInsetsDirectional.fromSTEB(
                               0.0, 8.0, 0.0, 8.0),
                           child: Text(
-                            'José Carlos Silva Uchoa',
+                            '${widget.data.prestador.name}',
                             style: FlutterFlowTheme.of(context)
                                 .headlineMedium
                                 .override(
@@ -912,7 +932,7 @@ class _PerfilProfissionalPageWidgetState
                           padding: const EdgeInsetsDirectional.fromSTEB(
                               0.0, 0.0, 33.0, 4.0),
                           child: Text(
-                            'Email: loremipsum@email.com',
+                            'Email: ${widget.data.prestador.email}',
                             style: FlutterFlowTheme.of(context)
                                 .bodyMedium
                                 .override(
@@ -925,7 +945,7 @@ class _PerfilProfissionalPageWidgetState
                           padding: const EdgeInsetsDirectional.fromSTEB(
                               0.0, 0.0, 75.0, 4.0),
                           child: Text(
-                            'Valor da hora R\$ 50,00',
+                            'Valor da hora R\$ ${widget.data.profession}',
                             style: FlutterFlowTheme.of(context)
                                 .bodyMedium
                                 .override(
