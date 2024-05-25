@@ -54,7 +54,7 @@ dependencies:
   image_picker_for_web: ^3.0.2
   image_picker_ios: ^0.8.11
   image_picker_platform_interface: ^2.10.0
-  intl: 0.19.0
+  intl: 0.18.1
   json_path: ^0.7.1
   mapbox_search: 4.2.2
   mime_type: 1.0.0

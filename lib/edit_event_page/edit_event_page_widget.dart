@@ -44,6 +44,7 @@ class Profession {
 
 class _EditEventPageWidgetState extends State<EditEventPageWidget> {
   late EditEventPageModel _model;
+  bool _isEditable = false;
   late String _message;
 
   final scaffoldKey = GlobalKey<ScaffoldState>();
@@ -1089,9 +1090,11 @@ class _EditEventPageWidgetState extends State<EditEventPageWidget> {
                 children: [
                   Expanded(
                     child: SwitchListTile.adaptive(
-                      value: _model.switchListTileValue ??= false,
-                      onChanged: (newValue) async {
-                        setState(() => _model.switchListTileValue = newValue);
+                      value: _isEditable,
+                      onChanged: (newValue) {
+                        setState(() {
+                          _isEditable = newValue;
+                        });
                       },
                       title: Text(
                         'Editar informações',
@@ -1270,6 +1273,7 @@ class _EditEventPageWidgetState extends State<EditEventPageWidget> {
                   controller: _model.textController2,
                   focusNode: _model.textFieldFocusNode2,
                   autofocus: true,
+                  enabled: _isEditable,
                   obscureText: false,
                   decoration: InputDecoration(
                     labelText: 'Nome',
@@ -1346,9 +1350,12 @@ class _EditEventPageWidgetState extends State<EditEventPageWidget> {
                     }
                   },
                   child: AbsorbPointer(
+                    absorbing:
+                        !_isEditable, // Desativa o GestureDetector se !_isEditable
                     child: TextFormField(
                       controller: _model.textController3,
                       focusNode: _model.textFieldFocusNode3,
+                      enabled: _isEditable,
                       autofocus: false,
                       obscureText: false,
                       decoration: InputDecoration(
@@ -1425,6 +1432,7 @@ class _EditEventPageWidgetState extends State<EditEventPageWidget> {
                 child: TextFormField(
                   controller: _model.textController1,
                   focusNode: _model.textFieldFocusNode1,
+                  enabled: _isEditable,
                   autofocus: false,
                   obscureText: false,
                   decoration: InputDecoration(
@@ -1537,6 +1545,7 @@ class _EditEventPageWidgetState extends State<EditEventPageWidget> {
                 child: TextFormField(
                   controller: _model.textController4,
                   focusNode: _model.textFieldFocusNode4,
+                  enabled: _isEditable,
                   autofocus: false,
                   obscureText: false,
                   decoration: InputDecoration(
@@ -1601,6 +1610,7 @@ class _EditEventPageWidgetState extends State<EditEventPageWidget> {
                 child: TextFormField(
                   controller: _model.textController6,
                   focusNode: _model.textFieldFocusNode6,
+                  enabled: _isEditable,
                   autofocus: false,
                   obscureText: false,
                   decoration: InputDecoration(
@@ -1664,6 +1674,7 @@ class _EditEventPageWidgetState extends State<EditEventPageWidget> {
                 child: TextFormField(
                   // controller: _model.textController5,
                   // focusNode: _model.textFieldFocusNode5,
+                  enabled: _isEditable,
                   autofocus: true,
                   obscureText: false,
                   decoration: InputDecoration(
@@ -1727,6 +1738,7 @@ class _EditEventPageWidgetState extends State<EditEventPageWidget> {
                 child: TextFormField(
                   controller: _model.textController10,
                   focusNode: _model.textFieldFocusNode10,
+                  enabled: _isEditable,
                   autofocus: true,
                   obscureText: false,
                   decoration: InputDecoration(
@@ -1790,6 +1802,7 @@ class _EditEventPageWidgetState extends State<EditEventPageWidget> {
                 child: TextFormField(
                   controller: _model.textController11,
                   focusNode: _model.textFieldFocusNode11,
+                  enabled: _isEditable,
                   autofocus: true,
                   obscureText: false,
                   decoration: InputDecoration(
@@ -1853,6 +1866,7 @@ class _EditEventPageWidgetState extends State<EditEventPageWidget> {
                 child: TextFormField(
                   controller: _model.textController9,
                   focusNode: _model.textFieldFocusNode9,
+                  enabled: _isEditable,
                   autofocus: true,
                   obscureText: false,
                   decoration: InputDecoration(
@@ -1916,6 +1930,7 @@ class _EditEventPageWidgetState extends State<EditEventPageWidget> {
                 child: TextFormField(
                   controller: _model.textController8,
                   focusNode: _model.textFieldFocusNode8,
+                  enabled: _isEditable,
                   autofocus: true,
                   obscureText: false,
                   decoration: InputDecoration(
@@ -2042,6 +2057,7 @@ class _EditEventPageWidgetState extends State<EditEventPageWidget> {
                 child: TextFormField(
                   // controller: _model.textController11,
                   // focusNode: _model.textFieldFocusNode11,
+                  enabled: _isEditable,
                   autofocus: true,
                   obscureText: false,
                   decoration: InputDecoration(
@@ -2105,6 +2121,7 @@ class _EditEventPageWidgetState extends State<EditEventPageWidget> {
                 child: TextFormField(
                   controller: _model.textController7,
                   focusNode: _model.textFieldFocusNode7,
+                  enabled: _isEditable,
                   autofocus: true,
                   obscureText: false,
                   decoration: InputDecoration(
@@ -2169,6 +2186,7 @@ class _EditEventPageWidgetState extends State<EditEventPageWidget> {
                 child: TextFormField(
                   controller: _model.textController5,
                   focusNode: _model.textFieldFocusNode5,
+                  enabled: _isEditable,
                   autofocus: false,
                   obscureText: false,
                   decoration: InputDecoration(

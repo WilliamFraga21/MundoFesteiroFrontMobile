@@ -38,51 +38,51 @@ class _LoginPageWidgetState extends State<LoginPageWidget> {
 
     super.dispose();
   }
-Future<void> login() async {
-  var url = Uri.parse(apiUrl + '/auth/login');
-  var response = await http.post(url,
-      body: json.encode({
-        'email': _model.textController1.text,
-        'password': _model.textController2.text,
-      }));
 
-  if (response.statusCode == 200) {
-    // Autenticação bem-sucedida, redirecione para a página inicial
-    final responseData = jsonDecode(response.body);
-    token = responseData['token'];
-    setState(() {
-      GoRouter.of(context).go('/homePage');
-    });
-  } else {
-    // Exibir mensagem de erro
-    final responseData = jsonDecode(response.body);
-    final List<dynamic> errorMessages = responseData['error']['message'];
+  Future<void> login() async {
+    var url = Uri.parse(apiUrl + '/auth/login');
+    var response = await http.post(url,
+        body: json.encode({
+          'email': _model.textController1.text,
+          'password': _model.textController2.text,
+        }));
 
-    // Concatenar as mensagens de erro em uma única string
-    final errorMessage = errorMessages.join('\n');
+    if (response.statusCode == 200) {
+      // Autenticação bem-sucedida, redirecione para a página inicial
+      final responseData = jsonDecode(response.body);
+      token = responseData['token'];
+      setState(() {
+        GoRouter.of(context).go('/homePage');
+      });
+    } else {
+      // Exibir mensagem de erro
+      final responseData = jsonDecode(response.body);
+      final List<dynamic> errorMessages = responseData['error']['message'];
 
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          title: Text('Erro'),
-          content: Text(errorMessage.isNotEmpty
-              ? errorMessage
-              : 'Erro ao fazer login. Status code: ${response.statusCode}'),
-          actions: [
-            TextButton(
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-              child: Text('OK'),
-            ),
-          ],
-        );
-      },
-    );
+      // Concatenar as mensagens de erro em uma única string
+      final errorMessage = errorMessages.join('\n');
+
+      showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: Text('Erro'),
+            content: Text(errorMessage.isNotEmpty
+                ? errorMessage
+                : 'Erro ao fazer login. Status code: ${response.statusCode}'),
+            actions: [
+              TextButton(
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+                child: Text('OK'),
+              ),
+            ],
+          );
+        },
+      );
+    }
   }
-}
-
 
   @override
   Widget build(BuildContext context) {

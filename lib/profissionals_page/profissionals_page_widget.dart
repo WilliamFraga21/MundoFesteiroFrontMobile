@@ -52,7 +52,8 @@ class _ProfissionalsPageWidgetState extends State<ProfissionalsPageWidget> {
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 Padding(
-                  padding: const EdgeInsetsDirectional.fromSTEB(0.0, 50.0, 0.0, 0.0),
+                  padding:
+                      const EdgeInsetsDirectional.fromSTEB(0.0, 50.0, 0.0, 0.0),
                   child: Row(
                     mainAxisSize: MainAxisSize.max,
                     children: [
@@ -106,8 +107,8 @@ class _ProfissionalsPageWidgetState extends State<ProfissionalsPageWidget> {
                 Align(
                   alignment: const AlignmentDirectional(0.0, 0.0),
                   child: Padding(
-                    padding:
-                        const EdgeInsetsDirectional.fromSTEB(0.0, 15.0, 0.0, 0.0),
+                    padding: const EdgeInsetsDirectional.fromSTEB(
+                        0.0, 15.0, 0.0, 0.0),
                     child: Text(
                       'Nome do Prestador',
                       style: FlutterFlowTheme.of(context).titleMedium.override(
@@ -120,7 +121,8 @@ class _ProfissionalsPageWidgetState extends State<ProfissionalsPageWidget> {
                   ),
                 ),
                 Padding(
-                  padding: const EdgeInsetsDirectional.fromSTEB(0.0, 10.0, 0.0, 0.0),
+                  padding:
+                      const EdgeInsetsDirectional.fromSTEB(0.0, 10.0, 0.0, 0.0),
                   child: InkWell(
                     splashColor: Colors.transparent,
                     focusColor: Colors.transparent,
@@ -193,7 +195,8 @@ class _ProfissionalsPageWidgetState extends State<ProfissionalsPageWidget> {
                   ),
                 ),
                 Padding(
-                  padding: const EdgeInsetsDirectional.fromSTEB(0.0, 10.0, 0.0, 0.0),
+                  padding:
+                      const EdgeInsetsDirectional.fromSTEB(0.0, 10.0, 0.0, 0.0),
                   child: InkWell(
                     splashColor: Colors.transparent,
                     focusColor: Colors.transparent,
@@ -257,7 +260,8 @@ class _ProfissionalsPageWidgetState extends State<ProfissionalsPageWidget> {
                   ),
                 ),
                 Padding(
-                  padding: const EdgeInsetsDirectional.fromSTEB(0.0, 10.0, 0.0, 0.0),
+                  padding:
+                      const EdgeInsetsDirectional.fromSTEB(0.0, 10.0, 0.0, 0.0),
                   child: InkWell(
                     splashColor: Colors.transparent,
                     focusColor: Colors.transparent,
@@ -330,7 +334,8 @@ class _ProfissionalsPageWidgetState extends State<ProfissionalsPageWidget> {
                   ),
                 ),
                 Padding(
-                  padding: const EdgeInsetsDirectional.fromSTEB(0.0, 10.0, 0.0, 0.0),
+                  padding:
+                      const EdgeInsetsDirectional.fromSTEB(0.0, 10.0, 0.0, 0.0),
                   child: InkWell(
                     splashColor: Colors.transparent,
                     focusColor: Colors.transparent,
@@ -403,7 +408,8 @@ class _ProfissionalsPageWidgetState extends State<ProfissionalsPageWidget> {
                   ),
                 ),
                 Padding(
-                  padding: const EdgeInsetsDirectional.fromSTEB(0.0, 10.0, 0.0, 0.0),
+                  padding:
+                      const EdgeInsetsDirectional.fromSTEB(0.0, 10.0, 0.0, 0.0),
                   child: InkWell(
                     splashColor: Colors.transparent,
                     focusColor: Colors.transparent,
@@ -476,7 +482,8 @@ class _ProfissionalsPageWidgetState extends State<ProfissionalsPageWidget> {
                   ),
                 ),
                 Padding(
-                  padding: const EdgeInsetsDirectional.fromSTEB(0.0, 10.0, 0.0, 0.0),
+                  padding:
+                      const EdgeInsetsDirectional.fromSTEB(0.0, 10.0, 0.0, 0.0),
                   child: InkWell(
                     splashColor: Colors.transparent,
                     focusColor: Colors.transparent,
@@ -541,7 +548,8 @@ class _ProfissionalsPageWidgetState extends State<ProfissionalsPageWidget> {
                   ),
                 ),
                 Padding(
-                  padding: const EdgeInsetsDirectional.fromSTEB(0.0, 10.0, 0.0, 0.0),
+                  padding:
+                      const EdgeInsetsDirectional.fromSTEB(0.0, 10.0, 0.0, 0.0),
                   child: InkWell(
                     splashColor: Colors.transparent,
                     focusColor: Colors.transparent,
@@ -617,8 +625,8 @@ class _ProfissionalsPageWidgetState extends State<ProfissionalsPageWidget> {
                   child: Align(
                     alignment: const AlignmentDirectional(0.0, 1.0),
                     child: Padding(
-                      padding:
-                          const EdgeInsetsDirectional.fromSTEB(0.0, 10.0, 0.0, 0.0),
+                      padding: const EdgeInsetsDirectional.fromSTEB(
+                          0.0, 10.0, 0.0, 0.0),
                       child: InkWell(
                         splashColor: Colors.transparent,
                         focusColor: Colors.transparent,
@@ -665,10 +673,12 @@ class _ProfissionalsPageWidgetState extends State<ProfissionalsPageWidget> {
                             children: [
                               Flexible(
                                 child: Align(
-                                  alignment: const AlignmentDirectional(0.0, 0.0),
+                                  alignment:
+                                      const AlignmentDirectional(0.0, 0.0),
                                   child: Padding(
-                                    padding: const EdgeInsetsDirectional.fromSTEB(
-                                        25.0, 0.0, 0.0, 0.0),
+                                    padding:
+                                        const EdgeInsetsDirectional.fromSTEB(
+                                            25.0, 0.0, 0.0, 0.0),
                                     child: Text(
                                       'Login',
                                       style: FlutterFlowTheme.of(context)
@@ -697,8 +707,8 @@ class _ProfissionalsPageWidgetState extends State<ProfissionalsPageWidget> {
                   child: Align(
                     alignment: const AlignmentDirectional(0.0, 1.0),
                     child: Padding(
-                      padding:
-                          const EdgeInsetsDirectional.fromSTEB(0.0, 10.0, 0.0, 30.0),
+                      padding: const EdgeInsetsDirectional.fromSTEB(
+                          0.0, 10.0, 0.0, 30.0),
                       child: InkWell(
                         splashColor: Colors.transparent,
                         focusColor: Colors.transparent,
@@ -745,10 +755,12 @@ class _ProfissionalsPageWidgetState extends State<ProfissionalsPageWidget> {
                             children: [
                               Flexible(
                                 child: Align(
-                                  alignment: const AlignmentDirectional(0.0, 0.0),
+                                  alignment:
+                                      const AlignmentDirectional(0.0, 0.0),
                                   child: Padding(
-                                    padding: const EdgeInsetsDirectional.fromSTEB(
-                                        25.0, 0.0, 0.0, 0.0),
+                                    padding:
+                                        const EdgeInsetsDirectional.fromSTEB(
+                                            25.0, 0.0, 0.0, 0.0),
                                     child: Text(
                                       'Logout',
                                       style: FlutterFlowTheme.of(context)
@@ -816,8 +828,8 @@ class _ProfissionalsPageWidgetState extends State<ProfissionalsPageWidget> {
               scrollDirection: Axis.vertical,
               children: [
                 Padding(
-                  padding:
-                      const EdgeInsetsDirectional.fromSTEB(0.0, 16.0, 320.0, 16.0),
+                  padding: const EdgeInsetsDirectional.fromSTEB(
+                      0.0, 16.0, 320.0, 16.0),
                   child: InkWell(
                     splashColor: Colors.transparent,
                     focusColor: Colors.transparent,
@@ -834,7 +846,8 @@ class _ProfissionalsPageWidgetState extends State<ProfissionalsPageWidget> {
                   ),
                 ),
                 Padding(
-                  padding: const EdgeInsetsDirectional.fromSTEB(25.0, 0.0, 0.0, 10.0),
+                  padding: const EdgeInsetsDirectional.fromSTEB(
+                      25.0, 0.0, 0.0, 10.0),
                   child: Text(
                     'Profissionais',
                     textAlign: TextAlign.start,
@@ -848,7 +861,8 @@ class _ProfissionalsPageWidgetState extends State<ProfissionalsPageWidget> {
                   ),
                 ),
                 Padding(
-                  padding: const EdgeInsetsDirectional.fromSTEB(16.0, 8.0, 16.0, 0.0),
+                  padding: const EdgeInsetsDirectional.fromSTEB(
+                      16.0, 8.0, 16.0, 0.0),
                   child: Container(
                     width: double.infinity,
                     decoration: BoxDecoration(
@@ -869,8 +883,8 @@ class _ProfissionalsPageWidgetState extends State<ProfissionalsPageWidget> {
                       ),
                     ),
                     child: Padding(
-                      padding:
-                          const EdgeInsetsDirectional.fromSTEB(8.0, 8.0, 12.0, 8.0),
+                      padding: const EdgeInsetsDirectional.fromSTEB(
+                          8.0, 8.0, 12.0, 8.0),
                       child: Row(
                         mainAxisSize: MainAxisSize.max,
                         crossAxisAlignment: CrossAxisAlignment.center,
@@ -932,10 +946,12 @@ class _ProfissionalsPageWidgetState extends State<ProfissionalsPageWidget> {
                                   ),
                                 ),
                                 Align(
-                                  alignment: const AlignmentDirectional(0.0, 0.0),
+                                  alignment:
+                                      const AlignmentDirectional(0.0, 0.0),
                                   child: Padding(
-                                    padding: const EdgeInsetsDirectional.fromSTEB(
-                                        0.0, 0.0, 0.0, 16.0),
+                                    padding:
+                                        const EdgeInsetsDirectional.fromSTEB(
+                                            0.0, 0.0, 0.0, 16.0),
                                     child: FFButtonWidget(
                                       onPressed: () async {
                                         if (Navigator.of(context).canPop()) {
@@ -944,7 +960,8 @@ class _ProfissionalsPageWidgetState extends State<ProfissionalsPageWidget> {
                                         context.pushNamed(
                                           'PerfilProfissionalPage',
                                           extra: <String, dynamic>{
-                                            kTransitionInfoKey: const TransitionInfo(
+                                            kTransitionInfoKey:
+                                                const TransitionInfo(
                                               hasTransition: true,
                                               transitionType:
                                                   PageTransitionType.fade,
@@ -958,11 +975,10 @@ class _ProfissionalsPageWidgetState extends State<ProfissionalsPageWidget> {
                                       options: FFButtonOptions(
                                         width: 237.0,
                                         height: 35.0,
-                                        padding: const EdgeInsetsDirectional.fromSTEB(
-                                            0.0, 0.0, 0.0, 0.0),
-                                        iconPadding:
-                                            const EdgeInsetsDirectional.fromSTEB(
-                                                0.0, 0.0, 0.0, 0.0),
+                                        padding: const EdgeInsetsDirectional
+                                            .fromSTEB(0.0, 0.0, 0.0, 0.0),
+                                        iconPadding: const EdgeInsetsDirectional
+                                            .fromSTEB(0.0, 0.0, 0.0, 0.0),
                                         color: const Color(0xFF05BD7B),
                                         textStyle: FlutterFlowTheme.of(context)
                                             .titleSmall
@@ -989,7 +1005,8 @@ class _ProfissionalsPageWidgetState extends State<ProfissionalsPageWidget> {
                   ),
                 ),
                 Padding(
-                  padding: const EdgeInsetsDirectional.fromSTEB(16.0, 8.0, 16.0, 0.0),
+                  padding: const EdgeInsetsDirectional.fromSTEB(
+                      16.0, 8.0, 16.0, 0.0),
                   child: Container(
                     width: double.infinity,
                     decoration: BoxDecoration(
@@ -1010,8 +1027,8 @@ class _ProfissionalsPageWidgetState extends State<ProfissionalsPageWidget> {
                       ),
                     ),
                     child: Padding(
-                      padding:
-                          const EdgeInsetsDirectional.fromSTEB(8.0, 8.0, 12.0, 8.0),
+                      padding: const EdgeInsetsDirectional.fromSTEB(
+                          8.0, 8.0, 12.0, 8.0),
                       child: Row(
                         mainAxisSize: MainAxisSize.max,
                         crossAxisAlignment: CrossAxisAlignment.center,
@@ -1073,10 +1090,12 @@ class _ProfissionalsPageWidgetState extends State<ProfissionalsPageWidget> {
                                   ),
                                 ),
                                 Align(
-                                  alignment: const AlignmentDirectional(0.0, 0.0),
+                                  alignment:
+                                      const AlignmentDirectional(0.0, 0.0),
                                   child: Padding(
-                                    padding: const EdgeInsetsDirectional.fromSTEB(
-                                        0.0, 0.0, 0.0, 16.0),
+                                    padding:
+                                        const EdgeInsetsDirectional.fromSTEB(
+                                            0.0, 0.0, 0.0, 16.0),
                                     child: FFButtonWidget(
                                       onPressed: () async {
                                         if (Navigator.of(context).canPop()) {
@@ -1085,7 +1104,8 @@ class _ProfissionalsPageWidgetState extends State<ProfissionalsPageWidget> {
                                         context.pushNamed(
                                           'PerfilProfissionalPage',
                                           extra: <String, dynamic>{
-                                            kTransitionInfoKey: const TransitionInfo(
+                                            kTransitionInfoKey:
+                                                const TransitionInfo(
                                               hasTransition: true,
                                               transitionType:
                                                   PageTransitionType.fade,
@@ -1099,11 +1119,10 @@ class _ProfissionalsPageWidgetState extends State<ProfissionalsPageWidget> {
                                       options: FFButtonOptions(
                                         width: 237.0,
                                         height: 35.0,
-                                        padding: const EdgeInsetsDirectional.fromSTEB(
-                                            0.0, 0.0, 0.0, 0.0),
-                                        iconPadding:
-                                            const EdgeInsetsDirectional.fromSTEB(
-                                                0.0, 0.0, 0.0, 0.0),
+                                        padding: const EdgeInsetsDirectional
+                                            .fromSTEB(0.0, 0.0, 0.0, 0.0),
+                                        iconPadding: const EdgeInsetsDirectional
+                                            .fromSTEB(0.0, 0.0, 0.0, 0.0),
                                         color: const Color(0xFF05BD7B),
                                         textStyle: FlutterFlowTheme.of(context)
                                             .titleSmall
@@ -1130,7 +1149,8 @@ class _ProfissionalsPageWidgetState extends State<ProfissionalsPageWidget> {
                   ),
                 ),
                 Padding(
-                  padding: const EdgeInsetsDirectional.fromSTEB(16.0, 8.0, 16.0, 0.0),
+                  padding: const EdgeInsetsDirectional.fromSTEB(
+                      16.0, 8.0, 16.0, 0.0),
                   child: Container(
                     width: double.infinity,
                     decoration: BoxDecoration(
@@ -1151,8 +1171,8 @@ class _ProfissionalsPageWidgetState extends State<ProfissionalsPageWidget> {
                       ),
                     ),
                     child: Padding(
-                      padding:
-                          const EdgeInsetsDirectional.fromSTEB(8.0, 8.0, 12.0, 8.0),
+                      padding: const EdgeInsetsDirectional.fromSTEB(
+                          8.0, 8.0, 12.0, 8.0),
                       child: Row(
                         mainAxisSize: MainAxisSize.max,
                         crossAxisAlignment: CrossAxisAlignment.center,
@@ -1214,10 +1234,12 @@ class _ProfissionalsPageWidgetState extends State<ProfissionalsPageWidget> {
                                   ),
                                 ),
                                 Align(
-                                  alignment: const AlignmentDirectional(0.0, 0.0),
+                                  alignment:
+                                      const AlignmentDirectional(0.0, 0.0),
                                   child: Padding(
-                                    padding: const EdgeInsetsDirectional.fromSTEB(
-                                        0.0, 0.0, 0.0, 16.0),
+                                    padding:
+                                        const EdgeInsetsDirectional.fromSTEB(
+                                            0.0, 0.0, 0.0, 16.0),
                                     child: FFButtonWidget(
                                       onPressed: () async {
                                         if (Navigator.of(context).canPop()) {
@@ -1226,7 +1248,8 @@ class _ProfissionalsPageWidgetState extends State<ProfissionalsPageWidget> {
                                         context.pushNamed(
                                           'PerfilProfissionalPage',
                                           extra: <String, dynamic>{
-                                            kTransitionInfoKey: const TransitionInfo(
+                                            kTransitionInfoKey:
+                                                const TransitionInfo(
                                               hasTransition: true,
                                               transitionType:
                                                   PageTransitionType.fade,
@@ -1240,11 +1263,10 @@ class _ProfissionalsPageWidgetState extends State<ProfissionalsPageWidget> {
                                       options: FFButtonOptions(
                                         width: 237.0,
                                         height: 35.0,
-                                        padding: const EdgeInsetsDirectional.fromSTEB(
-                                            0.0, 0.0, 0.0, 0.0),
-                                        iconPadding:
-                                            const EdgeInsetsDirectional.fromSTEB(
-                                                0.0, 0.0, 0.0, 0.0),
+                                        padding: const EdgeInsetsDirectional
+                                            .fromSTEB(0.0, 0.0, 0.0, 0.0),
+                                        iconPadding: const EdgeInsetsDirectional
+                                            .fromSTEB(0.0, 0.0, 0.0, 0.0),
                                         color: const Color(0xFF05BD7B),
                                         textStyle: FlutterFlowTheme.of(context)
                                             .titleSmall
@@ -1271,7 +1293,8 @@ class _ProfissionalsPageWidgetState extends State<ProfissionalsPageWidget> {
                   ),
                 ),
                 Padding(
-                  padding: const EdgeInsetsDirectional.fromSTEB(16.0, 8.0, 16.0, 0.0),
+                  padding: const EdgeInsetsDirectional.fromSTEB(
+                      16.0, 8.0, 16.0, 0.0),
                   child: Container(
                     width: double.infinity,
                     decoration: BoxDecoration(
@@ -1292,8 +1315,8 @@ class _ProfissionalsPageWidgetState extends State<ProfissionalsPageWidget> {
                       ),
                     ),
                     child: Padding(
-                      padding:
-                          const EdgeInsetsDirectional.fromSTEB(8.0, 8.0, 12.0, 8.0),
+                      padding: const EdgeInsetsDirectional.fromSTEB(
+                          8.0, 8.0, 12.0, 8.0),
                       child: Row(
                         mainAxisSize: MainAxisSize.max,
                         crossAxisAlignment: CrossAxisAlignment.center,
@@ -1355,10 +1378,12 @@ class _ProfissionalsPageWidgetState extends State<ProfissionalsPageWidget> {
                                   ),
                                 ),
                                 Align(
-                                  alignment: const AlignmentDirectional(0.0, 0.0),
+                                  alignment:
+                                      const AlignmentDirectional(0.0, 0.0),
                                   child: Padding(
-                                    padding: const EdgeInsetsDirectional.fromSTEB(
-                                        0.0, 0.0, 0.0, 16.0),
+                                    padding:
+                                        const EdgeInsetsDirectional.fromSTEB(
+                                            0.0, 0.0, 0.0, 16.0),
                                     child: FFButtonWidget(
                                       onPressed: () async {
                                         if (Navigator.of(context).canPop()) {
@@ -1367,7 +1392,8 @@ class _ProfissionalsPageWidgetState extends State<ProfissionalsPageWidget> {
                                         context.pushNamed(
                                           'PerfilProfissionalPage',
                                           extra: <String, dynamic>{
-                                            kTransitionInfoKey: const TransitionInfo(
+                                            kTransitionInfoKey:
+                                                const TransitionInfo(
                                               hasTransition: true,
                                               transitionType:
                                                   PageTransitionType.fade,
@@ -1381,11 +1407,10 @@ class _ProfissionalsPageWidgetState extends State<ProfissionalsPageWidget> {
                                       options: FFButtonOptions(
                                         width: 237.0,
                                         height: 35.0,
-                                        padding: const EdgeInsetsDirectional.fromSTEB(
-                                            0.0, 0.0, 0.0, 0.0),
-                                        iconPadding:
-                                            const EdgeInsetsDirectional.fromSTEB(
-                                                0.0, 0.0, 0.0, 0.0),
+                                        padding: const EdgeInsetsDirectional
+                                            .fromSTEB(0.0, 0.0, 0.0, 0.0),
+                                        iconPadding: const EdgeInsetsDirectional
+                                            .fromSTEB(0.0, 0.0, 0.0, 0.0),
                                         color: const Color(0xFF05BD7B),
                                         textStyle: FlutterFlowTheme.of(context)
                                             .titleSmall
@@ -1412,7 +1437,8 @@ class _ProfissionalsPageWidgetState extends State<ProfissionalsPageWidget> {
                   ),
                 ),
                 Padding(
-                  padding: const EdgeInsetsDirectional.fromSTEB(16.0, 8.0, 16.0, 0.0),
+                  padding: const EdgeInsetsDirectional.fromSTEB(
+                      16.0, 8.0, 16.0, 0.0),
                   child: Container(
                     width: double.infinity,
                     decoration: BoxDecoration(
@@ -1433,8 +1459,8 @@ class _ProfissionalsPageWidgetState extends State<ProfissionalsPageWidget> {
                       ),
                     ),
                     child: Padding(
-                      padding:
-                          const EdgeInsetsDirectional.fromSTEB(8.0, 8.0, 12.0, 8.0),
+                      padding: const EdgeInsetsDirectional.fromSTEB(
+                          8.0, 8.0, 12.0, 8.0),
                       child: Row(
                         mainAxisSize: MainAxisSize.max,
                         crossAxisAlignment: CrossAxisAlignment.center,
@@ -1496,10 +1522,12 @@ class _ProfissionalsPageWidgetState extends State<ProfissionalsPageWidget> {
                                   ),
                                 ),
                                 Align(
-                                  alignment: const AlignmentDirectional(0.0, 0.0),
+                                  alignment:
+                                      const AlignmentDirectional(0.0, 0.0),
                                   child: Padding(
-                                    padding: const EdgeInsetsDirectional.fromSTEB(
-                                        0.0, 0.0, 0.0, 16.0),
+                                    padding:
+                                        const EdgeInsetsDirectional.fromSTEB(
+                                            0.0, 0.0, 0.0, 16.0),
                                     child: FFButtonWidget(
                                       onPressed: () async {
                                         if (Navigator.of(context).canPop()) {
@@ -1508,7 +1536,8 @@ class _ProfissionalsPageWidgetState extends State<ProfissionalsPageWidget> {
                                         context.pushNamed(
                                           'PerfilProfissionalPage',
                                           extra: <String, dynamic>{
-                                            kTransitionInfoKey: const TransitionInfo(
+                                            kTransitionInfoKey:
+                                                const TransitionInfo(
                                               hasTransition: true,
                                               transitionType:
                                                   PageTransitionType.fade,
@@ -1522,11 +1551,10 @@ class _ProfissionalsPageWidgetState extends State<ProfissionalsPageWidget> {
                                       options: FFButtonOptions(
                                         width: 237.0,
                                         height: 35.0,
-                                        padding: const EdgeInsetsDirectional.fromSTEB(
-                                            0.0, 0.0, 0.0, 0.0),
-                                        iconPadding:
-                                            const EdgeInsetsDirectional.fromSTEB(
-                                                0.0, 0.0, 0.0, 0.0),
+                                        padding: const EdgeInsetsDirectional
+                                            .fromSTEB(0.0, 0.0, 0.0, 0.0),
+                                        iconPadding: const EdgeInsetsDirectional
+                                            .fromSTEB(0.0, 0.0, 0.0, 0.0),
                                         color: const Color(0xFF05BD7B),
                                         textStyle: FlutterFlowTheme.of(context)
                                             .titleSmall

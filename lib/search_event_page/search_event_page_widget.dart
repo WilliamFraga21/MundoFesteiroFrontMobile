@@ -1033,7 +1033,6 @@ class _SearchEventPageWidgetState extends State<SearchEventPageWidget> {
                   itemBuilder: (context, index) {
                     final eventoModel = snapshot.data![index];
                     return Row(
-                      // Começo do CARD
                       mainAxisSize: MainAxisSize.max,
                       children: [
                         Expanded(
@@ -1078,33 +1077,18 @@ class _SearchEventPageWidgetState extends State<SearchEventPageWidget> {
                                       fit: BoxFit.cover,
                                     ),
                                   ),
+                                  SizedBox(
+                                      height:
+                                          5), // Adiciona um espaçamento de 5 pixels
                                   Row(
                                     mainAxisSize: MainAxisSize.max,
                                     children: [
                                       Padding(
                                         padding: const EdgeInsetsDirectional
-                                            .fromSTEB(8.0, 10.0, 0.0, 0.0),
+                                            .fromSTEB(8.0, 0.0, 0.0, 0.0),
                                         child: Text(
-                                          '',
-                                          style: FlutterFlowTheme.of(context)
-                                              .bodyMedium
-                                              .override(
-                                                fontFamily: 'Outfit',
-                                                letterSpacing: 0.0,
-                                                fontWeight: FontWeight.bold,
-                                              ),
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                  Row(
-                                    mainAxisSize: MainAxisSize.max,
-                                    children: [
-                                      Padding(
-                                        padding: const EdgeInsetsDirectional
-                                            .fromSTEB(8.0, 10.0, 0.0, 0.0),
-                                        child: Text(
-                                          eventoModel.evento.nomeEvento,
+                                          capitalizeFirstLetter(
+                                              eventoModel.evento.nomeEvento),
                                           textAlign: TextAlign.justify,
                                           style: FlutterFlowTheme.of(context)
                                               .bodyMedium
@@ -1112,38 +1096,33 @@ class _SearchEventPageWidgetState extends State<SearchEventPageWidget> {
                                                 color: Colors.black,
                                                 fontFamily: 'Outfit',
                                                 letterSpacing: 0.0,
-                                                fontWeight: FontWeight.w500,
+                                                fontWeight: FontWeight.bold,
+                                                fontSize: 24.0,
                                               ),
                                         ),
                                       ),
                                     ],
                                   ),
+
                                   Row(
                                     mainAxisSize: MainAxisSize.max,
                                     mainAxisAlignment: MainAxisAlignment.start,
                                     children: [
                                       Expanded(
-                                        child: Align(
-                                          alignment: const AlignmentDirectional(
-                                              0.0, 0.0),
-                                          child: Padding(
-                                            padding: const EdgeInsetsDirectional
-                                                .fromSTEB(13.0, 4.0, 5.0, 4.0),
-                                            child: Text(
-                                              eventoModel
-                                                  .evento.descricaoEvento,
-                                              textAlign: TextAlign.justify,
-                                              style:
-                                                  FlutterFlowTheme.of(context)
-                                                      .bodyMedium
-                                                      .override(
-                                                        color: Colors.black,
-                                                        fontFamily: 'Outfit',
-                                                        letterSpacing: 0.0,
-                                                        fontWeight:
-                                                            FontWeight.w500,
-                                                      ),
-                                            ),
+                                        child: Padding(
+                                          padding: const EdgeInsetsDirectional
+                                              .fromSTEB(13.0, 4.0, 5.0, 4.0),
+                                          child: Text(
+                                            eventoModel.evento.descricaoEvento,
+                                            textAlign: TextAlign.justify,
+                                            style: FlutterFlowTheme.of(context)
+                                                .bodyMedium
+                                                .override(
+                                                  color: Colors.black,
+                                                  fontFamily: 'Outfit',
+                                                  letterSpacing: 0.0,
+                                                  fontWeight: FontWeight.w500,
+                                                ),
                                           ),
                                         ),
                                       ),
@@ -1216,6 +1195,13 @@ class _SearchEventPageWidgetState extends State<SearchEventPageWidget> {
         ),
       ),
     );
+  }
+
+  String capitalizeFirstLetter(String text) {
+    return text.split(' ').map((word) {
+      if (word.isEmpty) return '';
+      return word[0].toUpperCase() + word.substring(1);
+    }).join(' ');
   }
 
   verEvento(EventoModel eventoModel) {
