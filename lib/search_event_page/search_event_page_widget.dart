@@ -205,7 +205,7 @@ class _SearchEventPageWidgetState extends State<SearchEventPageWidget> {
   }
 
   Future<List<EventoModel>> fetchEventos() async {
-    var url = Uri.parse(apiUrl + '/evento');
+    var url = Uri.parse(apiUrl + '/evento/13');
 
     var headers = {
       'Content-Type': 'application/json',

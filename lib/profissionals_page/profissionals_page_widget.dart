@@ -194,7 +194,7 @@ class _ProfissionalsPageWidgetState extends State<ProfissionalsPageWidget> {
   }
 
   Future<List<PrestadorModel>> fetchPrestados() async {
-    var url = Uri.parse(apiUrl + '/prestador/getALL');
+    var url = Uri.parse(apiUrl + '/prestador/getALL/22');
 
     var headers = {
       'Content-Type': 'application/json',
