@@ -11,6 +11,7 @@ import 'package:smooth_page_indicator/smooth_page_indicator.dart'
 import 'package:flutter/material.dart';
 import 'edit_curriculum_model.dart';
 export 'edit_curriculum_model.dart';
+import '../hamburger/hamburger.dart';
 
 class EditCurriculumWidget extends StatefulWidget {
   const EditCurriculumWidget({super.key});
@@ -90,750 +91,26 @@ class _EditCurriculumWidgetState extends State<EditCurriculumWidget> {
 
     super.dispose();
   }
+  // final scaffoldKey = GlobalKey<ScaffoldState>();
+
+  void _onProfileTap() {
+    // Lógica para quando o perfil for clicado
+    Navigator.pushNamed(context, 'PerfilPage', arguments: {
+      'transition': PageTransitionType.fade,
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: () => _model.unfocusNode.canRequestFocus
-          ? FocusScope.of(context).requestFocus(_model.unfocusNode)
-          : FocusScope.of(context).unfocus(),
+      onTap: () => FocusScope.of(context).unfocus(),
       child: Scaffold(
         key: scaffoldKey,
         backgroundColor: FlutterFlowTheme.of(context).primaryBackground,
-        drawer: SizedBox(
-          width: MediaQuery.sizeOf(context).width * 0.5,
-          child: Drawer(
-            elevation: 16.0,
-            child: Column(
-              mainAxisSize: MainAxisSize.max,
-              mainAxisAlignment: MainAxisAlignment.start,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                Padding(
-                  padding: const EdgeInsetsDirectional.fromSTEB(0.0, 50.0, 0.0, 0.0),
-                  child: Row(
-                    mainAxisSize: MainAxisSize.max,
-                    children: [
-                      Flexible(
-                        child: Align(
-                          alignment: const AlignmentDirectional(0.0, 0.0),
-                          child: InkWell(
-                            splashColor: Colors.transparent,
-                            focusColor: Colors.transparent,
-                            hoverColor: Colors.transparent,
-                            highlightColor: Colors.transparent,
-                            onTap: () async {
-                              await Navigator.push(
-                                context,
-                                PageTransition(
-                                  type: PageTransitionType.fade,
-                                  child: FlutterFlowExpandedImageView(
-                                    image: Image.network(
-                                      'https://picsum.photos/seed/398/600',
-                                      fit: BoxFit.contain,
-                                    ),
-                                    allowRotation: false,
-                                    tag: 'circleImageTag2',
-                                    useHeroAnimation: true,
-                                  ),
-                                ),
-                              );
-                            },
-                            child: Hero(
-                              tag: 'circleImageTag2',
-                              transitionOnUserGestures: true,
-                              child: Container(
-                                width: 120.0,
-                                height: 120.0,
-                                clipBehavior: Clip.antiAlias,
-                                decoration: const BoxDecoration(
-                                  shape: BoxShape.circle,
-                                ),
-                                child: Image.network(
-                                  'https://picsum.photos/seed/398/600',
-                                  fit: BoxFit.cover,
-                                ),
-                              ),
-                            ),
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-                Align(
-                  alignment: const AlignmentDirectional(0.0, 0.0),
-                  child: Padding(
-                    padding:
-                        const EdgeInsetsDirectional.fromSTEB(0.0, 15.0, 0.0, 0.0),
-                    child: Text(
-                      'Nome do Prestador',
-                      style: FlutterFlowTheme.of(context).titleMedium.override(
-                            fontFamily: 'Outfit',
-                            color: const Color(0xFF018959),
-                            letterSpacing: 0.0,
-                            fontWeight: FontWeight.w600,
-                          ),
-                    ),
-                  ),
-                ),
-                Padding(
-                  padding: const EdgeInsetsDirectional.fromSTEB(0.0, 10.0, 0.0, 0.0),
-                  child: InkWell(
-                    splashColor: Colors.transparent,
-                    focusColor: Colors.transparent,
-                    hoverColor: Colors.transparent,
-                    highlightColor: Colors.transparent,
-                    onTap: () async {
-                      context.pushNamed(
-                        'PerfilPage',
-                        extra: <String, dynamic>{
-                          kTransitionInfoKey: const TransitionInfo(
-                            hasTransition: true,
-                            transitionType: PageTransitionType.fade,
-                            duration: Duration(milliseconds: 0),
-                          ),
-                        },
-                      );
-                    },
-                    child: Container(
-                      width: MediaQuery.sizeOf(context).width * 0.48,
-                      height: 55.0,
-                      decoration: BoxDecoration(
-                        color: FlutterFlowTheme.of(context).secondaryBackground,
-                        boxShadow: const [
-                          BoxShadow(
-                            blurRadius: 4.0,
-                            color: Color(0x33000000),
-                            offset: Offset(
-                              0.0,
-                              2.0,
-                            ),
-                            spreadRadius: 2.0,
-                          )
-                        ],
-                        borderRadius: BorderRadius.circular(6.0),
-                        border: Border.all(
-                          color: const Color(0xFF05BD7B),
-                          width: 2.0,
-                        ),
-                      ),
-                      child: Row(
-                        mainAxisSize: MainAxisSize.max,
-                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                        children: [
-                          Flexible(
-                            child: Align(
-                              alignment: const AlignmentDirectional(0.0, 0.0),
-                              child: Padding(
-                                padding: const EdgeInsetsDirectional.fromSTEB(
-                                    20.0, 0.0, 0.0, 0.0),
-                                child: Text(
-                                  'Perfil',
-                                  style: FlutterFlowTheme.of(context)
-                                      .bodyMedium
-                                      .override(
-                                        fontFamily: 'Outfit',
-                                        letterSpacing: 0.0,
-                                      ),
-                                ),
-                              ),
-                            ),
-                          ),
-                          const Icon(
-                            Icons.arrow_forward_ios,
-                            color: Color(0xFFB9BEC1),
-                            size: 20.0,
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                ),
-                Padding(
-                  padding: const EdgeInsetsDirectional.fromSTEB(0.0, 10.0, 0.0, 0.0),
-                  child: InkWell(
-                    splashColor: Colors.transparent,
-                    focusColor: Colors.transparent,
-                    hoverColor: Colors.transparent,
-                    highlightColor: Colors.transparent,
-                    onTap: () async {
-                      context.pushNamed('EditCurriculum');
-                    },
-                    child: Container(
-                      width: MediaQuery.sizeOf(context).width * 0.48,
-                      height: 55.0,
-                      decoration: BoxDecoration(
-                        color: FlutterFlowTheme.of(context).secondaryBackground,
-                        boxShadow: const [
-                          BoxShadow(
-                            blurRadius: 4.0,
-                            color: Color(0x33000000),
-                            offset: Offset(
-                              0.0,
-                              2.0,
-                            ),
-                            spreadRadius: 2.0,
-                          )
-                        ],
-                        borderRadius: BorderRadius.circular(6.0),
-                        border: Border.all(
-                          color: const Color(0xFF05BD7B),
-                          width: 2.0,
-                        ),
-                      ),
-                      child: Row(
-                        mainAxisSize: MainAxisSize.max,
-                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                        children: [
-                          Flexible(
-                            child: Align(
-                              alignment: const AlignmentDirectional(0.0, 0.0),
-                              child: Padding(
-                                padding: const EdgeInsetsDirectional.fromSTEB(
-                                    20.0, 0.0, 0.0, 0.0),
-                                child: Text(
-                                  'Editar Perfil',
-                                  style: FlutterFlowTheme.of(context)
-                                      .bodyMedium
-                                      .override(
-                                        fontFamily: 'Outfit',
-                                        letterSpacing: 0.0,
-                                      ),
-                                ),
-                              ),
-                            ),
-                          ),
-                          const Icon(
-                            Icons.arrow_forward_ios,
-                            color: Color(0xFFB9BEC1),
-                            size: 20.0,
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                ),
-                Padding(
-                  padding: const EdgeInsetsDirectional.fromSTEB(0.0, 10.0, 0.0, 0.0),
-                  child: InkWell(
-                    splashColor: Colors.transparent,
-                    focusColor: Colors.transparent,
-                    hoverColor: Colors.transparent,
-                    highlightColor: Colors.transparent,
-                    onTap: () async {
-                      context.pushNamed(
-                        'SelectEditEvent',
-                        extra: <String, dynamic>{
-                          kTransitionInfoKey: const TransitionInfo(
-                            hasTransition: true,
-                            transitionType: PageTransitionType.fade,
-                            duration: Duration(milliseconds: 0),
-                          ),
-                        },
-                      );
-                    },
-                    child: Container(
-                      width: MediaQuery.sizeOf(context).width * 0.48,
-                      height: 55.0,
-                      decoration: BoxDecoration(
-                        color: FlutterFlowTheme.of(context).secondaryBackground,
-                        boxShadow: const [
-                          BoxShadow(
-                            blurRadius: 4.0,
-                            color: Color(0x33000000),
-                            offset: Offset(
-                              0.0,
-                              2.0,
-                            ),
-                            spreadRadius: 2.0,
-                          )
-                        ],
-                        borderRadius: BorderRadius.circular(6.0),
-                        border: Border.all(
-                          color: const Color(0xFF05BD7B),
-                          width: 2.0,
-                        ),
-                      ),
-                      child: Row(
-                        mainAxisSize: MainAxisSize.max,
-                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                        children: [
-                          Flexible(
-                            child: Align(
-                              alignment: const AlignmentDirectional(0.0, 0.0),
-                              child: Padding(
-                                padding: const EdgeInsetsDirectional.fromSTEB(
-                                    20.0, 0.0, 0.0, 0.0),
-                                child: Text(
-                                  'Gerenciar Evento',
-                                  style: FlutterFlowTheme.of(context)
-                                      .bodyMedium
-                                      .override(
-                                        fontFamily: 'Outfit',
-                                        letterSpacing: 0.0,
-                                      ),
-                                ),
-                              ),
-                            ),
-                          ),
-                          const Icon(
-                            Icons.arrow_forward_ios,
-                            color: Color(0xFFB9BEC1),
-                            size: 20.0,
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                ),
-                Padding(
-                  padding: const EdgeInsetsDirectional.fromSTEB(0.0, 10.0, 0.0, 0.0),
-                  child: InkWell(
-                    splashColor: Colors.transparent,
-                    focusColor: Colors.transparent,
-                    hoverColor: Colors.transparent,
-                    highlightColor: Colors.transparent,
-                    onTap: () async {
-                      context.pushNamed(
-                        'ServicesPage',
-                        extra: <String, dynamic>{
-                          kTransitionInfoKey: const TransitionInfo(
-                            hasTransition: true,
-                            transitionType: PageTransitionType.fade,
-                            duration: Duration(milliseconds: 0),
-                          ),
-                        },
-                      );
-                    },
-                    child: Container(
-                      width: MediaQuery.sizeOf(context).width * 0.48,
-                      height: 55.0,
-                      decoration: BoxDecoration(
-                        color: FlutterFlowTheme.of(context).secondaryBackground,
-                        boxShadow: const [
-                          BoxShadow(
-                            blurRadius: 4.0,
-                            color: Color(0x33000000),
-                            offset: Offset(
-                              0.0,
-                              2.0,
-                            ),
-                            spreadRadius: 2.0,
-                          )
-                        ],
-                        borderRadius: BorderRadius.circular(6.0),
-                        border: Border.all(
-                          color: const Color(0xFF05BD7B),
-                          width: 2.0,
-                        ),
-                      ),
-                      child: Row(
-                        mainAxisSize: MainAxisSize.max,
-                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                        children: [
-                          Flexible(
-                            child: Align(
-                              alignment: const AlignmentDirectional(0.0, 0.0),
-                              child: Padding(
-                                padding: const EdgeInsetsDirectional.fromSTEB(
-                                    20.0, 0.0, 0.0, 0.0),
-                                child: Text(
-                                  'Procurar Prestador',
-                                  style: FlutterFlowTheme.of(context)
-                                      .bodyMedium
-                                      .override(
-                                        fontFamily: 'Outfit',
-                                        letterSpacing: 0.0,
-                                      ),
-                                ),
-                              ),
-                            ),
-                          ),
-                          const Icon(
-                            Icons.arrow_forward_ios,
-                            color: Color(0xFFB9BEC1),
-                            size: 20.0,
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                ),
-                Padding(
-                  padding: const EdgeInsetsDirectional.fromSTEB(0.0, 10.0, 0.0, 0.0),
-                  child: InkWell(
-                    splashColor: Colors.transparent,
-                    focusColor: Colors.transparent,
-                    hoverColor: Colors.transparent,
-                    highlightColor: Colors.transparent,
-                    onTap: () async {
-                      context.pushNamed(
-                        'SelectCategoryService',
-                        extra: <String, dynamic>{
-                          kTransitionInfoKey: const TransitionInfo(
-                            hasTransition: true,
-                            transitionType: PageTransitionType.fade,
-                            duration: Duration(milliseconds: 0),
-                          ),
-                        },
-                      );
-                    },
-                    child: Container(
-                      width: MediaQuery.sizeOf(context).width * 0.48,
-                      height: 55.0,
-                      decoration: BoxDecoration(
-                        color: FlutterFlowTheme.of(context).secondaryBackground,
-                        boxShadow: const [
-                          BoxShadow(
-                            blurRadius: 4.0,
-                            color: Color(0x33000000),
-                            offset: Offset(
-                              0.0,
-                              2.0,
-                            ),
-                            spreadRadius: 2.0,
-                          )
-                        ],
-                        borderRadius: BorderRadius.circular(6.0),
-                        border: Border.all(
-                          color: const Color(0xFF05BD7B),
-                          width: 2.0,
-                        ),
-                      ),
-                      child: Row(
-                        mainAxisSize: MainAxisSize.max,
-                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                        children: [
-                          Flexible(
-                            child: Align(
-                              alignment: const AlignmentDirectional(0.0, 0.0),
-                              child: Padding(
-                                padding: const EdgeInsetsDirectional.fromSTEB(
-                                    20.0, 0.0, 0.0, 0.0),
-                                child: Text(
-                                  'Procurar Evento',
-                                  style: FlutterFlowTheme.of(context)
-                                      .bodyMedium
-                                      .override(
-                                        fontFamily: 'Outfit',
-                                        letterSpacing: 0.0,
-                                      ),
-                                ),
-                              ),
-                            ),
-                          ),
-                          const Icon(
-                            Icons.arrow_forward_ios,
-                            color: Color(0xFFB9BEC1),
-                            size: 20.0,
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                ),
-                Padding(
-                  padding: const EdgeInsetsDirectional.fromSTEB(0.0, 10.0, 0.0, 0.0),
-                  child: InkWell(
-                    splashColor: Colors.transparent,
-                    focusColor: Colors.transparent,
-                    hoverColor: Colors.transparent,
-                    highlightColor: Colors.transparent,
-                    onTap: () async {
-                      context.pushNamed('SearchEmergencyProfissional');
-                    },
-                    child: Container(
-                      width: MediaQuery.sizeOf(context).width * 0.48,
-                      height: 55.0,
-                      decoration: BoxDecoration(
-                        color: FlutterFlowTheme.of(context).secondaryBackground,
-                        boxShadow: const [
-                          BoxShadow(
-                            blurRadius: 4.0,
-                            color: Color(0x33000000),
-                            offset: Offset(
-                              0.0,
-                              2.0,
-                            ),
-                            spreadRadius: 2.0,
-                          )
-                        ],
-                        borderRadius: BorderRadius.circular(6.0),
-                        border: Border.all(
-                          color: const Color(0xFF05BD7B),
-                          width: 2.0,
-                        ),
-                      ),
-                      child: Row(
-                        mainAxisSize: MainAxisSize.max,
-                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                        children: [
-                          Flexible(
-                            child: Align(
-                              alignment: const AlignmentDirectional(0.0, 0.0),
-                              child: Padding(
-                                padding: const EdgeInsetsDirectional.fromSTEB(
-                                    20.0, 0.0, 0.0, 0.0),
-                                child: Text(
-                                  'Contratação de Emergência',
-                                  textAlign: TextAlign.center,
-                                  style: FlutterFlowTheme.of(context)
-                                      .bodyMedium
-                                      .override(
-                                        fontFamily: 'Outfit',
-                                        letterSpacing: 0.0,
-                                      ),
-                                ),
-                              ),
-                            ),
-                          ),
-                          const Icon(
-                            Icons.arrow_forward_ios,
-                            color: Color(0xFFB9BEC1),
-                            size: 20.0,
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                ),
-                Padding(
-                  padding: const EdgeInsetsDirectional.fromSTEB(0.0, 10.0, 0.0, 0.0),
-                  child: InkWell(
-                    splashColor: Colors.transparent,
-                    focusColor: Colors.transparent,
-                    hoverColor: Colors.transparent,
-                    highlightColor: Colors.transparent,
-                    onTap: () async {
-                      context.pushNamed(
-                        'ProvideServicesPage',
-                        extra: <String, dynamic>{
-                          kTransitionInfoKey: const TransitionInfo(
-                            hasTransition: true,
-                            transitionType: PageTransitionType.fade,
-                            duration: Duration(milliseconds: 0),
-                          ),
-                        },
-                      );
-                    },
-                    child: Container(
-                      width: MediaQuery.sizeOf(context).width * 0.48,
-                      height: 55.0,
-                      decoration: BoxDecoration(
-                        color: FlutterFlowTheme.of(context).secondaryBackground,
-                        boxShadow: const [
-                          BoxShadow(
-                            blurRadius: 4.0,
-                            color: Color(0x33000000),
-                            offset: Offset(
-                              0.0,
-                              2.0,
-                            ),
-                            spreadRadius: 2.0,
-                          )
-                        ],
-                        borderRadius: BorderRadius.circular(6.0),
-                        border: Border.all(
-                          color: const Color(0xFF05BD7B),
-                          width: 2.0,
-                        ),
-                      ),
-                      child: Row(
-                        mainAxisSize: MainAxisSize.max,
-                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                        children: [
-                          Flexible(
-                            child: Align(
-                              alignment: const AlignmentDirectional(0.0, 0.0),
-                              child: Padding(
-                                padding: const EdgeInsetsDirectional.fromSTEB(
-                                    20.0, 0.0, 0.0, 0.0),
-                                child: Text(
-                                  'Cadastrar Curriculo',
-                                  style: FlutterFlowTheme.of(context)
-                                      .bodyMedium
-                                      .override(
-                                        fontFamily: 'Outfit',
-                                        letterSpacing: 0.0,
-                                      ),
-                                ),
-                              ),
-                            ),
-                          ),
-                          const Icon(
-                            Icons.arrow_forward_ios,
-                            color: Color(0xFFB9BEC1),
-                            size: 20.0,
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                ),
-                Flexible(
-                  child: Align(
-                    alignment: const AlignmentDirectional(0.0, 1.0),
-                    child: Padding(
-                      padding:
-                          const EdgeInsetsDirectional.fromSTEB(0.0, 10.0, 0.0, 0.0),
-                      child: InkWell(
-                        splashColor: Colors.transparent,
-                        focusColor: Colors.transparent,
-                        hoverColor: Colors.transparent,
-                        highlightColor: Colors.transparent,
-                        onTap: () async {
-                          context.pushNamed(
-                            'LoginPage',
-                            extra: <String, dynamic>{
-                              kTransitionInfoKey: const TransitionInfo(
-                                hasTransition: true,
-                                transitionType: PageTransitionType.fade,
-                                duration: Duration(milliseconds: 0),
-                              ),
-                            },
-                          );
-                        },
-                        child: Container(
-                          width: MediaQuery.sizeOf(context).width * 0.48,
-                          height: 55.0,
-                          decoration: BoxDecoration(
-                            color: FlutterFlowTheme.of(context)
-                                .secondaryBackground,
-                            boxShadow: const [
-                              BoxShadow(
-                                blurRadius: 4.0,
-                                color: Color(0x33000000),
-                                offset: Offset(
-                                  0.0,
-                                  2.0,
-                                ),
-                                spreadRadius: 2.0,
-                              )
-                            ],
-                            borderRadius: BorderRadius.circular(6.0),
-                            border: Border.all(
-                              color: const Color(0xFF05BD7B),
-                              width: 2.0,
-                            ),
-                          ),
-                          child: Row(
-                            mainAxisSize: MainAxisSize.max,
-                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                            children: [
-                              Flexible(
-                                child: Align(
-                                  alignment: const AlignmentDirectional(0.0, 0.0),
-                                  child: Padding(
-                                    padding: const EdgeInsetsDirectional.fromSTEB(
-                                        25.0, 0.0, 0.0, 0.0),
-                                    child: Text(
-                                      'Login',
-                                      style: FlutterFlowTheme.of(context)
-                                          .bodyMedium
-                                          .override(
-                                            fontFamily: 'Outfit',
-                                            letterSpacing: 0.0,
-                                          ),
-                                    ),
-                                  ),
-                                ),
-                              ),
-                              const Icon(
-                                Icons.login_outlined,
-                                color: Color(0xFFB9BEC1),
-                                size: 25.0,
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
-                    ),
-                  ),
-                ),
-                Flexible(
-                  child: Align(
-                    alignment: const AlignmentDirectional(0.0, 1.0),
-                    child: Padding(
-                      padding:
-                          const EdgeInsetsDirectional.fromSTEB(0.0, 10.0, 0.0, 30.0),
-                      child: InkWell(
-                        splashColor: Colors.transparent,
-                        focusColor: Colors.transparent,
-                        hoverColor: Colors.transparent,
-                        highlightColor: Colors.transparent,
-                        onTap: () async {
-                          context.pushNamed(
-                            'HomePage',
-                            extra: <String, dynamic>{
-                              kTransitionInfoKey: const TransitionInfo(
-                                hasTransition: true,
-                                transitionType: PageTransitionType.fade,
-                                duration: Duration(milliseconds: 0),
-                              ),
-                            },
-                          );
-                        },
-                        child: Container(
-                          width: MediaQuery.sizeOf(context).width * 0.48,
-                          height: 55.0,
-                          decoration: BoxDecoration(
-                            color: FlutterFlowTheme.of(context)
-                                .secondaryBackground,
-                            boxShadow: const [
-                              BoxShadow(
-                                blurRadius: 4.0,
-                                color: Color(0x33000000),
-                                offset: Offset(
-                                  0.0,
-                                  2.0,
-                                ),
-                                spreadRadius: 2.0,
-                              )
-                            ],
-                            borderRadius: BorderRadius.circular(6.0),
-                            border: Border.all(
-                              color: const Color(0xFF05BD7B),
-                              width: 2.0,
-                            ),
-                          ),
-                          child: Row(
-                            mainAxisSize: MainAxisSize.max,
-                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                            children: [
-                              Flexible(
-                                child: Align(
-                                  alignment: const AlignmentDirectional(0.0, 0.0),
-                                  child: Padding(
-                                    padding: const EdgeInsetsDirectional.fromSTEB(
-                                        25.0, 0.0, 0.0, 0.0),
-                                    child: Text(
-                                      'Logout',
-                                      style: FlutterFlowTheme.of(context)
-                                          .bodyMedium
-                                          .override(
-                                            fontFamily: 'Outfit',
-                                            letterSpacing: 0.0,
-                                          ),
-                                    ),
-                                  ),
-                                ),
-                              ),
-                              const Icon(
-                                Icons.logout_outlined,
-                                color: Color(0xFFB9BEC1),
-                                size: 25.0,
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
-                    ),
-                  ),
-                ),
-              ],
-            ),
-          ),
+        drawer: HamburgerMenu(
+          imageUrl: 'https://picsum.photos/seed/398/600',
+          name: 'Nome do Prestador',
+          onProfileTap: _onProfileTap,
         ),
         appBar: AppBar(
           backgroundColor: Colors.black,
@@ -873,7 +150,8 @@ class _EditCurriculumWidgetState extends State<EditCurriculumWidget> {
               mainAxisSize: MainAxisSize.max,
               children: [
                 Padding(
-                  padding: const EdgeInsetsDirectional.fromSTEB(23.0, 16.0, 0.0, 0.0),
+                  padding: const EdgeInsetsDirectional.fromSTEB(
+                      23.0, 16.0, 0.0, 0.0),
                   child: Icon(
                     Icons.arrow_back,
                     color: FlutterFlowTheme.of(context).secondaryText,
@@ -1006,8 +284,8 @@ class _EditCurriculumWidgetState extends State<EditCurriculumWidget> {
               child: Stack(
                 children: [
                   Padding(
-                    padding:
-                        const EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 0.0, 40.0),
+                    padding: const EdgeInsetsDirectional.fromSTEB(
+                        0.0, 0.0, 0.0, 40.0),
                     child: PageView(
                       controller: _model.pageViewController ??=
                           PageController(initialPage: 0),
@@ -1051,8 +329,9 @@ class _EditCurriculumWidgetState extends State<EditCurriculumWidget> {
                               children: [
                                 Expanded(
                                   child: Padding(
-                                    padding: const EdgeInsetsDirectional.fromSTEB(
-                                        8.0, 16.0, 8.0, 0.0),
+                                    padding:
+                                        const EdgeInsetsDirectional.fromSTEB(
+                                            8.0, 16.0, 8.0, 0.0),
                                     child: TextFormField(
                                       controller: _model.textController1,
                                       focusNode: _model.textFieldFocusNode1,
@@ -1132,8 +411,9 @@ class _EditCurriculumWidgetState extends State<EditCurriculumWidget> {
                               children: [
                                 Expanded(
                                   child: Padding(
-                                    padding: const EdgeInsetsDirectional.fromSTEB(
-                                        8.0, 16.0, 8.0, 0.0),
+                                    padding:
+                                        const EdgeInsetsDirectional.fromSTEB(
+                                            8.0, 16.0, 8.0, 0.0),
                                     child: TextFormField(
                                       controller: _model.textController2,
                                       focusNode: _model.textFieldFocusNode2,
@@ -1213,8 +493,9 @@ class _EditCurriculumWidgetState extends State<EditCurriculumWidget> {
                               children: [
                                 Expanded(
                                   child: Padding(
-                                    padding: const EdgeInsetsDirectional.fromSTEB(
-                                        8.0, 16.0, 8.0, 0.0),
+                                    padding:
+                                        const EdgeInsetsDirectional.fromSTEB(
+                                            8.0, 16.0, 8.0, 0.0),
                                     child: TextFormField(
                                       controller: _model.textController3,
                                       focusNode: _model.textFieldFocusNode3,
@@ -1294,8 +575,9 @@ class _EditCurriculumWidgetState extends State<EditCurriculumWidget> {
                               children: [
                                 Expanded(
                                   child: Padding(
-                                    padding: const EdgeInsetsDirectional.fromSTEB(
-                                        8.0, 16.0, 8.0, 0.0),
+                                    padding:
+                                        const EdgeInsetsDirectional.fromSTEB(
+                                            8.0, 16.0, 8.0, 0.0),
                                     child: TextFormField(
                                       controller: _model.textController4,
                                       focusNode: _model.textFieldFocusNode4,
@@ -1375,8 +657,9 @@ class _EditCurriculumWidgetState extends State<EditCurriculumWidget> {
                               children: [
                                 Expanded(
                                   child: Padding(
-                                    padding: const EdgeInsetsDirectional.fromSTEB(
-                                        8.0, 16.0, 8.0, 0.0),
+                                    padding:
+                                        const EdgeInsetsDirectional.fromSTEB(
+                                            8.0, 16.0, 8.0, 0.0),
                                     child: TextFormField(
                                       controller: _model.textController5,
                                       focusNode: _model.textFieldFocusNode5,
@@ -1456,8 +739,9 @@ class _EditCurriculumWidgetState extends State<EditCurriculumWidget> {
                               children: [
                                 Expanded(
                                   child: Padding(
-                                    padding: const EdgeInsetsDirectional.fromSTEB(
-                                        8.0, 16.0, 8.0, 0.0),
+                                    padding:
+                                        const EdgeInsetsDirectional.fromSTEB(
+                                            8.0, 16.0, 8.0, 0.0),
                                     child: TextFormField(
                                       controller: _model.textController6,
                                       focusNode: _model.textFieldFocusNode6,
@@ -1537,8 +821,9 @@ class _EditCurriculumWidgetState extends State<EditCurriculumWidget> {
                               children: [
                                 Expanded(
                                   child: Padding(
-                                    padding: const EdgeInsetsDirectional.fromSTEB(
-                                        8.0, 16.0, 8.0, 0.0),
+                                    padding:
+                                        const EdgeInsetsDirectional.fromSTEB(
+                                            8.0, 16.0, 8.0, 0.0),
                                     child: TextFormField(
                                       controller: _model.textController7,
                                       focusNode: _model.textFieldFocusNode7,
@@ -1618,8 +903,9 @@ class _EditCurriculumWidgetState extends State<EditCurriculumWidget> {
                               children: [
                                 Expanded(
                                   child: Padding(
-                                    padding: const EdgeInsetsDirectional.fromSTEB(
-                                        8.0, 16.0, 8.0, 0.0),
+                                    padding:
+                                        const EdgeInsetsDirectional.fromSTEB(
+                                            8.0, 16.0, 8.0, 0.0),
                                     child: TextFormField(
                                       controller: _model.textController8,
                                       focusNode: _model.textFieldFocusNode8,
@@ -1699,8 +985,9 @@ class _EditCurriculumWidgetState extends State<EditCurriculumWidget> {
                               children: [
                                 Expanded(
                                   child: Padding(
-                                    padding: const EdgeInsetsDirectional.fromSTEB(
-                                        8.0, 16.0, 8.0, 0.0),
+                                    padding:
+                                        const EdgeInsetsDirectional.fromSTEB(
+                                            8.0, 16.0, 8.0, 0.0),
                                     child: TextFormField(
                                       controller: _model.textController9,
                                       focusNode: _model.textFieldFocusNode9,
@@ -1780,8 +1067,9 @@ class _EditCurriculumWidgetState extends State<EditCurriculumWidget> {
                               children: [
                                 Expanded(
                                   child: Padding(
-                                    padding: const EdgeInsetsDirectional.fromSTEB(
-                                        8.0, 16.0, 8.0, 0.0),
+                                    padding:
+                                        const EdgeInsetsDirectional.fromSTEB(
+                                            8.0, 16.0, 8.0, 0.0),
                                     child: TextFormField(
                                       controller: _model.textController10,
                                       focusNode: _model.textFieldFocusNode10,
@@ -1869,7 +1157,8 @@ class _EditCurriculumWidgetState extends State<EditCurriculumWidget> {
                                     onPressed: () async {
                                       await _model.pageViewController
                                           ?.previousPage(
-                                        duration: const Duration(milliseconds: 300),
+                                        duration:
+                                            const Duration(milliseconds: 300),
                                         curve: Curves.ease,
                                       );
                                     },
@@ -1877,8 +1166,9 @@ class _EditCurriculumWidgetState extends State<EditCurriculumWidget> {
                                     options: FFButtonOptions(
                                       width: 150.0,
                                       height: 40.0,
-                                      padding: const EdgeInsetsDirectional.fromSTEB(
-                                          24.0, 0.0, 24.0, 0.0),
+                                      padding:
+                                          const EdgeInsetsDirectional.fromSTEB(
+                                              24.0, 0.0, 24.0, 0.0),
                                       iconPadding:
                                           const EdgeInsetsDirectional.fromSTEB(
                                               0.0, 0.0, 0.0, 0.0),
@@ -1901,7 +1191,8 @@ class _EditCurriculumWidgetState extends State<EditCurriculumWidget> {
                                   FFButtonWidget(
                                     onPressed: () async {
                                       await _model.pageViewController?.nextPage(
-                                        duration: const Duration(milliseconds: 300),
+                                        duration:
+                                            const Duration(milliseconds: 300),
                                         curve: Curves.ease,
                                       );
                                     },
@@ -1909,8 +1200,9 @@ class _EditCurriculumWidgetState extends State<EditCurriculumWidget> {
                                     options: FFButtonOptions(
                                       width: 150.0,
                                       height: 40.0,
-                                      padding: const EdgeInsetsDirectional.fromSTEB(
-                                          24.0, 0.0, 24.0, 0.0),
+                                      padding:
+                                          const EdgeInsetsDirectional.fromSTEB(
+                                              24.0, 0.0, 24.0, 0.0),
                                       iconPadding:
                                           const EdgeInsetsDirectional.fromSTEB(
                                               0.0, 0.0, 0.0, 0.0),
@@ -1972,8 +1264,9 @@ class _EditCurriculumWidgetState extends State<EditCurriculumWidget> {
                               children: [
                                 Expanded(
                                   child: Padding(
-                                    padding: const EdgeInsetsDirectional.fromSTEB(
-                                        8.0, 16.0, 8.0, 0.0),
+                                    padding:
+                                        const EdgeInsetsDirectional.fromSTEB(
+                                            8.0, 16.0, 8.0, 0.0),
                                     child: TextFormField(
                                       controller: _model.textController11,
                                       focusNode: _model.textFieldFocusNode11,
@@ -2054,8 +1347,9 @@ class _EditCurriculumWidgetState extends State<EditCurriculumWidget> {
                               children: [
                                 Expanded(
                                   child: Padding(
-                                    padding: const EdgeInsetsDirectional.fromSTEB(
-                                        8.0, 16.0, 8.0, 0.0),
+                                    padding:
+                                        const EdgeInsetsDirectional.fromSTEB(
+                                            8.0, 16.0, 8.0, 0.0),
                                     child: TextFormField(
                                       controller: _model.textController12,
                                       focusNode: _model.textFieldFocusNode12,
@@ -2136,8 +1430,9 @@ class _EditCurriculumWidgetState extends State<EditCurriculumWidget> {
                               children: [
                                 Expanded(
                                   child: Padding(
-                                    padding: const EdgeInsetsDirectional.fromSTEB(
-                                        8.0, 16.0, 8.0, 0.0),
+                                    padding:
+                                        const EdgeInsetsDirectional.fromSTEB(
+                                            8.0, 16.0, 8.0, 0.0),
                                     child: TextFormField(
                                       controller: _model.textController13,
                                       focusNode: _model.textFieldFocusNode13,
@@ -2218,8 +1513,9 @@ class _EditCurriculumWidgetState extends State<EditCurriculumWidget> {
                               children: [
                                 Expanded(
                                   child: Padding(
-                                    padding: const EdgeInsetsDirectional.fromSTEB(
-                                        8.0, 16.0, 8.0, 0.0),
+                                    padding:
+                                        const EdgeInsetsDirectional.fromSTEB(
+                                            8.0, 16.0, 8.0, 0.0),
                                     child: TextFormField(
                                       controller: _model.textController14,
                                       focusNode: _model.textFieldFocusNode14,
@@ -2307,7 +1603,8 @@ class _EditCurriculumWidgetState extends State<EditCurriculumWidget> {
                                     onPressed: () async {
                                       await _model.pageViewController
                                           ?.previousPage(
-                                        duration: const Duration(milliseconds: 300),
+                                        duration:
+                                            const Duration(milliseconds: 300),
                                         curve: Curves.ease,
                                       );
                                     },
@@ -2315,8 +1612,9 @@ class _EditCurriculumWidgetState extends State<EditCurriculumWidget> {
                                     options: FFButtonOptions(
                                       width: 150.0,
                                       height: 40.0,
-                                      padding: const EdgeInsetsDirectional.fromSTEB(
-                                          24.0, 0.0, 24.0, 0.0),
+                                      padding:
+                                          const EdgeInsetsDirectional.fromSTEB(
+                                              24.0, 0.0, 24.0, 0.0),
                                       iconPadding:
                                           const EdgeInsetsDirectional.fromSTEB(
                                               0.0, 0.0, 0.0, 0.0),
@@ -2339,7 +1637,8 @@ class _EditCurriculumWidgetState extends State<EditCurriculumWidget> {
                                   FFButtonWidget(
                                     onPressed: () async {
                                       await _model.pageViewController?.nextPage(
-                                        duration: const Duration(milliseconds: 300),
+                                        duration:
+                                            const Duration(milliseconds: 300),
                                         curve: Curves.ease,
                                       );
                                     },
@@ -2347,8 +1646,9 @@ class _EditCurriculumWidgetState extends State<EditCurriculumWidget> {
                                     options: FFButtonOptions(
                                       width: 150.0,
                                       height: 40.0,
-                                      padding: const EdgeInsetsDirectional.fromSTEB(
-                                          24.0, 0.0, 24.0, 0.0),
+                                      padding:
+                                          const EdgeInsetsDirectional.fromSTEB(
+                                              24.0, 0.0, 24.0, 0.0),
                                       iconPadding:
                                           const EdgeInsetsDirectional.fromSTEB(
                                               0.0, 0.0, 0.0, 0.0),
@@ -2444,8 +1744,9 @@ class _EditCurriculumWidgetState extends State<EditCurriculumWidget> {
                                     borderColor: const Color(0xFF05BD7B),
                                     borderWidth: 2.0,
                                     borderRadius: 8.0,
-                                    margin: const EdgeInsetsDirectional.fromSTEB(
-                                        16.0, 4.0, 16.0, 4.0),
+                                    margin:
+                                        const EdgeInsetsDirectional.fromSTEB(
+                                            16.0, 4.0, 16.0, 4.0),
                                     hidesUnderline: true,
                                     isOverButton: true,
                                     isSearchable: false,
@@ -2469,8 +1770,9 @@ class _EditCurriculumWidgetState extends State<EditCurriculumWidget> {
                               children: [
                                 Expanded(
                                   child: Padding(
-                                    padding: const EdgeInsetsDirectional.fromSTEB(
-                                        8.0, 16.0, 8.0, 0.0),
+                                    padding:
+                                        const EdgeInsetsDirectional.fromSTEB(
+                                            8.0, 16.0, 8.0, 0.0),
                                     child: TextFormField(
                                       controller: _model.textController15,
                                       focusNode: _model.textFieldFocusNode15,
@@ -2551,8 +1853,9 @@ class _EditCurriculumWidgetState extends State<EditCurriculumWidget> {
                               children: [
                                 Expanded(
                                   child: Padding(
-                                    padding: const EdgeInsetsDirectional.fromSTEB(
-                                        8.0, 16.0, 8.0, 0.0),
+                                    padding:
+                                        const EdgeInsetsDirectional.fromSTEB(
+                                            8.0, 16.0, 8.0, 0.0),
                                     child: TextFormField(
                                       controller: _model.textController16,
                                       focusNode: _model.textFieldFocusNode16,
@@ -2633,8 +1936,9 @@ class _EditCurriculumWidgetState extends State<EditCurriculumWidget> {
                               children: [
                                 Expanded(
                                   child: Padding(
-                                    padding: const EdgeInsetsDirectional.fromSTEB(
-                                        8.0, 16.0, 8.0, 0.0),
+                                    padding:
+                                        const EdgeInsetsDirectional.fromSTEB(
+                                            8.0, 16.0, 8.0, 0.0),
                                     child: TextFormField(
                                       controller: _model.textController17,
                                       focusNode: _model.textFieldFocusNode17,
@@ -2715,8 +2019,9 @@ class _EditCurriculumWidgetState extends State<EditCurriculumWidget> {
                               children: [
                                 Expanded(
                                   child: Padding(
-                                    padding: const EdgeInsetsDirectional.fromSTEB(
-                                        8.0, 16.0, 8.0, 0.0),
+                                    padding:
+                                        const EdgeInsetsDirectional.fromSTEB(
+                                            8.0, 16.0, 8.0, 0.0),
                                     child: TextFormField(
                                       controller: _model.textController18,
                                       focusNode: _model.textFieldFocusNode18,
@@ -2804,7 +2109,8 @@ class _EditCurriculumWidgetState extends State<EditCurriculumWidget> {
                                     onPressed: () async {
                                       await _model.pageViewController
                                           ?.previousPage(
-                                        duration: const Duration(milliseconds: 300),
+                                        duration:
+                                            const Duration(milliseconds: 300),
                                         curve: Curves.ease,
                                       );
                                     },
@@ -2812,8 +2118,9 @@ class _EditCurriculumWidgetState extends State<EditCurriculumWidget> {
                                     options: FFButtonOptions(
                                       width: 150.0,
                                       height: 40.0,
-                                      padding: const EdgeInsetsDirectional.fromSTEB(
-                                          24.0, 0.0, 24.0, 0.0),
+                                      padding:
+                                          const EdgeInsetsDirectional.fromSTEB(
+                                              24.0, 0.0, 24.0, 0.0),
                                       iconPadding:
                                           const EdgeInsetsDirectional.fromSTEB(
                                               0.0, 0.0, 0.0, 0.0),
@@ -2836,7 +2143,8 @@ class _EditCurriculumWidgetState extends State<EditCurriculumWidget> {
                                   FFButtonWidget(
                                     onPressed: () async {
                                       await _model.pageViewController?.nextPage(
-                                        duration: const Duration(milliseconds: 300),
+                                        duration:
+                                            const Duration(milliseconds: 300),
                                         curve: Curves.ease,
                                       );
                                     },
@@ -2844,8 +2152,9 @@ class _EditCurriculumWidgetState extends State<EditCurriculumWidget> {
                                     options: FFButtonOptions(
                                       width: 150.0,
                                       height: 40.0,
-                                      padding: const EdgeInsetsDirectional.fromSTEB(
-                                          24.0, 0.0, 24.0, 0.0),
+                                      padding:
+                                          const EdgeInsetsDirectional.fromSTEB(
+                                              24.0, 0.0, 24.0, 0.0),
                                       iconPadding:
                                           const EdgeInsetsDirectional.fromSTEB(
                                               0.0, 0.0, 0.0, 0.0),
@@ -2927,8 +2236,8 @@ class _EditCurriculumWidgetState extends State<EditCurriculumWidget> {
                         height: 40.0,
                         padding: const EdgeInsetsDirectional.fromSTEB(
                             24.0, 0.0, 24.0, 0.0),
-                        iconPadding:
-                            const EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 0.0, 0.0),
+                        iconPadding: const EdgeInsetsDirectional.fromSTEB(
+                            0.0, 0.0, 0.0, 0.0),
                         color: const Color(0xFF065839),
                         textStyle:
                             FlutterFlowTheme.of(context).titleSmall.override(
@@ -2957,8 +2266,8 @@ class _EditCurriculumWidgetState extends State<EditCurriculumWidget> {
                         height: 40.0,
                         padding: const EdgeInsetsDirectional.fromSTEB(
                             24.0, 0.0, 24.0, 0.0),
-                        iconPadding:
-                            const EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 0.0, 0.0),
+                        iconPadding: const EdgeInsetsDirectional.fromSTEB(
+                            0.0, 0.0, 0.0, 0.0),
                         color: const Color(0xFF05BD7B),
                         textStyle:
                             FlutterFlowTheme.of(context).titleSmall.override(
