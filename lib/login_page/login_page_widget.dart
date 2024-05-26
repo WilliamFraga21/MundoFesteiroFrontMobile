@@ -7,6 +7,7 @@ export 'login_page_model.dart';
 import '../constants/constants.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
+import '../Helper/helper.dart';
 
 class LoginPageWidget extends StatefulWidget {
   const LoginPageWidget({super.key});
@@ -17,14 +18,14 @@ class LoginPageWidget extends StatefulWidget {
 
 class _LoginPageWidgetState extends State<LoginPageWidget> {
   late LoginPageModel _model;
-
+  late Future futureToken;
   final scaffoldKey = GlobalKey<ScaffoldState>();
 
   @override
   void initState() {
     super.initState();
     _model = createModel(context, () => LoginPageModel());
-
+    futureToken = fetchToken();
     _model.textController1 ??= TextEditingController();
     _model.textFieldFocusNode1 ??= FocusNode();
 
@@ -39,6 +40,34 @@ class _LoginPageWidgetState extends State<LoginPageWidget> {
     super.dispose();
   }
 
+  Future fetchToken() async {
+    final dbHelper = DatabaseHelper();
+    String? validToken = await DatabaseHelper().getToken();
+    print(validToken);
+    print('validToken');
+    var url = Uri.parse(apiUrl + '/api/profile');
+
+    var headers = {
+      'Content-Type': 'application/json',
+      'Authorization': "Bearer $validToken",
+    };
+
+    var response = await http.get(url, headers: headers);
+
+    if (response.statusCode == 200) {
+      setState(() {
+        GoRouter.of(context).go('/HomePage');
+      });
+    } else {
+      print(response.statusCode);
+      final dbHelper = DatabaseHelper();
+      await dbHelper.deleteToken();
+      setState(() {
+        GoRouter.of(context).go('/LoginPage');
+      });
+    }
+  }
+
   Future<void> login() async {
     var url = Uri.parse(apiUrl + '/auth/login');
     var response = await http.post(url,
@@ -51,6 +80,8 @@ class _LoginPageWidgetState extends State<LoginPageWidget> {
       // Autenticação bem-sucedida, redirecione para a página inicial
       final responseData = jsonDecode(response.body);
       token = responseData['token'];
+      DatabaseHelper dbHelper = DatabaseHelper();
+      await dbHelper.insertToken(token);
       setState(() {
         GoRouter.of(context).go('/homePage');
       });

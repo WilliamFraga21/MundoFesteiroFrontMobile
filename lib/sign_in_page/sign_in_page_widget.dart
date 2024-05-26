@@ -92,7 +92,7 @@ class _SignInPageWidgetState extends State<SignInPageWidget> {
     if (response.statusCode == 201) {
       setState(() {
         _message = 'Conta criada com sucesso!';
-        GoRouter.of(context).go('/homePage');
+        GoRouter.of(context).go('/LoginPage');
       });
     } else {
       // Exibir aviso com mensagem da API

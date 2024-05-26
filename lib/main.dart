@@ -7,6 +7,11 @@ import 'flutter_flow/flutter_flow_theme.dart';
 import 'flutter_flow/flutter_flow_util.dart';
 import 'flutter_flow/nav/nav.dart';
 import 'index.dart';
+import '../constants/constants.dart';
+import 'dart:convert';
+import 'package:http/http.dart' as http;
+import '../Helper/helper.dart';
+export 'package:go_router/go_router.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -35,14 +40,42 @@ class _MyAppState extends State<MyApp> {
 
   late AppStateNotifier _appStateNotifier;
   late GoRouter _router;
-
+  // late Future futureToken;
   @override
   void initState() {
     super.initState();
-
+    // futureToken = fetchToken();
     _appStateNotifier = AppStateNotifier.instance;
     _router = createRouter(_appStateNotifier);
   }
+
+  // Future fetchToken() async {
+  //   final dbHelper = DatabaseHelper();
+  //   String? validToken = await DatabaseHelper().getToken();
+  //   print(validToken);
+  //   print('validToken');
+  //   var url = Uri.parse(apiUrl + '/api/profile');
+
+  //   var headers = {
+  //     'Content-Type': 'application/json',
+  //     'Authorization': "Bearer $validToken",
+  //   };
+
+  //   var response = await http.get(url, headers: headers);
+
+  //   if (response.statusCode == 200) {
+  //     setState(() {
+  //       _appStateNotifier.stopShowingSplashImage();
+  //     });
+  //   } else {
+  //     print(response.statusCode);
+  //     final dbHelper = DatabaseHelper();
+  //     await dbHelper.deleteToken();
+  //     setState(() {
+  //       GoRouter.of(context).go('/LoginPage');
+  //     });
+  //   }
+  // }
 
   void setThemeMode(ThemeMode mode) => setState(() {
         _themeMode = mode;

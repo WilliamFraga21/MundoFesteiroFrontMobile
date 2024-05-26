@@ -169,97 +169,97 @@ class _HomePageWidgetState extends State<HomePageWidget> {
               child: Row(
                 mainAxisSize: MainAxisSize.max,
                 children: [
-                  Padding(
-                    padding: const EdgeInsetsDirectional.fromSTEB(
-                        50.0, 0.0, 0.0, 0.0),
-                    child: FlutterFlowIconButton(
-                      borderColor: FlutterFlowTheme.of(context).primary,
-                      borderRadius: 20.0,
-                      borderWidth: 1.0,
-                      buttonSize: 40.0,
-                      fillColor: FlutterFlowTheme.of(context).black600,
-                      icon: Icon(
-                        Icons.person,
-                        color: FlutterFlowTheme.of(context).alternate,
-                        size: 24.0,
+                  Expanded(
+                    child: Container(
+                      decoration: const BoxDecoration(
+                        shape: BoxShape.circle,
+                        color: Colors.black,
                       ),
-                      onPressed: () async {
-                        if (Navigator.of(context).canPop()) {
-                          context.pop();
-                        }
-                        context.pushNamed(
-                          'ServicesPage',
-                          extra: <String, dynamic>{
-                            kTransitionInfoKey: const TransitionInfo(
-                              hasTransition: true,
-                              transitionType: PageTransitionType.fade,
-                              duration: Duration(milliseconds: 0),
-                            ),
-                          },
-                        );
-                      },
+                      child: FlutterFlowIconButton(
+                        buttonSize: 40.0,
+                        icon: const Icon(
+                          Icons.person,
+                          color: Color(0xFF05BD7B),
+                          size: 24.0,
+                        ),
+                        onPressed: () async {
+                          if (Navigator.of(context).canPop()) {
+                            context.pop();
+                          }
+                          context.pushNamed(
+                            'ServicesPage',
+                            extra: <String, dynamic>{
+                              kTransitionInfoKey: const TransitionInfo(
+                                hasTransition: true,
+                                transitionType: PageTransitionType.fade,
+                                duration: Duration(milliseconds: 0),
+                              ),
+                            },
+                          );
+                        },
+                      ),
                     ),
                   ),
-                  Padding(
-                    padding: const EdgeInsetsDirectional.fromSTEB(
-                        88.0, 0.0, 88.0, 0.0),
-                    child: FlutterFlowIconButton(
-                      borderColor: FlutterFlowTheme.of(context).primary,
-                      borderRadius: 20.0,
-                      borderWidth: 1.0,
-                      buttonSize: 40.0,
-                      fillColor: FlutterFlowTheme.of(context).black600,
-                      icon: Icon(
-                        Icons.warning,
-                        color: FlutterFlowTheme.of(context).error,
-                        size: 24.0,
+                  Expanded(
+                    child: Container(
+                      decoration: const BoxDecoration(
+                        shape: BoxShape.circle,
+                        color: Colors.black,
                       ),
-                      onPressed: () async {
-                        if (Navigator.of(context).canPop()) {
-                          context.pop();
-                        }
-                        context.pushNamed(
-                          'SearchEmergencyProfissional',
-                          extra: <String, dynamic>{
-                            kTransitionInfoKey: const TransitionInfo(
-                              hasTransition: true,
-                              transitionType: PageTransitionType.fade,
-                              duration: Duration(milliseconds: 0),
-                            ),
-                          },
-                        );
-                      },
+                      child: FlutterFlowIconButton(
+                        buttonSize: 40.0,
+                        icon: const Icon(
+                          Icons.warning,
+                          color: Colors.red,
+                          size: 24.0,
+                        ),
+                        onPressed: () async {
+                          if (Navigator.of(context).canPop()) {
+                            context.pop();
+                          }
+                          context.pushNamed(
+                            'SearchEmergencyProfissional',
+                            extra: <String, dynamic>{
+                              kTransitionInfoKey: const TransitionInfo(
+                                hasTransition: true,
+                                transitionType: PageTransitionType.fade,
+                                duration: Duration(milliseconds: 0),
+                              ),
+                            },
+                          );
+                        },
+                      ),
                     ),
                   ),
-                  Padding(
-                    padding: const EdgeInsetsDirectional.fromSTEB(
-                        0.0, 0.0, 50.0, 0.0),
-                    child: FlutterFlowIconButton(
-                      borderColor: FlutterFlowTheme.of(context).primary,
-                      borderRadius: 20.0,
-                      borderWidth: 1.0,
-                      buttonSize: 40.0,
-                      fillColor: FlutterFlowTheme.of(context).black600,
-                      icon: Icon(
-                        Icons.celebration_sharp,
-                        color: FlutterFlowTheme.of(context).alternate,
-                        size: 24.0,
+                  Expanded(
+                    child: Container(
+                      decoration: const BoxDecoration(
+                        shape: BoxShape.circle,
+                        color: Colors.black,
                       ),
-                      onPressed: () async {
-                        if (Navigator.of(context).canPop()) {
-                          context.pop();
-                        }
-                        context.pushNamed(
-                          'SelectCategoryService',
-                          extra: <String, dynamic>{
-                            kTransitionInfoKey: const TransitionInfo(
-                              hasTransition: true,
-                              transitionType: PageTransitionType.fade,
-                              duration: Duration(milliseconds: 0),
-                            ),
-                          },
-                        );
-                      },
+                      child: FlutterFlowIconButton(
+                        buttonSize: 40.0,
+                        icon: const Icon(
+                          Icons.celebration_sharp,
+                          color: Color(0xFF05BD7B),
+                          size: 24.0,
+                        ),
+                        onPressed: () async {
+                          if (Navigator.of(context).canPop()) {
+                            context.pop();
+                          }
+                          context.pushNamed(
+                            'SelectCategoryService',
+                            extra: <String, dynamic>{
+                              kTransitionInfoKey: const TransitionInfo(
+                                hasTransition: true,
+                                transitionType: PageTransitionType.fade,
+                                duration: Duration(milliseconds: 0),
+                              ),
+                            },
+                          );
+                        },
+                      ),
                     ),
                   ),
                 ],
