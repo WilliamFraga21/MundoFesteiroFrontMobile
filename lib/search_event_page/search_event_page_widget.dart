@@ -144,16 +144,19 @@ class LocalidadeEvento {
 class Profissao {
   final String profissao;
   final int profissaoId;
+  final int quantidade;
 
   Profissao({
     required this.profissao,
     required this.profissaoId,
+    required this.quantidade,
   });
 
   factory Profissao.fromJson(Map<String, dynamic> json) {
     return Profissao(
       profissao: json['profissao'],
       profissaoId: json['profissao_id'],
+      quantidade: json['quantidade'],
     );
   }
 }
@@ -349,7 +352,7 @@ class _SearchEventPageWidgetState extends State<SearchEventPageWidget> {
                                           padding: const EdgeInsetsDirectional
                                               .fromSTEB(13.0, 4.0, 5.0, 4.0),
                                           child: Text(
-                                            eventoModel.evento.descricaoEvento,
+                                            eventoModel.profissao.toString(),
                                             textAlign: TextAlign.justify,
                                             style: FlutterFlowTheme.of(context)
                                                 .bodyMedium

@@ -357,7 +357,7 @@ class _ProfissionalsPageWidgetState extends State<ProfissionalsPageWidget> {
                                     ClipRRect(
                                       borderRadius: BorderRadius.circular(8.0),
                                       child: Image.network(
-                                        'https://cdn-icons-png.flaticon.com/512/4519/4519678.png',
+                                        '${prestador.photo}',
                                         width: 70.0,
                                         height: 70.0,
                                         fit: BoxFit.cover,
@@ -389,7 +389,7 @@ class _ProfissionalsPageWidgetState extends State<ProfissionalsPageWidget> {
                                             padding: const EdgeInsetsDirectional
                                                 .fromSTEB(16.0, 4.0, 0.0, 0.0),
                                             child: Text(
-                                              '${prestador.prestador.id} Anos', // Use a propriedade de idade real aqui
+                                              '${prestador.photo}', // Use a propriedade de idade real aqui
                                               style:
                                                   FlutterFlowTheme.of(context)
                                                       .bodyLarge

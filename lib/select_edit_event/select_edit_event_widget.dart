@@ -142,16 +142,19 @@ class LocalidadeEvento {
 class Profissao {
   final String profissao;
   final int profissaoId;
+  final int quantidade;
 
   Profissao({
     required this.profissao,
     required this.profissaoId,
+    required this.quantidade,
   });
 
   factory Profissao.fromJson(Map<String, dynamic> json) {
     return Profissao(
       profissao: json['profissao'],
       profissaoId: json['profissao_id'],
+      quantidade: json['quantidade'],
     );
   }
 }
@@ -227,11 +230,13 @@ class _SelectEditEventWidgetState extends State<SelectEditEventWidget> {
     var response = await http.get(url, headers: headers);
 
     if (response.statusCode == 200) {
+      // print(response.body);
       Map<String, dynamic> jsonResponse = json.decode(response.body);
       if (jsonResponse['Evento'] != null) {
         // List<dynamic> eventsJson = jsonResponse['Evento'];
         // var la = jsonResponse['Evento'];
         List jsonResponse = json.decode(response.body)['Evento'];
+        print(jsonResponse);
         return jsonResponse
             .map((evento) => EventoModel.fromJson(evento))
             .toList();

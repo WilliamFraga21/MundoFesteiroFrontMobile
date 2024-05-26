@@ -101,11 +101,18 @@ class _EditEventPageWidgetState extends State<EditEventPageWidget> {
 
     _model.textController12 ??= TextEditingController();
     _model.textFieldFocusNode12 ??= FocusNode();
+    // if (widget.data.profissao != null) {
+    //   List<String> professions = [];
+    //   for (var i = 0; i < widget.data.profissao.length; i++) {
+    //     professions.insert(i, widget.data.profissao[i].profissao);
+    //   }
 
+    //   print(professions);
+    //   _onMultiSelectChanged(professions);
+    // }
     // for (var professionData in widget.data.profissao) {
     //   selectedProfessions = professionData[]
     // }
-
     _model.textController13 ??= TextEditingController();
     _model.textFieldFocusNode13 ??= FocusNode();
 
@@ -208,6 +215,20 @@ class _EditEventPageWidgetState extends State<EditEventPageWidget> {
         setState(() {
           professions = fetchedProfessions;
         });
+
+        if (widget.data.profissao != null) {
+          List<String> professions = [];
+          for (var i = 0; i < widget.data.profissao.length; i++) {
+            professions.insert(i, widget.data.profissao[i].profissao);
+          }
+
+          print(professions);
+          _onMultiSelectChanged(professions);
+
+          for (var i = 0; i < widget.data.profissao.length; i++) {
+            _updateExperience(i, widget.data.profissao[i].quantidade);
+          }
+        }
       } else {
         print(
             'Falha ao carregar profissões. Código de status: ${response.statusCode}');
@@ -226,6 +247,7 @@ class _EditEventPageWidgetState extends State<EditEventPageWidget> {
   void _onMultiSelectChanged(List<String>? selectedNames) {
     if (selectedNames == null) return;
     setState(() {
+      print(selectedNames);
       selectedProfessions = selectedNames.map((name) {
         return professions.firstWhere((profession) => profession.name == name);
       }).toList();
@@ -1539,7 +1561,8 @@ class _EditEventPageWidgetState extends State<EditEventPageWidget> {
                 ),
               ),
               const SizedBox(height: 20),
-              const Text('Profissões Selecionadas:'),
+              Text('${widget.data.profissao}'),
+
               Column(
                 children: selectedProfessions.map((Profession profession) {
                   int index = selectedProfessions.indexOf(profession);
@@ -1632,7 +1655,7 @@ class _EditEventPageWidgetState extends State<EditEventPageWidget> {
                             padding: const EdgeInsetsDirectional.fromSTEB(
                                 16.0, 0.0, 0.0, 0.0),
                             child: Text(
-                              'Visualizar contratações',
+                              '${widget.data.profissao[2]}',
                               style: FlutterFlowTheme.of(context)
                                   .bodyLarge
                                   .override(
