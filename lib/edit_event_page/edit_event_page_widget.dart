@@ -31,9 +31,10 @@ class EditEventPageWidget extends StatefulWidget {
 class Profession {
   int id;
   String name;
+  String iconURL;
   int quantidade;
 
-  Profession(this.id, this.name, this.quantidade);
+  Profession(this.id, this.name, this.iconURL, this.quantidade);
 
   Map<String, dynamic> toJson() {
     return {
@@ -207,8 +208,8 @@ class _EditEventPageWidgetState extends State<EditEventPageWidget> {
         final List<Profession> fetchedProfessions = [];
         for (var item in data) {
           for (var professionData in item) {
-            final profession =
-                Profession(professionData['id'], professionData['name'], 0);
+            final profession = Profession(professionData['id'],
+                professionData['name'], professionData['iconURL'], 0);
             fetchedProfessions.add(profession);
           }
         }
@@ -1560,8 +1561,6 @@ class _EditEventPageWidgetState extends State<EditEventPageWidget> {
                           ),
                 ),
               ),
-              const SizedBox(height: 20),
-              Text('${widget.data.profissao}'),
 
               Column(
                 children: selectedProfessions.map((Profession profession) {
@@ -1569,8 +1568,10 @@ class _EditEventPageWidgetState extends State<EditEventPageWidget> {
                   return Padding(
                     padding: const EdgeInsets.symmetric(vertical: 6.0),
                     child: Container(
-                      width: 395.0,
-                      height: 80.0,
+                      width: 373.0,
+                      height: 56.0,
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 10.0), // Adicionando padding para margem
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(8.0),
                         border: Border.all(
@@ -1579,19 +1580,17 @@ class _EditEventPageWidgetState extends State<EditEventPageWidget> {
                         ),
                       ),
                       child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          // ClipRRect(
-                          //   borderRadius: BorderRadius.circular(8.0),
-                          //   child: Image.network(
-                          //     'https://cdn-icons-png.flaticon.com/256/2654/2654013.png',
-                          //     width: 50.0,
-                          //     height: 50.0,
-                          //     fit: BoxFit.cover,
-                          //   ),
-                          // ),
-
-                          const SizedBox(width: 20),
+                          ClipRRect(
+                            borderRadius: BorderRadius.circular(8.0),
+                            child: Image.network(
+                              profession.iconURL,
+                              width: 50.0,
+                              height: 50.0,
+                              fit: BoxFit.cover,
+                            ),
+                          ),
+                          const SizedBox(width: 10), // Reduzido de 20 para 10
                           IconButton(
                             onPressed: () {
                               setState(() {
@@ -1601,13 +1600,18 @@ class _EditEventPageWidgetState extends State<EditEventPageWidget> {
                             icon: const Icon(Icons.delete),
                             color: Colors.red,
                           ),
-                          const SizedBox(width: 20),
-                          Text(
-                            profession.name,
-                            style: const TextStyle(
-                                color: Color(0xFF05BD7B)), // Cor do texto preto
+                          const SizedBox(width: 10), // Reduzido de 20 para 10
+                          Expanded(
+                            child: Text(
+                              profession.name,
+                              style: const TextStyle(
+                                color: Color(0xFF05BD7B),
+                              ),
+                              softWrap: true,
+                              overflow: TextOverflow.ellipsis,
+                            ),
                           ),
-                          const SizedBox(width: 20),
+                          const SizedBox(width: 10), // Reduzido de 20 para 10
                           const Text('Qtd:'),
                           const SizedBox(width: 10),
                           _buildIconButton(Icons.remove, () {
@@ -1626,6 +1630,7 @@ class _EditEventPageWidgetState extends State<EditEventPageWidget> {
                   );
                 }).toList(),
               ),
+
               Padding(
                 padding:
                     const EdgeInsetsDirectional.fromSTEB(8.0, 0.0, 8.0, 16.0),
@@ -1655,7 +1660,7 @@ class _EditEventPageWidgetState extends State<EditEventPageWidget> {
                             padding: const EdgeInsetsDirectional.fromSTEB(
                                 16.0, 0.0, 0.0, 0.0),
                             child: Text(
-                              '${widget.data.profissao[2]}',
+                              'dwadwadwa',
                               style: FlutterFlowTheme.of(context)
                                   .bodyLarge
                                   .override(
