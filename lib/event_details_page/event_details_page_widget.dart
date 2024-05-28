@@ -12,6 +12,7 @@ import 'event_details_page_model.dart';
 export 'event_details_page_model.dart';
 import '../search_event_page/search_event_page_widget.dart';
 import '../hamburger/hamburger.dart';
+import '../datas/eventoModel.dart';
 
 class EventDetailsPageWidget extends StatefulWidget {
   // const EventDetailsPageWidget({super.key});

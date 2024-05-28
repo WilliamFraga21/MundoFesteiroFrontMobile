@@ -1,7 +1,7 @@
 import 'dart:ffi';
 
 import 'package:mundo_festeiro_mobile_app/index.dart';
-
+import '../perfil_profissional_page/perfil_profissional_page_widget.dart';
 import '/flutter_flow/flutter_flow_expanded_image_view.dart';
 import '/flutter_flow/flutter_flow_icon_button.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
@@ -14,9 +14,14 @@ import '../constants/constants.dart';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 import '../hamburger/hamburger.dart';
+import '../services_page/services_page_widget.dart';
 
 class ProfissionalsPageWidget extends StatefulWidget {
-  const ProfissionalsPageWidget({super.key});
+  // const ProfissionalsPageWidget({super.key});
+
+  Profession data;
+
+  ProfissionalsPageWidget({Key? key, required this.data}) : super(key: key);
 
   @override
   State<ProfissionalsPageWidget> createState() =>
@@ -73,14 +78,14 @@ class Prestador {
   }
 }
 
-class Profession {
+class Profession2 {
   final int id;
   final String profissao;
   final int tempoExperiencia;
   final double valorDiaServicoProfissao;
   final double valorHoraServicoProfissao;
 
-  Profession({
+  Profession2({
     required this.id,
     required this.profissao,
     required this.tempoExperiencia,
@@ -88,8 +93,8 @@ class Profession {
     required this.valorHoraServicoProfissao,
   });
 
-  factory Profession.fromJson(Map<String, dynamic> json) {
-    return Profession(
+  factory Profession2.fromJson(Map<String, dynamic> json) {
+    return Profession2(
       id: json['id'],
       profissao: json['profissao'],
       tempoExperiencia: json['tempoexperiencia'],
@@ -133,7 +138,7 @@ class LocalidadePrestador {
 
 class PrestadorModel {
   final Prestador prestador;
-  final List<Profession>? profession;
+  final List<Profession2>? profession;
   final LocalidadePrestador localidadePrestador;
   final String? photo;
 
@@ -156,10 +161,10 @@ class PrestadorModel {
     // Extrair dados das profissões (se disponível)
     final prestadorProfessions = json['prestadorprofessions'] as List<dynamic>?;
 
-    List<Profession>? profession;
+    List<Profession2>? profession;
     if (prestadorProfessions != null) {
       profession = prestadorProfessions
-          .map((professionJson) => Profession.fromJson(professionJson))
+          .map((professionJson) => Profession2.fromJson(professionJson))
           .toList();
     }
 
@@ -195,7 +200,7 @@ class _ProfissionalsPageWidgetState extends State<ProfissionalsPageWidget> {
   }
 
   Future<List<PrestadorModel>> fetchPrestados() async {
-    var url = Uri.parse(apiUrl + '/prestador/getALL/22');
+    var url = Uri.parse(apiUrl + '/prestador/getALL/${widget.data.id}');
 
     var headers = {
       'Content-Type': 'application/json',
@@ -357,7 +362,8 @@ class _ProfissionalsPageWidgetState extends State<ProfissionalsPageWidget> {
                                     ClipRRect(
                                       borderRadius: BorderRadius.circular(8.0),
                                       child: Image.network(
-                                        '${prestador.photo}',
+                                        prestador.photo ??
+                                            'https://cdn-icons-png.flaticon.com/512/4519/4519678.png',
                                         width: 70.0,
                                         height: 70.0,
                                         fit: BoxFit.cover,
@@ -485,6 +491,7 @@ class _ProfissionalsPageWidgetState extends State<ProfissionalsPageWidget> {
   }
 
   verPrestador(PrestadorModel prestadorModel) {
+    print('Teste1234');
     Navigator.push(
         context,
         MaterialPageRoute(

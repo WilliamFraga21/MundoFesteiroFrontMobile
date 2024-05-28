@@ -57,11 +57,11 @@ GoRouter createRouter(AppStateNotifier appStateNotifier) => GoRouter(
               path: 'forgotPasswordPage',
               builder: (context, params) => const ForgotPasswordPageWidget(),
             ),
-            FFRoute(
-              name: 'ProfissionalsPage',
-              path: 'profissionalsPage',
-              builder: (context, params) => const ProfissionalsPageWidget(),
-            ),
+            // FFRoute(
+            //   name: 'ProfissionalsPage',
+            //   path: 'profissionalsPage',
+            //   builder: (context, params) => const ProfissionalsPageWidget(),
+            // ),
             // FFRoute(
             //   name: 'PerfilProfissionalPage',
             //   path: 'perfilProfissionalPage',
@@ -102,11 +102,11 @@ GoRouter createRouter(AppStateNotifier appStateNotifier) => GoRouter(
               path: 'editCurriculum',
               builder: (context, params) => const EditCurriculumWidget(),
             ),
-            FFRoute(
-              name: 'SearchEventPage',
-              path: 'searchEventPage',
-              builder: (context, params) => const SearchEventPageWidget(),
-            ),
+            // FFRoute(
+            //   name: 'SearchEventPage',
+            //   path: 'searchEventPage',
+            //   builder: (context, params) => const SearchEventPageWidget(),
+            // ),
             FFRoute(
               name: 'SearchEmergencyProfissional',
               path: 'searchEmergencyProfissional',
