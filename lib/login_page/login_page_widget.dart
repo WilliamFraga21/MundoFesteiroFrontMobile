@@ -19,6 +19,7 @@ class LoginPageWidget extends StatefulWidget {
 class _LoginPageWidgetState extends State<LoginPageWidget> {
   late LoginPageModel _model;
   late Future futureToken;
+  late Future futureGetMe;
   final scaffoldKey = GlobalKey<ScaffoldState>();
 
   @override
@@ -26,6 +27,7 @@ class _LoginPageWidgetState extends State<LoginPageWidget> {
     super.initState();
     _model = createModel(context, () => LoginPageModel());
     futureToken = fetchToken();
+
     _model.textController1 ??= TextEditingController();
     _model.textFieldFocusNode1 ??= FocusNode();
 
@@ -62,9 +64,52 @@ class _LoginPageWidgetState extends State<LoginPageWidget> {
       print(response.statusCode);
       final dbHelper = DatabaseHelper();
       await dbHelper.deleteToken();
+      await dbHelper.deleteUser();
       setState(() {
         GoRouter.of(context).go('/LoginPage');
       });
+    }
+  }
+
+  Future<void> fetchGetMe(String token) async {
+    print('validToken');
+    var url = Uri.parse(apiUrl + '/api/user/me');
+
+    var headers = {
+      'Content-Type': 'application/json',
+      'Authorization': "Bearer $token",
+    };
+
+    var response = await http.get(url, headers: headers);
+
+    if (response.statusCode == 200) {
+      try {
+        // Decodificar apenas o corpo da resposta, que é uma string JSON
+        Map<String, dynamic> jsonResponse = json.decode(response.body);
+
+        // Verificar a estrutura do JSON antes de acessar os valores
+        if (jsonResponse.containsKey('user') &&
+            jsonResponse['user'].containsKey('user') &&
+            jsonResponse.containsKey('photo')) {
+          String name = jsonResponse['user']['user']['name'];
+          String photo = jsonResponse['photo'];
+          DatabaseHelper dbHelper = DatabaseHelper();
+          await dbHelper.insertUser(name, photo);
+          print('Nome: $name');
+          print('Photo: $photo');
+
+          // Aqui você pode retornar ou processar os valores de nome e foto conforme necessário
+        } else {
+          print('Erro: Estrutura de resposta JSON inesperada');
+        }
+      } catch (e) {
+        // Captura e imprime erros de decodificação JSON
+        print('Erro ao decodificar JSON: $e');
+      }
+    } else {
+      print('Error: GetMeUser');
+      print('Status code: ${response.statusCode}');
+      print('Response body: ${response.body}');
     }
   }
 
@@ -80,6 +125,7 @@ class _LoginPageWidgetState extends State<LoginPageWidget> {
       // Autenticação bem-sucedida, redirecione para a página inicial
       final responseData = jsonDecode(response.body);
       token = responseData['token'];
+      await fetchGetMe(token);
       DatabaseHelper dbHelper = DatabaseHelper();
       await dbHelper.insertToken(token);
       setState(() {

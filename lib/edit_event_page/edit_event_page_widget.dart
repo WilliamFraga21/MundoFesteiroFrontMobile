@@ -14,7 +14,7 @@ import 'package:http/http.dart' as http;
 import '../constants/constants.dart';
 import '../select_edit_event/select_edit_event_widget.dart';
 import 'dart:convert';
-
+import '../Helper/helper.dart';
 import '../hamburger/hamburger.dart';
 
 class EditEventPageWidget extends StatefulWidget {
@@ -132,11 +132,12 @@ class _EditEventPageWidgetState extends State<EditEventPageWidget> {
 
   Future<void> editEvent() async {
     var url = Uri.parse(apiUrl + '/api/evento/update/6');
-
+    final dbHelper = DatabaseHelper();
+    String? validToken = await dbHelper.getToken();
     // Definindo os headers
     var headers = {
       'Content-Type': 'application/json',
-      'Authorization': "Bearer $token",
+      'Authorization': "Bearer $validToken",
     };
 
     final List<Map<String, dynamic>> selectedProfessionsData =

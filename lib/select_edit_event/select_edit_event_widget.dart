@@ -11,6 +11,7 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 import '../edit_event_page/edit_event_page_widget.dart';
 import '../hamburger/hamburger.dart';
+import '../Helper/helper.dart';
 
 class SelectEditEventWidget extends StatefulWidget {
   const SelectEditEventWidget({super.key});
@@ -220,11 +221,13 @@ class _SelectEditEventWidgetState extends State<SelectEditEventWidget> {
   }
 
   Future<List<EventoModel>> fetchEventos() async {
+    final dbHelper = DatabaseHelper();
+    String? validToken = await dbHelper.getToken();
     var url = Uri.parse(apiUrl + '/api/evento/me');
-
+    print(validToken);
     var headers = {
       'Content-Type': 'application/json',
-      'Authorization': "Bearer $token",
+      'Authorization': "Bearer $validToken",
     };
 
     var response = await http.get(url, headers: headers);

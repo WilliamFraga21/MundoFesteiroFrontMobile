@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_web_plugins/url_strategy.dart';
 import 'backend/firebase/firebase_config.dart';
@@ -49,34 +48,6 @@ class _MyAppState extends State<MyApp> {
     _router = createRouter(_appStateNotifier);
   }
 
-  // Future fetchToken() async {
-  //   final dbHelper = DatabaseHelper();
-  //   String? validToken = await DatabaseHelper().getToken();
-  //   print(validToken);
-  //   print('validToken');
-  //   var url = Uri.parse(apiUrl + '/api/profile');
-
-  //   var headers = {
-  //     'Content-Type': 'application/json',
-  //     'Authorization': "Bearer $validToken",
-  //   };
-
-  //   var response = await http.get(url, headers: headers);
-
-  //   if (response.statusCode == 200) {
-  //     setState(() {
-  //       _appStateNotifier.stopShowingSplashImage();
-  //     });
-  //   } else {
-  //     print(response.statusCode);
-  //     final dbHelper = DatabaseHelper();
-  //     await dbHelper.deleteToken();
-  //     setState(() {
-  //       GoRouter.of(context).go('/LoginPage');
-  //     });
-  //   }
-  // }
-
   void setThemeMode(ThemeMode mode) => setState(() {
         _themeMode = mode;
         FlutterFlowTheme.saveThemeMode(mode);
@@ -120,12 +91,69 @@ class NavBarPage extends StatefulWidget {
 class _NavBarPageState extends State<NavBarPage> {
   String _currentPageName = 'HomePage';
   late Widget? _currentPage;
-
+  late Future futureToken;
+  bool iftoken = false;
   @override
   void initState() {
     super.initState();
     _currentPageName = widget.initialPage ?? _currentPageName;
     _currentPage = widget.page;
+    // futureToken = fetchToken();
+  }
+
+  // Future fetchToken() async {
+  //   final dbHelper = DatabaseHelper();
+  //   String? validToken = await DatabaseHelper().getToken();
+  //   print(validToken);
+  //   print('validToken');
+  //   var url = Uri.parse(apiUrl + '/api/profile');
+
+  //   var headers = {
+  //     'Content-Type': 'application/json',
+  //     'Authorization': "Bearer $validToken",
+  //   };
+
+  //   var response = await http.get(url, headers: headers);
+
+  //   if (response.statusCode == 200) {
+  //     iftoken = true;
+  //   } else {
+  //     print(response.statusCode);
+  //     final dbHelper = DatabaseHelper();
+  //     await dbHelper.deleteToken();
+  //     setState(() {
+  //       GoRouter.of(context).go('/LoginPage');
+  //     });
+  //   }
+  // }
+
+  Future<void> handleEventManagementNavigation() async {
+    final dbHelper = DatabaseHelper();
+    String? validToken = await dbHelper.getToken();
+    var url = Uri.parse(apiUrl + '/api/profile');
+
+    var headers = {
+      'Content-Type': 'application/json',
+      'Authorization': "Bearer $validToken",
+    };
+
+    var response = await http.get(url, headers: headers);
+
+    if (response.statusCode == 200) {
+      // Navigate to the event management page
+      iftoken = true;
+      setState(() {
+        _currentPage = SelectEditEventWidget();
+        _currentPageName = 'SelectEditEvent';
+      });
+    } else {
+      // Navigate to the login page
+      final dbHelper = DatabaseHelper();
+      await dbHelper.deleteToken();
+      setState(() {
+        GoRouter.of(context).go('/LoginPage');
+      });
+    }
   }
 
   @override
@@ -140,10 +168,16 @@ class _NavBarPageState extends State<NavBarPage> {
       body: _currentPage ?? tabs[_currentPageName],
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: currentIndex,
-        onTap: (i) => setState(() {
-          _currentPage = null;
-          _currentPageName = tabs.keys.toList()[i];
-        }),
+        onTap: (i) async {
+          if (tabs.keys.toList()[i] == 'SelectEditEvent') {
+            await handleEventManagementNavigation();
+          } else {
+            setState(() {
+              _currentPage = null;
+              _currentPageName = tabs.keys.toList()[i];
+            });
+          }
+        },
         backgroundColor: Colors.black,
         selectedItemColor: const Color(0xFF05BD7B),
         unselectedItemColor: Colors.white,
