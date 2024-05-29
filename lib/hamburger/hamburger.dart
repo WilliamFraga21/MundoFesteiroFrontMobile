@@ -33,8 +33,8 @@ class HamburgerMenu extends StatelessWidget {
       photoUser = user['photo'];
 
       // Faça o que desejar com os valores
-      print('Nome: $nameUser');
-      print('Foto: $photoUser');
+      // print('Nome: $nameUser');
+      // print('Foto: $photoUser');
     }
   }
 

@@ -107,12 +107,12 @@ GoRouter createRouter(AppStateNotifier appStateNotifier) => GoRouter(
             //   path: 'searchEventPage',
             //   builder: (context, params) => const SearchEventPageWidget(),
             // ),
-            FFRoute(
-              name: 'SearchEmergencyProfissional',
-              path: 'searchEmergencyProfissional',
-              builder: (context, params) =>
-                  const SearchEmergencyProfissionalWidget(),
-            ),
+            // FFRoute(
+            //   name: 'SearchEmergencyProfissional',
+            //   path: 'searchEmergencyProfissional',
+            //   builder: (context, params) =>
+            //       const SearchEmergencyProfissionalWidget(),
+            // ),
             FFRoute(
               name: 'SelectEditEvent',
               path: 'selectEditEvent',

@@ -283,24 +283,6 @@ class _ProfissionalsPageWidgetState extends State<ProfissionalsPageWidget> {
             top: true,
             child: Column(children: [
               Padding(
-                padding: const EdgeInsetsDirectional.fromSTEB(
-                    0.0, 16.0, 320.0, 16.0),
-                child: InkWell(
-                  splashColor: Colors.transparent,
-                  focusColor: Colors.transparent,
-                  hoverColor: Colors.transparent,
-                  highlightColor: Colors.transparent,
-                  onTap: () async {
-                    context.safePop();
-                  },
-                  child: Icon(
-                    Icons.arrow_back,
-                    color: FlutterFlowTheme.of(context).secondaryText,
-                    size: 24.0,
-                  ),
-                ),
-              ),
-              Padding(
                 padding:
                     const EdgeInsetsDirectional.fromSTEB(25.0, 0.0, 0.0, 10.0),
                 child: Text(
@@ -491,7 +473,6 @@ class _ProfissionalsPageWidgetState extends State<ProfissionalsPageWidget> {
   }
 
   verPrestador(PrestadorModel prestadorModel) {
-    print('Teste1234');
     Navigator.push(
         context,
         MaterialPageRoute(

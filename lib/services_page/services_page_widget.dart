@@ -148,7 +148,7 @@ class _ServicesPageWidgetState extends State<ServicesPageWidget> {
                           hoverColor: Colors.transparent,
                           highlightColor: Colors.transparent,
                           onTap: () async {
-                            verServicos(profession);
+                            verServicosPage(profession);
                           },
                           child: Container(
                             width: double.infinity,
@@ -211,7 +211,7 @@ class _ServicesPageWidgetState extends State<ServicesPageWidget> {
                                               EdgeInsetsDirectional.fromSTEB(
                                                   16, 4, 0, 0),
                                           child: Text(
-                                            'Número de prestadores', // Substitua por número real de prestadores
+                                            'Número de Prestadores', // Substitua por número real de prestadores
                                             style: TextStyle(
                                               fontFamily: 'Outfit',
                                               color: Color(0xFF05BD7B),
@@ -251,7 +251,7 @@ class _ServicesPageWidgetState extends State<ServicesPageWidget> {
     );
   }
 
-  void verServicos(Profession profession) {
+  void verServicosPage(Profession profession) {
     Navigator.push(
       context,
       MaterialPageRoute(

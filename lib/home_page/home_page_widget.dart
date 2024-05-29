@@ -1,5 +1,5 @@
 import 'package:mundo_festeiro_mobile_app/select_category_service/select_category_service_widget.dart';
-
+import 'package:mundo_festeiro_mobile_app/services_page/services_page_widget.dart';
 import '/flutter_flow/flutter_flow_expanded_image_view.dart';
 import '/flutter_flow/flutter_flow_icon_button.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
@@ -185,19 +185,7 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                           size: 24.0,
                         ),
                         onPressed: () async {
-                          if (Navigator.of(context).canPop()) {
-                            context.pop();
-                          }
-                          context.pushNamed(
-                            'ServicesPage',
-                            extra: <String, dynamic>{
-                              kTransitionInfoKey: const TransitionInfo(
-                                hasTransition: true,
-                                transitionType: PageTransitionType.fade,
-                                duration: Duration(milliseconds: 0),
-                              ),
-                            },
-                          );
+                          procurarPrestador();
                         },
                       ),
                     ),
@@ -215,21 +203,7 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                           color: Colors.red,
                           size: 24.0,
                         ),
-                        onPressed: () async {
-                          if (Navigator.of(context).canPop()) {
-                            context.pop();
-                          }
-                          context.pushNamed(
-                            'SearchEmergencyProfissional',
-                            extra: <String, dynamic>{
-                              kTransitionInfoKey: const TransitionInfo(
-                                hasTransition: true,
-                                transitionType: PageTransitionType.fade,
-                                duration: Duration(milliseconds: 0),
-                              ),
-                            },
-                          );
-                        },
+                        onPressed: () async {},
                       ),
                     ),
                   ),
@@ -267,19 +241,7 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                     hoverColor: Colors.transparent,
                     highlightColor: Colors.transparent,
                     onTap: () async {
-                      if (Navigator.of(context).canPop()) {
-                        context.pop();
-                      }
-                      context.pushNamed(
-                        'ServicesPage',
-                        extra: <String, dynamic>{
-                          kTransitionInfoKey: const TransitionInfo(
-                            hasTransition: true,
-                            transitionType: PageTransitionType.fade,
-                            duration: Duration(milliseconds: 0),
-                          ),
-                        },
-                      );
+                      procurarPrestador();
                     },
                     child: Text(
                       'Contrate um\nprofissional',
@@ -384,5 +346,10 @@ class _HomePageWidgetState extends State<HomePageWidget> {
   procurarEvento() {
     Navigator.push(context,
         MaterialPageRoute(builder: (_) => const SelectCategoryServiceWidget()));
+  }
+
+  procurarPrestador() {
+    Navigator.push(
+        context, MaterialPageRoute(builder: (_) => const ServicesPageWidget()));
   }
 }
