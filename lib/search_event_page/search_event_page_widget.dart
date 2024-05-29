@@ -137,7 +137,8 @@ class _SearchEventPageWidgetState extends State<SearchEventPageWidget> {
                 topRight: Radius.circular(8.0),
               ),
               child: Image.network(
-                'https://picsum.photos/seed/874/600',
+                eventoModel.photo ??
+                    'https://static.vecteezy.com/ti/vetor-gratis/p1/9169455-ceu-dourado-por-do-sol-na-costa-natureza-paisagem-vetor.jpg',
                 width: 300.0,
                 height: 179.0,
                 fit: BoxFit.cover,

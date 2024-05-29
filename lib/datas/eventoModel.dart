@@ -143,12 +143,13 @@ class EventoModel {
   final Evento evento;
   final LocalidadeEvento localidadeEvento;
   final List<Profissao> profissao;
-
+  final String? photo;
   EventoModel({
     required this.user,
     required this.evento,
     required this.localidadeEvento,
     required this.profissao,
+    required this.photo,
   });
 
   factory EventoModel.fromJson(Map<String, dynamic> json) {
@@ -156,11 +157,13 @@ class EventoModel {
     List<Profissao> profissaoList =
         list.map((i) => Profissao.fromJson(i)).toList();
 
+    final photo = json['photo'] as String?;
     return EventoModel(
       user: User.fromJson(json['user']),
       evento: Evento.fromJson(json['evento']),
       localidadeEvento: LocalidadeEvento.fromJson(json['localidadeEvento']),
       profissao: profissaoList,
+      photo: photo,
     );
   }
 }

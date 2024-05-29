@@ -165,24 +165,26 @@ class EventoModel {
   final Evento evento;
   final LocalidadeEvento localidadeEvento;
   final List<Profissao> profissao;
-
+  final String? photo;
   EventoModel({
     required this.user,
     required this.evento,
     required this.localidadeEvento,
     required this.profissao,
+    required this.photo,
   });
 
   factory EventoModel.fromJson(Map<String, dynamic> json) {
     var list = json['profissao'] as List;
     List<Profissao> profissaoList =
         list.map((i) => Profissao.fromJson(i)).toList();
-
+    final photo = json['photo'] as String?;
     return EventoModel(
       user: User.fromJson(json['user']),
       evento: Evento.fromJson(json['evento']),
       localidadeEvento: LocalidadeEvento.fromJson(json['localidadeEvento']),
       profissao: profissaoList,
+      photo: photo,
     );
   }
 }
@@ -377,7 +379,8 @@ class _SelectEditEventWidgetState extends State<SelectEditEventWidget> {
                                       topRight: Radius.circular(8.0),
                                     ),
                                     child: Image.network(
-                                      'https://picsum.photos/seed/874/600',
+                                      eventoModel.photo ??
+                                          'https://static.vecteezy.com/ti/vetor-gratis/p1/9169455-ceu-dourado-por-do-sol-na-costa-natureza-paisagem-vetor.jpg',
                                       width: 300.0,
                                       height: 179.0,
                                       fit: BoxFit.cover,
@@ -419,7 +422,7 @@ class _SelectEditEventWidgetState extends State<SelectEditEventWidget> {
                                           padding: const EdgeInsetsDirectional
                                               .fromSTEB(13.0, 4.0, 5.0, 4.0),
                                           child: Text(
-                                            eventoModel.evento.descricaoEvento,
+                                            eventoModel.photo.toString(),
                                             textAlign: TextAlign.justify,
                                             style: FlutterFlowTheme.of(context)
                                                 .bodyMedium
