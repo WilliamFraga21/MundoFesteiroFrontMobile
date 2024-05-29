@@ -1,3 +1,5 @@
+import 'package:mundo_festeiro_mobile_app/select_category_service/select_category_service_widget.dart';
+
 import '/flutter_flow/flutter_flow_expanded_image_view.dart';
 import '/flutter_flow/flutter_flow_icon_button.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
@@ -245,19 +247,7 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                           size: 24.0,
                         ),
                         onPressed: () async {
-                          if (Navigator.of(context).canPop()) {
-                            context.pop();
-                          }
-                          context.pushNamed(
-                            'SelectCategoryService',
-                            extra: <String, dynamic>{
-                              kTransitionInfoKey: const TransitionInfo(
-                                hasTransition: true,
-                                transitionType: PageTransitionType.fade,
-                                duration: Duration(milliseconds: 0),
-                              ),
-                            },
-                          );
+                          procurarEvento();
                         },
                       ),
                     ),
@@ -389,5 +379,10 @@ class _HomePageWidgetState extends State<HomePageWidget> {
         ),
       ),
     );
+  }
+
+  procurarEvento() {
+    Navigator.push(context,
+        MaterialPageRoute(builder: (_) => const SelectCategoryServiceWidget()));
   }
 }

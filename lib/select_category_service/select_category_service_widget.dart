@@ -256,7 +256,7 @@ class _SelectCategoryServiceWidgetState
   }
 
   void verServicos(Profession profession) {
-    Navigator.push(
+    Navigator.pushReplacement(
       context,
       MaterialPageRoute(
         builder: (_) => SearchEventPageWidget(data: profession),
