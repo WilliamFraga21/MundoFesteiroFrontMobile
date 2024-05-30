@@ -30,12 +30,12 @@ GoRouter createRouter(AppStateNotifier appStateNotifier) => GoRouter(
       initialLocation: '/',
       debugLogDiagnostics: true,
       refreshListenable: appStateNotifier,
-      errorBuilder: (context, state) => const LoginPageWidget(),
+      errorBuilder: (context, state) => const HomePageWidget(),
       routes: [
         FFRoute(
           name: '_initialize',
           path: '/',
-          builder: (context, _) => const LoginPageWidget(),
+          builder: (context, _) => const HomePageWidget(),
           routes: [
             FFRoute(
               name: 'LoginPage',
@@ -47,11 +47,11 @@ GoRouter createRouter(AppStateNotifier appStateNotifier) => GoRouter(
               path: 'signInPage',
               builder: (context, params) => const SignInPageWidget(),
             ),
-            FFRoute(
-              name: 'ServicesPage',
-              path: 'servicesPage',
-              builder: (context, params) => const ServicesPageWidget(),
-            ),
+            // FFRoute(
+            //   name: 'ServicesPage',
+            //   path: 'servicesPage',
+            //   builder: (context, params) => const ServicesPageWidget(),
+            // ),
             FFRoute(
               name: 'ForgotPasswordPage',
               path: 'forgotPasswordPage',
@@ -73,13 +73,13 @@ GoRouter createRouter(AppStateNotifier appStateNotifier) => GoRouter(
               path: 'createEventPage',
               builder: (context, params) => const CreateEventPageWidget(),
             ),
-            FFRoute(
-              name: 'ProvideServicesPage',
-              path: 'provideServicesPage',
-              builder: (context, params) => params.isEmpty
-                  ? const NavBarPage(initialPage: 'ProvideServicesPage')
-                  : const ProvideServicesPageWidget(),
-            ),
+            // FFRoute(
+            //   name: 'ProvideServicesPage',
+            //   path: 'provideServicesPage',
+            //   builder: (context, params) => params.isEmpty
+            //       ? const NavBarPage(initialPage: 'ProvideServicesPage')
+            //       : const ProvideServicesPageWidget(),
+            // ),
             FFRoute(
               name: 'PerfilPage',
               path: 'perfilPage',
@@ -113,23 +113,23 @@ GoRouter createRouter(AppStateNotifier appStateNotifier) => GoRouter(
             //   builder: (context, params) =>
             //       const SearchEmergencyProfissionalWidget(),
             // ),
-            FFRoute(
-              name: 'SelectEditEvent',
-              path: 'selectEditEvent',
-              builder: (context, params) => params.isEmpty
-                  ? const NavBarPage(initialPage: 'SelectEditEvent')
-                  : const SelectEditEventWidget(),
-            ),
+            // FFRoute(
+            //   name: 'SelectEditEvent',
+            //   path: 'selectEditEvent',
+            //   builder: (context, params) => params.isEmpty
+            //       ? const NavBarPage(initialPage: 'SelectEditEvent')
+            //       : const SelectEditEventWidget(),
+            // ),
             // FFRoute(
             //   name: 'EditEventPage',
             //   path: 'editEventPage',
             //   builder: (context, params) => const EditEventPageWidget(),
             // ),
-            FFRoute(
-              name: 'SelectCategoryService',
-              path: 'selectCategoryService',
-              builder: (context, params) => const SelectCategoryServiceWidget(),
-            ),
+            // FFRoute(
+            //   name: 'SelectCategoryService',
+            //   path: 'selectCategoryService',
+            //   builder: (context, params) => const SelectCategoryServiceWidget(),
+            // ),
             FFRoute(
               name: 'EventHiring',
               path: 'eventHiring',
