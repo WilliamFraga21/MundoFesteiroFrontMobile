@@ -1,4 +1,5 @@
 import '/flutter_flow/flutter_flow_util.dart';
+import '/flutter_flow/form_field_controller.dart';
 import 'provide_services_page_widget.dart' show ProvideServicesPageWidget;
 import 'package:flutter/material.dart';
 
@@ -8,9 +9,19 @@ class ProvideServicesPageModel
 
   final unfocusNode = FocusNode();
   // State field(s) for TextField widget.
+  // FocusNode? textFieldFocusNode1;
+  // TextEditingController? textController1;
+  // String? Function(BuildContext, String?)? textController1Validator;
+  // bool isDataUploading = false;
+  // FFUploadedFile uploadedLocalFile =
+  //     FFUploadedFile(bytes: Uint8List.fromList([]));
+  bool? switchListTileValue;
   FocusNode? textFieldFocusNode1;
   TextEditingController? textController1;
   String? Function(BuildContext, String?)? textController1Validator;
+  bool isDataUploading = false;
+  FFUploadedFile uploadedLocalFile =
+      FFUploadedFile(bytes: Uint8List.fromList([]));
   // State field(s) for TextField widget.
   FocusNode? textFieldFocusNode2;
   TextEditingController? textController2;
@@ -31,6 +42,10 @@ class ProvideServicesPageModel
   FocusNode? textFieldFocusNode6;
   TextEditingController? textController6;
   String? Function(BuildContext, String?)? textController6Validator;
+  List<String>? dropDownValue2;
+  FormFieldController<List<String>>? dropDownValueController2;
+  // State field(s) for CountController widget.
+  int? countControllerValue;
 
   @override
   void initState(BuildContext context) {}

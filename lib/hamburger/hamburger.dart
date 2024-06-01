@@ -332,16 +332,7 @@ class HamburgerMenu extends StatelessWidget {
                 hoverColor: Colors.transparent,
                 highlightColor: Colors.transparent,
                 onTap: () async {
-                  context.pushNamed(
-                    'ServicesPage',
-                    extra: <String, dynamic>{
-                      kTransitionInfoKey: const TransitionInfo(
-                        hasTransition: true,
-                        transitionType: PageTransitionType.fade,
-                        duration: Duration(milliseconds: 0),
-                      ),
-                    },
-                  );
+                  searchPrestador(context);
                 },
                 child: Container(
                   width: MediaQuery.sizeOf(context).width * 0.48,
@@ -406,16 +397,7 @@ class HamburgerMenu extends StatelessWidget {
                 hoverColor: Colors.transparent,
                 highlightColor: Colors.transparent,
                 onTap: () async {
-                  context.pushNamed(
-                    'SelectCategoryService',
-                    extra: <String, dynamic>{
-                      kTransitionInfoKey: const TransitionInfo(
-                        hasTransition: true,
-                        transitionType: PageTransitionType.fade,
-                        duration: Duration(milliseconds: 0),
-                      ),
-                    },
-                  );
+                  searchEvent(context);
                 },
                 child: Container(
                   width: MediaQuery.sizeOf(context).width * 0.48,
@@ -546,16 +528,7 @@ class HamburgerMenu extends StatelessWidget {
                 hoverColor: Colors.transparent,
                 highlightColor: Colors.transparent,
                 onTap: () async {
-                  context.pushNamed(
-                    'ProvideServicesPage',
-                    extra: <String, dynamic>{
-                      kTransitionInfoKey: const TransitionInfo(
-                        hasTransition: true,
-                        transitionType: PageTransitionType.fade,
-                        duration: Duration(milliseconds: 0),
-                      ),
-                    },
-                  );
+                  createCurriculum(context);
                 },
                 child: Container(
                   width: MediaQuery.sizeOf(context).width * 0.48,
