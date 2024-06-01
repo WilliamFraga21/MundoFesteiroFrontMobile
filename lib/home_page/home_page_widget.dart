@@ -1,5 +1,6 @@
 import 'package:mundo_festeiro_mobile_app/select_category_service/select_category_service_widget.dart';
 import 'package:mundo_festeiro_mobile_app/services_page/services_page_widget.dart';
+import '../perfil_page/perfil_page_widget.dart';
 import '/flutter_flow/flutter_flow_expanded_image_view.dart';
 import '/flutter_flow/flutter_flow_icon_button.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
@@ -8,8 +9,14 @@ import '/flutter_flow/flutter_flow_widgets.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'home_page_model.dart';
-export 'home_page_model.dart';
+import 'dart:convert';
+import 'package:http/http.dart' as http;
+import 'package:provider/provider.dart';
 import '../hamburger/hamburger.dart';
+import '../Helper/helper.dart';
+import '../constants/constants.dart';
+import '../datas/user_provider.dart';
+import '../datas/user.dart';
 
 class HomePageWidget extends StatefulWidget {
   const HomePageWidget({super.key});
@@ -20,28 +27,73 @@ class HomePageWidget extends StatefulWidget {
 
 class _HomePageWidgetState extends State<HomePageWidget> {
   late HomePageModel _model;
-
   final scaffoldKey = GlobalKey<ScaffoldState>();
 
   @override
   void initState() {
     super.initState();
     _model = createModel(context, () => HomePageModel());
+    fetchGetMe();
   }
 
   @override
   void dispose() {
     _model.dispose();
-
     super.dispose();
   }
-  // final scaffoldKey = GlobalKey<ScaffoldState>();
 
   void _onProfileTap() {
-    // Lógica para quando o perfil for clicado
-    Navigator.pushNamed(context, 'PerfilPage', arguments: {
-      'transition': PageTransitionType.fade,
-    });
+    Navigator.push(context,
+        MaterialPageRoute(builder: (context) => const PerfilPageWidget()));
+  }
+
+  Future<void> fetchGetMe() async {
+    DatabaseHelper dbHelper = DatabaseHelper();
+    var tokenSQL = await dbHelper.getToken();
+    print('validToken');
+    var url = Uri.parse(apiUrl + '/api/user/me');
+
+    var headers = {
+      'Content-Type': 'application/json',
+      'Authorization': "Bearer $tokenSQL",
+    };
+
+    var response = await http.get(url, headers: headers);
+
+    if (response.statusCode == 200) {
+      try {
+        Map<String, dynamic> jsonResponse = json.decode(response.body);
+        if (jsonResponse.containsKey('user') &&
+            jsonResponse['user'] != null &&
+            jsonResponse['user'].containsKey('user') &&
+            jsonResponse['user']['user'] != null) {
+          Map<String, dynamic> userData = jsonResponse['user']['user'];
+          int id = userData['id'] ?? 0;
+          String name = userData['name'] ?? '';
+          // Outros campos de usuário
+
+          String photo = jsonResponse['photo'] ?? '';
+
+          User user = User(id: id, name: name, photoUrl: photo);
+
+          DatabaseHelper dbHelper = DatabaseHelper();
+          await dbHelper
+              .insertUser(user); // Convertendo User para Map antes de inserir
+
+          Provider.of<UserProvider>(context, listen: false).setUser(user);
+          print('Nome: $name');
+          print('Photo: $photo');
+        } else {
+          print('Erro: Estrutura de resposta JSON inesperada');
+        }
+      } catch (e) {
+        print('Erro ao decodificar JSON: $e');
+      }
+    } else {
+      print('Error: GetMeUser');
+      print('Status code: ${response.statusCode}');
+      print('Response body: ${response.body}');
+    }
   }
 
   @override
@@ -52,8 +104,6 @@ class _HomePageWidgetState extends State<HomePageWidget> {
         key: scaffoldKey,
         backgroundColor: FlutterFlowTheme.of(context).primaryBackground,
         drawer: HamburgerMenu(
-          imageUrl: 'https://picsum.photos/seed/398/600',
-          name: 'Nome do Prestador',
           onProfileTap: _onProfileTap,
         ),
         appBar: AppBar(
@@ -161,7 +211,7 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                   scrollDirection: Axis.horizontal,
                   autoPlay: false,
                   onPageChanged: (index, _) =>
-                      _model.carouselCurrentIndex = index,
+                      setState(() => _model.carouselCurrentIndex = index),
                 ),
               ),
             ),
@@ -343,12 +393,12 @@ class _HomePageWidgetState extends State<HomePageWidget> {
     );
   }
 
-  procurarEvento() {
+  void procurarEvento() {
     Navigator.push(context,
         MaterialPageRoute(builder: (_) => const SelectCategoryServiceWidget()));
   }
 
-  procurarPrestador() {
+  void procurarPrestador() {
     Navigator.push(
         context, MaterialPageRoute(builder: (_) => const ServicesPageWidget()));
   }

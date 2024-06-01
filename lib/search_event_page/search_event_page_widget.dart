@@ -77,8 +77,6 @@ class _SearchEventPageWidgetState extends State<SearchEventPageWidget> {
         key: scaffoldKey,
         backgroundColor: FlutterFlowTheme.of(context).primaryBackground,
         drawer: HamburgerMenu(
-          imageUrl: 'https://picsum.photos/seed/398/600',
-          name: 'Nome do Prestador',
           onProfileTap: _onProfileTap,
         ),
         body: SafeArea(

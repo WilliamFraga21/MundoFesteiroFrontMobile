@@ -11,6 +11,8 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 import '../Helper/helper.dart';
 export 'package:go_router/go_router.dart';
+import 'package:provider/provider.dart';
+import './datas/user_provider.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -20,7 +22,14 @@ void main() async {
 
   await FlutterFlowTheme.initialize();
 
-  runApp(const MyApp());
+  runApp(
+    MultiProvider(
+      providers: [
+        ChangeNotifierProvider(create: (_) => UserProvider()),
+      ],
+      child: MyApp(),
+    ),
+  );
 }
 
 class MyApp extends StatefulWidget {

@@ -1,5 +1,6 @@
 import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';
+import '../datas/user.dart';
 
 class DatabaseHelper {
   static final DatabaseHelper _instance = DatabaseHelper._internal();
@@ -22,28 +23,25 @@ class DatabaseHelper {
     String path = join(await getDatabasesPath(), 'app_database.db');
     return await openDatabase(
       path,
-      version: 2, // Incrementa a versão do banco de dados
+      version: 3, // Incrementa a versão do banco de dados
       onCreate: (db, version) async {
         await db.execute(
           "CREATE TABLE tokens(id INTEGER PRIMARY KEY, token TEXT)",
         );
         await db.execute(
-          "CREATE TABLE users(id INTEGER PRIMARY KEY, name TEXT, photo TEXT)",
+          "CREATE TABLE users(id INTEGER PRIMARY KEY, name TEXT, photoUrl TEXT)", // Adiciona a coluna 'photoUrl'
         );
       },
       onUpgrade: (db, oldVersion, newVersion) async {
-        if (oldVersion < 2) {
-          // Se a versão antiga for menor que 2, recrie a tabela
-          await db.execute("DROP TABLE IF EXISTS users");
-          await db.execute(
-            "CREATE TABLE users(id INTEGER PRIMARY KEY, name TEXT, photo TEXT)",
-          );
+        if (oldVersion < 3) {
+          // Se a versão antiga for menor que 3, adicione a coluna 'photoUrl'
+          await db.execute("ALTER TABLE users ADD COLUMN photoUrl TEXT");
         }
       },
     );
   }
 
-  // Methods for 'tokens' table
+  // Métodos para a tabela 'tokens'
   Future<void> insertToken(String token) async {
     final db = await database;
     await db.insert(
@@ -67,22 +65,19 @@ class DatabaseHelper {
     await db.delete('tokens');
   }
 
-  // Methods for 'users' table
-  Future<void> insertUser(String name, String photo) async {
+  // Métodos para a tabela 'users'
+  Future<void> insertUser(User user) async {
     final db = await database;
     await db.insert(
       'users',
-      {'name': name, 'photo': photo}, // Incluir o valor da coluna 'photo'
+      user.toMap(),
       conflictAlgorithm: ConflictAlgorithm.replace,
     );
   }
 
   Future<List<Map<String, dynamic>>> getUsers() async {
     final db = await database;
-    return await db.query(
-      'users',
-      columns: ['name', 'photo'], // Selecionar apenas os campos desejados
-    );
+    return await db.query('users');
   }
 
   Future<void> deleteUser() async {

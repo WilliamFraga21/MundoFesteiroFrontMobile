@@ -71,47 +71,47 @@ class _LoginPageWidgetState extends State<LoginPageWidget> {
     }
   }
 
-  Future<void> fetchGetMe(String token) async {
-    print('validToken');
-    var url = Uri.parse(apiUrl + '/api/user/me');
+  // Future<void> fetchGetMe(String token) async {
+  //   print('validToken');
+  //   var url = Uri.parse(apiUrl + '/api/user/me');
 
-    var headers = {
-      'Content-Type': 'application/json',
-      'Authorization': "Bearer $token",
-    };
+  //   var headers = {
+  //     'Content-Type': 'application/json',
+  //     'Authorization': "Bearer $token",
+  //   };
 
-    var response = await http.get(url, headers: headers);
+  //   var response = await http.get(url, headers: headers);
 
-    if (response.statusCode == 200) {
-      try {
-        // Decodificar apenas o corpo da resposta, que é uma string JSON
-        Map<String, dynamic> jsonResponse = json.decode(response.body);
+  //   if (response.statusCode == 200) {
+  //     try {
+  //       // Decodificar apenas o corpo da resposta, que é uma string JSON
+  //       Map<String, dynamic> jsonResponse = json.decode(response.body);
 
-        // Verificar a estrutura do JSON antes de acessar os valores
-        if (jsonResponse.containsKey('user') &&
-            jsonResponse['user'].containsKey('user') &&
-            jsonResponse.containsKey('photo')) {
-          String name = jsonResponse['user']['user']['name'];
-          String photo = jsonResponse['photo'];
-          DatabaseHelper dbHelper = DatabaseHelper();
-          await dbHelper.insertUser(name, photo);
-          print('Nome: $name');
-          print('Photo: $photo');
+  //       // Verificar a estrutura do JSON antes de acessar os valores
+  //       if (jsonResponse.containsKey('user') &&
+  //           jsonResponse['user'].containsKey('user') &&
+  //           jsonResponse.containsKey('photo')) {
+  //         String name = jsonResponse['user']['user']['name'];
+  //         String photo = jsonResponse['photo'];
+  //         DatabaseHelper dbHelper = DatabaseHelper();
+  //         await dbHelper.insertUser(name, photo);
+  //         print('Nome: $name');
+  //         print('Photo: $photo');
 
-          // Aqui você pode retornar ou processar os valores de nome e foto conforme necessário
-        } else {
-          print('Erro: Estrutura de resposta JSON inesperada');
-        }
-      } catch (e) {
-        // Captura e imprime erros de decodificação JSON
-        print('Erro ao decodificar JSON: $e');
-      }
-    } else {
-      print('Error: GetMeUser');
-      print('Status code: ${response.statusCode}');
-      print('Response body: ${response.body}');
-    }
-  }
+  //         // Aqui você pode retornar ou processar os valores de nome e foto conforme necessário
+  //       } else {
+  //         print('Erro: Estrutura de resposta JSON inesperada');
+  //       }
+  //     } catch (e) {
+  //       // Captura e imprime erros de decodificação JSON
+  //       print('Erro ao decodificar JSON: $e');
+  //     }
+  //   } else {
+  //     print('Error: GetMeUser');
+  //     print('Status code: ${response.statusCode}');
+  //     print('Response body: ${response.body}');
+  //   }
+  // }
 
   Future<void> login() async {
     var url = Uri.parse(apiUrl + '/auth/login');
@@ -125,7 +125,7 @@ class _LoginPageWidgetState extends State<LoginPageWidget> {
       // Autenticação bem-sucedida, redirecione para a página inicial
       final responseData = jsonDecode(response.body);
       token = responseData['token'];
-      await fetchGetMe(token);
+      // await fetchGetMe(token);
       DatabaseHelper dbHelper = DatabaseHelper();
       await dbHelper.insertToken(token);
       setState(() {

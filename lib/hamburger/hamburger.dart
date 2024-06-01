@@ -14,40 +14,22 @@ import 'package:http/http.dart' as http;
 import '../constants/constants.dart';
 import 'dart:convert';
 import '../Helper/helper.dart';
+import 'package:provider/provider.dart';
+import '../datas/user_provider.dart';
+import '../datas/user.dart' as DataUser;
 
 class HamburgerMenu extends StatelessWidget {
-  final String imageUrl;
-  final String name;
   final VoidCallback onProfileTap;
   var nameUser;
   var photoUser;
   HamburgerMenu({
-    required this.imageUrl,
-    required this.name,
     required this.onProfileTap,
-  }) {
-    // Inicializar o token dentro do construtor assíncrono
-    _initializeUser();
-  }
-
-  Future<void> _initializeUser() async {
-    final dbHelper = DatabaseHelper();
-    List<Map<String, dynamic>> dataUser = await dbHelper.getUsers();
-
-    // Iterar sobre cada registro
-    for (Map<String, dynamic> user in dataUser) {
-      // Acessar os valores de cada registro
-      nameUser = user['name'];
-      photoUser = user['photo'];
-
-      // Faça o que desejar com os valores
-      // print('Nome: $nameUser');
-      // print('Foto: $photoUser');
-    }
-  }
+  });
 
   @override
   Widget build(BuildContext context) {
+    final userProvider = Provider.of<UserProvider>(context);
+    final user = userProvider.user;
     return SizedBox(
       width: MediaQuery.sizeOf(context).width * 0.5,
       child: Drawer(
@@ -101,6 +83,7 @@ class HamburgerMenu extends StatelessWidget {
                             ),
                             child: Image.network(
                               photoUser ??
+                                  user?.photoUrl ??
                                   'https://cdn-icons-png.flaticon.com/512/4519/4519678.png',
                               fit: BoxFit.cover,
                             ),
@@ -118,7 +101,7 @@ class HamburgerMenu extends StatelessWidget {
                 padding:
                     const EdgeInsetsDirectional.fromSTEB(0.0, 15.0, 0.0, 0.0),
                 child: Text(
-                  nameUser ?? 'Usuário não conectado',
+                  nameUser ?? user?.name ?? 'Usuário não conectado',
                   style: FlutterFlowTheme.of(context).titleMedium.override(
                         fontFamily: 'Outfit',
                         color: const Color(0xFF018959),
