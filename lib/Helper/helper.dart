@@ -32,12 +32,12 @@ class DatabaseHelper {
           "CREATE TABLE users(id INTEGER PRIMARY KEY, name TEXT, photoUrl TEXT)", // Adiciona a coluna 'photoUrl'
         );
       },
-      onUpgrade: (db, oldVersion, newVersion) async {
-        if (oldVersion < 3) {
-          // Se a versão antiga for menor que 3, adicione a coluna 'photoUrl'
-          await db.execute("ALTER TABLE users ADD COLUMN photoUrl TEXT");
-        }
-      },
+      // onUpgrade: (db, oldVersion, newVersion) async {
+      //   if (oldVersion < 3) {
+      //     // Se a versão antiga for menor que 3, adicione a coluna 'photoUrl'
+      //     await db.execute("ALTER TABLE users ADD COLUMN photoUrl TEXT");
+      //   }
+      // },
     );
   }
 

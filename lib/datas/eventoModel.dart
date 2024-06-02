@@ -3,10 +3,8 @@ class User {
   final String name;
   final String email;
   final String contactNo;
-  final String shippingAddress;
-  final String shippingState;
-  final String shippingCity;
-  final int shippingPincode;
+  // ignore: non_constant_identifier_names
+  final int localidade_id;
   final String? status;
 
   User({
@@ -14,10 +12,8 @@ class User {
     required this.name,
     required this.email,
     required this.contactNo,
-    required this.shippingAddress,
-    required this.shippingState,
-    required this.shippingCity,
-    required this.shippingPincode,
+    // ignore: non_constant_identifier_names
+    required this.localidade_id,
     this.status,
   });
 
@@ -27,10 +23,7 @@ class User {
       name: json['name'],
       email: json['email'],
       contactNo: json['contactno'].toString(),
-      shippingAddress: json['shippingAddress'],
-      shippingState: json['shippingState'],
-      shippingCity: json['shippingCity'],
-      shippingPincode: json['shippingPincode'],
+      localidade_id: json['localidade_id'],
       status: json['Status'],
     );
   }

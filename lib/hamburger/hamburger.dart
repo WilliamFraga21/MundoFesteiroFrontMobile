@@ -60,8 +60,8 @@ class HamburgerMenu extends StatelessWidget {
                               type: PageTransitionType.fade,
                               child: FlutterFlowExpandedImageView(
                                 image: Image.network(
-                                  photoUser ??
-                                      'https://cdn-icons-png.flaticon.com/512/4519/4519678.png',
+                                  // photoUser ??
+                                  'https://cdn-icons-png.flaticon.com/512/4519/4519678.png',
                                   fit: BoxFit.contain,
                                 ),
                                 allowRotation: false,
@@ -82,9 +82,9 @@ class HamburgerMenu extends StatelessWidget {
                               shape: BoxShape.circle,
                             ),
                             child: Image.network(
-                              photoUser ??
-                                  user?.photoUrl ??
-                                  'https://cdn-icons-png.flaticon.com/512/4519/4519678.png',
+                              // photoUser ??
+                              // user?.photoUrl ??
+                              'https://cdn-icons-png.flaticon.com/512/4519/4519678.png',
                               fit: BoxFit.cover,
                             ),
                           ),

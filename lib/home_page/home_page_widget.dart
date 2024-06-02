@@ -52,7 +52,6 @@ class _HomePageWidgetState extends State<HomePageWidget> {
     var tokenSQL = await dbHelper.getToken();
     print('validToken');
     var url = Uri.parse(apiUrl + '/api/user/me');
-
     var headers = {
       'Content-Type': 'application/json',
       'Authorization': "Bearer $tokenSQL",

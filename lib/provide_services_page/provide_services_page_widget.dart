@@ -16,6 +16,7 @@ export 'provide_services_page_model.dart';
 import '../constants/constants.dart';
 import 'package:http/http.dart' as http;
 import '../hamburger/hamburger.dart';
+import '../Helper/helper.dart';
 
 class ProvideServicesPageWidget extends StatefulWidget {
   const ProvideServicesPageWidget({super.key});
@@ -25,17 +26,51 @@ class ProvideServicesPageWidget extends StatefulWidget {
       _ProvideServicesPageWidgetState();
 }
 
-class Profession {
-  int id;
-  String name;
-  int experience;
+class SelectedProfession {
+  final int id;
+  final String name;
+  final String iconURL;
+  final double valorDia;
+  final double valorHora;
+  final int experiencia;
 
-  Profession(this.id, this.name, this.experience);
+  SelectedProfession({
+    required this.id,
+    required this.name,
+    required this.iconURL,
+    required this.valorDia,
+    required this.valorHora,
+    required this.experiencia,
+  });
+}
+
+class Profession {
+  final int id;
+  final String name;
+  final String iconURL;
+  double valorDia;
+  double valorHora;
+  int experiencia;
+
+  Profession(
+    this.id,
+    this.name,
+    this.iconURL, {
+    this.valorDia = 10.0, // Valor padrão para valorDia
+    this.valorHora = 10.0, // Valor padrão para valorHora
+    this.experiencia = 10, // Valor padrão para experiencia
+  });
+
+  @override
+  String toString() {
+    return 'Profession{id: $id, name: $name, iconURL: $iconURL, valorDia: $valorDia, valorHora: $valorHora, experiencia: $experiencia}';
+  }
 
   Map<String, dynamic> toJson() {
     return {
       'id': id,
-      'tempoexperiencia': experience,
+      'name': name,
+      'iconURL': iconURL,
     };
   }
 }
@@ -43,6 +78,7 @@ class Profession {
 class _ProvideServicesPageWidgetState extends State<ProvideServicesPageWidget> {
   late ProvideServicesPageModel _model;
   late String _message;
+  List<Profession> selectedProfessions = [];
 
   final scaffoldKey = GlobalKey<ScaffoldState>();
 
@@ -83,12 +119,14 @@ class _ProvideServicesPageWidgetState extends State<ProvideServicesPageWidget> {
   }
 
   Future<void> createPrestador() async {
+    DatabaseHelper dbHelper = DatabaseHelper();
+    var tokenSQL = await dbHelper.getToken();
     var url = Uri.parse(apiUrl + '/api/prestador/create');
 
     // Definindo os headers
     var headers = {
       'Content-Type': 'application/json',
-      'Authorization': "Bearer $token",
+      'Authorization': "Bearer $tokenSQL",
     };
 
     var body = json.encode({
@@ -133,66 +171,9 @@ class _ProvideServicesPageWidgetState extends State<ProvideServicesPageWidget> {
     }
   }
 
-  Future<void> createProfession() async {
-    var url = Uri.parse(apiUrl + '/api/prestador/createProfession');
-
-    // Definindo os headers
-    var headers = {
-      'Content-Type': 'application/json',
-      'Authorization': "Bearer $token",
-    };
-
-    final List<Map<String, dynamic>> selectedProfessionsData =
-        selectedProfessions.map((profession) => profession.toJson()).toList();
-
-    var body = json.encode({
-      "valorDiaServicoProfissao": _model.textController2.text,
-      "valorHoraServicoProfissao": _model.textController3.text,
-      'tempoexperiencia': _model.textController4.text,
-      "professions": selectedProfessionsData,
-    });
-
-    var response = await http.post(
-      url,
-      body: body,
-      headers: headers,
-    );
-
-    if (response.statusCode == 201) {
-      setState(() {
-        _message = 'Profissões cadastradas com sucesso!';
-        GoRouter.of(context).go('/homePage');
-      });
-    } else {
-      // Exibir aviso com mensagem da API
-      final responseData = jsonDecode(response.body);
-      final errorMessage = responseData['message'];
-
-      showDialog(
-        context: context,
-        builder: (BuildContext context) {
-          return AlertDialog(
-            title: Text('Erro'),
-            content: Text(errorMessage ??
-                'Erro ao cadastrar profissões. Status code: ${response.body}'),
-            actions: [
-              TextButton(
-                onPressed: () {
-                  Navigator.of(context).pop();
-                },
-                child: Text('OK'),
-              ),
-            ],
-          );
-        },
-      );
-    }
-  }
-
   List<Profession> professions = [];
-  List<Profession> selectedProfessions = [];
+  // List<Profession> selectedProfessions = [];
   late FormFieldController<List<String>> dropDownValueController2;
-
   Future<void> _fetchProfessions() async {
     var url = Uri.parse(apiUrl + '/profissao/getALL');
     try {
@@ -200,16 +181,21 @@ class _ProvideServicesPageWidgetState extends State<ProvideServicesPageWidget> {
       if (response.statusCode == 200) {
         final List<dynamic> data = json.decode(response.body);
         final List<Profession> fetchedProfessions = [];
+        // final List<Profession> fetchedProfessions =
+        //     data.map<Profession>((json) => Profession.fromJson(json)).toList();
+
         for (var item in data) {
           for (var professionData in item) {
-            final profession =
-                Profession(professionData['id'], professionData['name'], 0);
+            final profession = Profession(professionData['id'],
+                professionData['name'], professionData['iconURL']);
             fetchedProfessions.add(profession);
           }
         }
         setState(() {
           professions = fetchedProfessions;
         });
+        // print(professions);
+        // print("professionsssssssssssssssssssssssssssssssssssssssssss");
       } else {
         print(
             'Falha ao carregar profissões. Código de status: ${response.statusCode}');
@@ -219,21 +205,6 @@ class _ProvideServicesPageWidgetState extends State<ProvideServicesPageWidget> {
     }
   }
 
-  void _updateExperience(int index, int value) {
-    setState(() {
-      selectedProfessions[index].experience = value;
-    });
-  }
-
-  void _onMultiSelectChanged(List<String>? selectedNames) {
-    if (selectedNames == null) return;
-    setState(() {
-      selectedProfessions = selectedNames.map((name) {
-        return professions.firstWhere((profession) => profession.name == name);
-      }).toList();
-    });
-  }
-
   void _onProfileTap() {
     // Lógica para quando o perfil for clicado
     Navigator.pushNamed(context, 'PerfilPage', arguments: {
@@ -241,469 +212,418 @@ class _ProvideServicesPageWidgetState extends State<ProvideServicesPageWidget> {
     });
   }
 
+  // Função para lidar com a seleção de uma profissão
+  // void _onProfessionSelected(Profession profession) {
+  //   setState(() {
+  //     // Crie uma instância de SelectedProfession com os dados da profissão selecionada
+  //     SelectedProfession selectedProfession = SelectedProfession(
+  //       id: profession.id,
+  //       name: profession.name,
+  //       iconURL: profession.iconURL,
+  //       valorDia: 0.0, // Valor inicial, você pode definir como desejar
+  //       valorHora: 0.0, // Valor inicial, você pode definir como desejar
+  //       experiencia: 0, // Valor inicial, você pode definir como desejar
+  //     );
+
+  //     // Adicione a SelectedProfession à lista de profissões selecionadas
+  //     selectedProfessions.add(selectedProfession);
+  //   });
+  // }
+
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: () => FocusScope.of(context).unfocus(),
-      child: Scaffold(
-        key: scaffoldKey,
-        backgroundColor: FlutterFlowTheme.of(context).primaryBackground,
-        drawer: HamburgerMenu(
-          onProfileTap: _onProfileTap,
-        ),
-        appBar: AppBar(
-          backgroundColor: Colors.black,
-          automaticallyImplyLeading: false,
-          leading: FlutterFlowIconButton(
-            borderColor: Colors.transparent,
-            borderRadius: 30.0,
-            borderWidth: 1.0,
-            buttonSize: 60.0,
-            icon: const Icon(
-              Icons.menu,
-              color: Colors.white,
-              size: 30.0,
+        onTap: () => FocusScope.of(context).unfocus(),
+        child: Scaffold(
+          key: scaffoldKey,
+          backgroundColor: FlutterFlowTheme.of(context).primaryBackground,
+          drawer: HamburgerMenu(
+            onProfileTap: _onProfileTap,
+          ),
+          appBar: AppBar(
+            backgroundColor: Colors.black,
+            automaticallyImplyLeading: false,
+            leading: FlutterFlowIconButton(
+              borderColor: Colors.transparent,
+              borderRadius: 30.0,
+              borderWidth: 1.0,
+              buttonSize: 60.0,
+              icon: const Icon(
+                Icons.menu,
+                color: Colors.white,
+                size: 30.0,
+              ),
+              onPressed: () async {
+                scaffoldKey.currentState!.openDrawer();
+              },
             ),
-            onPressed: () async {
-              scaffoldKey.currentState!.openDrawer();
-            },
-          ),
-          title: Text(
-            'Logo',
-            style: FlutterFlowTheme.of(context).headlineMedium.override(
-                  fontFamily: 'Outfit',
-                  color: Colors.white,
-                  fontSize: 22.0,
-                  letterSpacing: 0.0,
-                ),
-          ),
-          actions: const [],
-          centerTitle: true,
-          elevation: 2.0,
-        ),
-        body: ListView(
-          padding: const EdgeInsets.all(16.0),
-          children: [
-            Row(
-              mainAxisSize: MainAxisSize.max,
-              children: [
-                Padding(
-                  padding: const EdgeInsetsDirectional.fromSTEB(
-                      23.0, 16.0, 0.0, 0.0),
-                  child: InkWell(
-                    splashColor: Colors.transparent,
-                    focusColor: Colors.transparent,
-                    hoverColor: Colors.transparent,
-                    highlightColor: Colors.transparent,
-                    onTap: () async {
-                      context.safePop();
-                    },
-                    child: Icon(
-                      Icons.arrow_back,
-                      color: FlutterFlowTheme.of(context).secondaryText,
-                      size: 24.0,
-                    ),
+            title: Text(
+              'Logo',
+              style: FlutterFlowTheme.of(context).headlineMedium.override(
+                    fontFamily: 'Outfit',
+                    color: Colors.white,
+                    fontSize: 22.0,
+                    letterSpacing: 0.0,
                   ),
-                ),
-              ],
             ),
-            Align(
-              alignment: const AlignmentDirectional(1.0, 0.0),
-              child: Row(
-                mainAxisSize: MainAxisSize.max,
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  InkWell(
-                    splashColor: Colors.transparent,
-                    focusColor: Colors.transparent,
-                    hoverColor: Colors.transparent,
-                    highlightColor: Colors.transparent,
-                    onTap: () async {
-                      await Navigator.push(
-                        context,
-                        PageTransition(
-                          type: PageTransitionType.fade,
-                          child: FlutterFlowExpandedImageView(
-                            image: Image.network(
-                              'https://picsum.photos/seed/760/600',
-                              fit: BoxFit.contain,
+            actions: const [],
+            centerTitle: true,
+            elevation: 2.0,
+          ),
+          body: Column(
+            mainAxisSize: MainAxisSize.max,
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              SingleChildScrollView(
+                child: Column(
+                  mainAxisSize: MainAxisSize.max,
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Row(
+                      mainAxisSize: MainAxisSize.max,
+                      children: [
+                        Padding(
+                          padding: EdgeInsetsDirectional.fromSTEB(23, 16, 0, 0),
+                          child: InkWell(
+                            splashColor: Colors.transparent,
+                            focusColor: Colors.transparent,
+                            hoverColor: Colors.transparent,
+                            highlightColor: Colors.transparent,
+                            onTap: () async {
+                              context.safePop();
+                            },
+                            child: Icon(
+                              Icons.arrow_back,
+                              color: FlutterFlowTheme.of(context).secondaryText,
+                              size: 24,
                             ),
-                            allowRotation: false,
-                            tag: 'circleImageTag1',
-                            useHeroAnimation: true,
                           ),
                         ),
-                      );
-                    },
-                    child: Hero(
-                      tag: 'circleImageTag1',
-                      transitionOnUserGestures: true,
-                      child: Container(
-                        width: 120.0,
-                        height: 120.0,
-                        clipBehavior: Clip.antiAlias,
-                        decoration: const BoxDecoration(
-                          shape: BoxShape.circle,
+                      ],
+                    ),
+                    Row(
+                      mainAxisSize: MainAxisSize.max,
+                      children: [
+                        Expanded(
+                          child: Padding(
+                            padding:
+                                EdgeInsetsDirectional.fromSTEB(8, 16, 8, 0),
+                            child: TextFormField(
+                              controller: _model.textController1,
+                              focusNode: _model.textFieldFocusNode1,
+                              autofocus: true,
+                              obscureText: false,
+                              decoration: InputDecoration(
+                                labelText: 'Curriculo',
+                                labelStyle: FlutterFlowTheme.of(context)
+                                    .labelMedium
+                                    .override(
+                                      fontFamily: 'Outfit',
+                                      color: Color(0xFF05BD7B),
+                                      fontSize: 16,
+                                      letterSpacing: 0,
+                                      fontWeight: FontWeight.w500,
+                                    ),
+                                hintStyle: FlutterFlowTheme.of(context)
+                                    .labelMedium
+                                    .override(
+                                      fontFamily: 'Outfit',
+                                      letterSpacing: 0,
+                                    ),
+                                enabledBorder: OutlineInputBorder(
+                                  borderSide: BorderSide(
+                                    color: Color(0xFF05BD7B),
+                                    width: 2,
+                                  ),
+                                  borderRadius: BorderRadius.circular(10),
+                                ),
+                                focusedBorder: OutlineInputBorder(
+                                  borderSide: BorderSide(
+                                    color: FlutterFlowTheme.of(context).primary,
+                                    width: 2,
+                                  ),
+                                  borderRadius: BorderRadius.circular(10),
+                                ),
+                                errorBorder: OutlineInputBorder(
+                                  borderSide: BorderSide(
+                                    color: FlutterFlowTheme.of(context).error,
+                                    width: 2,
+                                  ),
+                                  borderRadius: BorderRadius.circular(10),
+                                ),
+                                focusedErrorBorder: OutlineInputBorder(
+                                  borderSide: BorderSide(
+                                    color: FlutterFlowTheme.of(context).error,
+                                    width: 2,
+                                  ),
+                                  borderRadius: BorderRadius.circular(10),
+                                ),
+                              ),
+                              style: FlutterFlowTheme.of(context)
+                                  .bodyMedium
+                                  .override(
+                                    fontFamily: 'Outfit',
+                                    color: Colors.black,
+                                    fontSize: 15,
+                                    letterSpacing: 0,
+                                    fontWeight: FontWeight.normal,
+                                  ),
+                              validator: _model.textController1Validator
+                                  .asValidator(context),
+                            ),
+                          ),
                         ),
-                        child: Image.network(
-                          'https://picsum.photos/seed/760/600',
-                          fit: BoxFit.cover,
+                      ],
+                    ),
+                    Row(
+                      mainAxisSize: MainAxisSize.max,
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        Expanded(
+                          child: Padding(
+                            padding:
+                                EdgeInsetsDirectional.fromSTEB(8, 16, 8, 0),
+                            child: DropdownButtonFormField<Profession>(
+                              items: professions.map((profession) {
+                                return DropdownMenuItem<Profession>(
+                                  value: profession,
+                                  child: Text(profession.name),
+                                );
+                              }).toList(),
+                              onChanged: (Profession? value) {
+                                setState(() {
+                                  if (value != null &&
+                                      !selectedProfessions.contains(value)) {
+                                    selectedProfessions.add(value);
+                                    print(selectedProfessions);
+                                    print('kkkkkkkkkkkkkkkkkkkkkkkkkkkkk');
+                                  }
+                                });
+                              },
+                              decoration: InputDecoration(
+                                labelText: 'Selecionar profissões',
+                                border: OutlineInputBorder(),
+                              ),
+                              isExpanded: true,
+                            ),
+                          ),
                         ),
+                      ],
+                    ),
+                    for (var profession in selectedProfessions)
+                      Padding(
+                        padding: EdgeInsets.all(8),
+                        child: Card(
+                          clipBehavior: Clip.antiAliasWithSaveLayer,
+                          color:
+                              FlutterFlowTheme.of(context).secondaryBackground,
+                          elevation: 4,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(8),
+                          ),
+                          child: Padding(
+                            padding:
+                                EdgeInsetsDirectional.fromSTEB(8, 12, 8, 12),
+                            child: Column(
+                              mainAxisSize: MainAxisSize.max,
+                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                              children: [
+                                // Imagem e nome da profissão
+                                Row(
+                                  mainAxisSize: MainAxisSize.max,
+                                  mainAxisAlignment: MainAxisAlignment.start,
+                                  children: [
+                                    ClipRRect(
+                                      borderRadius: BorderRadius.circular(8),
+                                      child: Image.network(
+                                        profession
+                                            .iconURL, // Substitua pela URL real da imagem
+                                        width:
+                                            MediaQuery.of(context).size.width *
+                                                0.15,
+                                        height: 56,
+                                        fit: BoxFit.cover,
+                                      ),
+                                    ),
+                                    Padding(
+                                      padding: EdgeInsetsDirectional.fromSTEB(
+                                          10, 0, 0, 0),
+                                      child: Text(
+                                        profession.name,
+                                        style: FlutterFlowTheme.of(context)
+                                            .bodyMedium
+                                            .override(
+                                              fontFamily: 'Outfit',
+                                              letterSpacing: 0,
+                                            ),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                                Positioned(
+                                  top: 8,
+                                  right: 8,
+                                  child: GestureDetector(
+                                    onTap: () {
+                                      // Função para deletar a profissão selecionada
+                                      setState(() {
+                                        selectedProfessions.remove(profession);
+                                      });
+                                    },
+                                    child: Icon(
+                                      Icons.delete,
+                                      color: Colors.red,
+                                    ),
+                                  ),
+                                ),
+                                // Campo de Experiência
+                                Row(
+                                  mainAxisSize: MainAxisSize.max,
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Text(
+                                      'Experiência',
+                                      style: FlutterFlowTheme.of(context)
+                                          .bodyMedium
+                                          .override(
+                                            fontFamily: 'Outfit',
+                                            letterSpacing: 0,
+                                          ),
+                                    ),
+                                    Container(
+                                      width: 160,
+                                      height: 50,
+                                      child: TextFormField(
+                                        initialValue:
+                                            profession.experiencia.toString(),
+                                        onChanged: (value) {
+                                          // Atualize o valor da experiência quando o usuário digitar
+                                          profession.experiencia =
+                                              int.tryParse(value) ?? 0;
+                                        },
+                                        decoration: InputDecoration(
+                                          labelText: 'Experiência',
+                                        ),
+                                        keyboardType: TextInputType.number,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                                // Campo de Valor da Hora
+                                Row(
+                                  mainAxisSize: MainAxisSize.max,
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Text(
+                                      'Valor da hora',
+                                      style: FlutterFlowTheme.of(context)
+                                          .bodyMedium
+                                          .override(
+                                            fontFamily: 'Outfit',
+                                            letterSpacing: 0,
+                                          ),
+                                    ),
+                                    Container(
+                                      width: 160,
+                                      height: 50,
+                                      child: TextFormField(
+                                        initialValue:
+                                            profession.valorHora.toString(),
+                                        onChanged: (value) {
+                                          // Atualize o valor da hora quando o usuário digitar
+                                          profession.valorHora =
+                                              double.tryParse(value) ?? 0.0;
+                                        },
+                                        decoration: InputDecoration(
+                                          labelText: 'Valor da hora',
+                                        ),
+                                        keyboardType: TextInputType.number,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                                // Campo de Valor da Diária
+                                Row(
+                                  mainAxisSize: MainAxisSize.max,
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Text(
+                                      'Valor da diária',
+                                      style: FlutterFlowTheme.of(context)
+                                          .bodyMedium
+                                          .override(
+                                            fontFamily: 'Outfit',
+                                            letterSpacing: 0,
+                                          ),
+                                    ),
+                                    Container(
+                                      width: 160,
+                                      height: 50,
+                                      child: TextFormField(
+                                        initialValue:
+                                            profession.valorDia.toString(),
+                                        onChanged: (value) {
+                                          // Atualize o valor da diária quando o usuário digitar
+                                          profession.valorDia =
+                                              double.tryParse(value) ?? 0.0;
+                                        },
+                                        decoration: InputDecoration(
+                                          labelText: 'Valor da diária',
+                                        ),
+                                        keyboardType: TextInputType.number,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                      ),
+                  ],
+                ),
+              ),
+              Row(
+                mainAxisSize: MainAxisSize.max,
+                children: [
+                  Padding(
+                    padding: EdgeInsetsDirectional.fromSTEB(95, 16, 0, 16),
+                    child: FFButtonWidget(
+                      onPressed: () async {
+                        print(selectedProfessions);
+                      },
+                      text: 'Cadastrar',
+                      options: FFButtonOptions(
+                        width: 200,
+                        height: 40,
+                        padding: EdgeInsetsDirectional.fromSTEB(24, 0, 24, 0),
+                        iconPadding: EdgeInsetsDirectional.fromSTEB(0, 0, 0, 0),
+                        color: Color(0xFF05BD7B),
+                        textStyle:
+                            FlutterFlowTheme.of(context).titleSmall.override(
+                                  fontFamily: 'Outfit',
+                                  color: Colors.white,
+                                  letterSpacing: 0,
+                                ),
+                        elevation: 3,
+                        borderSide: BorderSide(
+                          color: Colors.transparent,
+                          width: 1,
+                        ),
+                        borderRadius: BorderRadius.circular(8),
                       ),
                     ),
                   ),
                 ],
               ),
-            ),
-            Padding(
-              padding:
-                  const EdgeInsetsDirectional.fromSTEB(8.0, 16.0, 8.0, 0.0),
-              child: TextFormField(
-                controller: _model.textController1,
-                focusNode: _model.textFieldFocusNode1,
-                autofocus: false,
-                obscureText: false,
-                decoration: InputDecoration(
-                  labelText: 'Escreva um texto resumindo  sua carreira.',
-                  labelStyle: FlutterFlowTheme.of(context).labelMedium.override(
-                        fontFamily: 'Outfit',
-                        color: const Color(0xFF05BD7B),
-                        fontSize: 16.0,
-                        letterSpacing: 0.0,
-                        fontWeight: FontWeight.w500,
-                      ),
-                  hintStyle: FlutterFlowTheme.of(context).labelMedium.override(
-                        fontFamily: 'Outfit',
-                        color: Colors.black,
-                        letterSpacing: 0.0,
-                      ),
-                  enabledBorder: OutlineInputBorder(
-                    borderSide: const BorderSide(
-                      color: Color(0xFF05BD7B),
-                      width: 2.0,
-                    ),
-                    borderRadius: BorderRadius.circular(10.0),
-                  ),
-                  focusedBorder: OutlineInputBorder(
-                    borderSide: BorderSide(
-                      color: FlutterFlowTheme.of(context).primary,
-                      width: 2.0,
-                    ),
-                    borderRadius: BorderRadius.circular(10.0),
-                  ),
-                  errorBorder: OutlineInputBorder(
-                    borderSide: BorderSide(
-                      color: FlutterFlowTheme.of(context).error,
-                      width: 2.0,
-                    ),
-                    borderRadius: BorderRadius.circular(10.0),
-                  ),
-                  focusedErrorBorder: OutlineInputBorder(
-                    borderSide: BorderSide(
-                      color: FlutterFlowTheme.of(context).error,
-                      width: 2.0,
-                    ),
-                    borderRadius: BorderRadius.circular(10.0),
-                  ),
-                ),
-                style: FlutterFlowTheme.of(context).bodyMedium.override(
-                      fontFamily: 'Outfit',
-                      color: Colors.black,
-                      fontSize: 15.0,
-                      letterSpacing: 0.0,
-                      fontWeight: FontWeight.normal,
-                    ),
-                validator: _model.textController1Validator.asValidator(context),
-              ),
-            ),
-            Padding(
-              padding:
-                  const EdgeInsetsDirectional.fromSTEB(0.0, 16.0, 0.0, 0.0),
-              child: FlutterFlowDropDown<String>(
-                multiSelectController: _model.dropDownValueController2 ??=
-                    FormFieldController<List<String>>(null),
-                options:
-                    professions.map((profession) => profession.name).toList(),
-                optionLabels:
-                    professions.map((profession) => profession.name).toList(),
-                width: 373.0,
-                height: 56.0,
-                textStyle: FlutterFlowTheme.of(context).bodyMedium.override(
-                      fontFamily: 'Outfit',
-                      color: const Color(0xFF05BD7B),
-                      fontSize: 16.0,
-                      letterSpacing: 0.0,
-                      fontWeight: FontWeight.w500,
-                    ),
-                hintText: 'Selecionar Serviços',
-                icon: const Icon(
-                  Icons.keyboard_arrow_down_rounded,
-                  color: Color(0xFF05BD7B),
-                  size: 24.0,
-                ),
-                fillColor: FlutterFlowTheme.of(context).alternate,
-                elevation: 2.0,
-                borderColor: const Color(0xFF05BD7B),
-                borderWidth: 2.0,
-                borderRadius: 8.0,
-                margin:
-                    const EdgeInsetsDirectional.fromSTEB(16.0, 4.0, 16.0, 4.0),
-                hidesUnderline: true,
-                isOverButton: true,
-                isSearchable: false,
-                isMultiSelect: true,
-                onMultiSelectChanged: _onMultiSelectChanged,
-                labelText: '',
-                labelTextStyle:
-                    FlutterFlowTheme.of(context).labelMedium.override(
-                          fontFamily: 'Outfit',
-                          color: Colors.black,
-                          letterSpacing: 0.0,
-                        ),
-              ),
-            ),
-            const SizedBox(height: 20),
-            const Text('Profissões Selecionadas:'),
-            Column(
-              children: selectedProfessions.map((Profession profession) {
-                int index = selectedProfessions.indexOf(profession);
-                return Column(
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.symmetric(vertical: 6.0),
-                      child: Container(
-                        width: 395.0,
-                        height: 80.0,
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(8.0),
-                          border: Border.all(
-                            color: const Color(0xFF05BD7B),
-                            width: 2.0,
-                          ),
-                        ),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            // const SizedBox(width: 20),
-                            IconButton(
-                              onPressed: () {
-                                setState(() {
-                                  selectedProfessions.removeAt(index);
-                                });
-                              },
-                              icon: const Icon(Icons.delete),
-                              color: Colors.red,
-                            ),
-                            // const SizedBox(width: 10),
-                            Text(
-                              profession.name,
-                              style: const TextStyle(color: Color(0xFF05BD7B)),
-                            ),
-                            const SizedBox(width: 10),
-                            const Text('Experiência:'),
-                            // const SizedBox(width: 10),
-                            _buildIconButton(Icons.remove, () {
-                              if (profession.experience > 0) {
-                                _updateExperience(
-                                    index, profession.experience - 1);
-                              }
-                            }),
-                            Text('${profession.experience}'),
-                            _buildIconButton(Icons.add, () {
-                              _updateExperience(
-                                  index, profession.experience + 1);
-                            }),
-                          ],
-                        ),
-                      ),
-                    ),
-                  ],
-                );
-              }).toList(),
-            ),
-            Row(
-              mainAxisSize: MainAxisSize.max,
-              children: [
-                Expanded(
-                  child: Padding(
-                    padding: const EdgeInsetsDirectional.fromSTEB(
-                        8.0, 0.0, 8.0, 0.0),
-                    child: TextFormField(
-                      controller: _model.textController2,
-                      focusNode: _model.textFieldFocusNode2,
-                      autofocus: true,
-                      obscureText: false,
-                      decoration: InputDecoration(
-                        labelText:
-                            'Valor da Diaria. Coloque somente os números, sem acentos ou pontos',
-                        labelStyle:
-                            FlutterFlowTheme.of(context).labelMedium.override(
-                                  fontFamily: 'Outfit',
-                                  color: const Color(0xFF05BD7B),
-                                  fontSize: 16.0,
-                                  letterSpacing: 0.0,
-                                  fontWeight: FontWeight.w500,
-                                ),
-                        hintStyle:
-                            FlutterFlowTheme.of(context).labelMedium.override(
-                                  fontFamily: 'Outfit',
-                                  letterSpacing: 0.0,
-                                ),
-                        enabledBorder: OutlineInputBorder(
-                          borderSide: const BorderSide(
-                            color: Color(0xFF05BD7B),
-                            width: 2.0,
-                          ),
-                          borderRadius: BorderRadius.circular(10.0),
-                        ),
-                        focusedBorder: OutlineInputBorder(
-                          borderSide: BorderSide(
-                            color: FlutterFlowTheme.of(context).primary,
-                            width: 2.0,
-                          ),
-                          borderRadius: BorderRadius.circular(10.0),
-                        ),
-                        errorBorder: OutlineInputBorder(
-                          borderSide: BorderSide(
-                            color: FlutterFlowTheme.of(context).error,
-                            width: 2.0,
-                          ),
-                          borderRadius: BorderRadius.circular(10.0),
-                        ),
-                        focusedErrorBorder: OutlineInputBorder(
-                          borderSide: BorderSide(
-                            color: FlutterFlowTheme.of(context).error,
-                            width: 2.0,
-                          ),
-                          borderRadius: BorderRadius.circular(10.0),
-                        ),
-                      ),
-                      style: FlutterFlowTheme.of(context).bodyMedium.override(
-                            fontFamily: 'Outfit',
-                            color: Colors.black,
-                            fontSize: 15.0,
-                            letterSpacing: 0.0,
-                            fontWeight: FontWeight.normal,
-                          ),
-                      validator:
-                          _model.textController2Validator.asValidator(context),
-                    ),
-                  ),
-                ),
-              ],
-            ),
-            Row(
-              mainAxisSize: MainAxisSize.max,
-              children: [
-                Expanded(
-                  child: Padding(
-                    padding: const EdgeInsetsDirectional.fromSTEB(
-                        8.0, 0.0, 8.0, 0.0),
-                    child: TextFormField(
-                      controller: _model.textController3,
-                      focusNode: _model.textFieldFocusNode3,
-                      autofocus: true,
-                      obscureText: false,
-                      decoration: InputDecoration(
-                        labelText:
-                            'Valor da Hora. Coloque somente os números, sem acentos ou pontos',
-                        labelStyle:
-                            FlutterFlowTheme.of(context).labelMedium.override(
-                                  fontFamily: 'Outfit',
-                                  color: const Color(0xFF05BD7B),
-                                  fontSize: 16.0,
-                                  letterSpacing: 0.0,
-                                  fontWeight: FontWeight.w500,
-                                ),
-                        hintStyle:
-                            FlutterFlowTheme.of(context).labelMedium.override(
-                                  fontFamily: 'Outfit',
-                                  letterSpacing: 0.0,
-                                ),
-                        enabledBorder: OutlineInputBorder(
-                          borderSide: const BorderSide(
-                            color: Color(0xFF05BD7B),
-                            width: 2.0,
-                          ),
-                          borderRadius: BorderRadius.circular(10.0),
-                        ),
-                        focusedBorder: OutlineInputBorder(
-                          borderSide: BorderSide(
-                            color: FlutterFlowTheme.of(context).primary,
-                            width: 2.0,
-                          ),
-                          borderRadius: BorderRadius.circular(10.0),
-                        ),
-                        errorBorder: OutlineInputBorder(
-                          borderSide: BorderSide(
-                            color: FlutterFlowTheme.of(context).error,
-                            width: 2.0,
-                          ),
-                          borderRadius: BorderRadius.circular(10.0),
-                        ),
-                        focusedErrorBorder: OutlineInputBorder(
-                          borderSide: BorderSide(
-                            color: FlutterFlowTheme.of(context).error,
-                            width: 2.0,
-                          ),
-                          borderRadius: BorderRadius.circular(10.0),
-                        ),
-                      ),
-                      style: FlutterFlowTheme.of(context).bodyMedium.override(
-                            fontFamily: 'Outfit',
-                            color: Colors.black,
-                            fontSize: 15.0,
-                            letterSpacing: 0.0,
-                            fontWeight: FontWeight.normal,
-                          ),
-                      validator:
-                          _model.textController3Validator.asValidator(context),
-                    ),
-                  ),
-                ),
-              ],
-            ),
-            Row(
-              mainAxisSize: MainAxisSize.max,
-              children: [
-                Padding(
-                  padding: const EdgeInsetsDirectional.fromSTEB(
-                      95.0, 16.0, 0.0, 16.0),
-                  child: FFButtonWidget(
-                    onPressed: () async {
-                      await createPrestador();
-                      await createProfession();
-                    },
-                    text: 'Cadastrar',
-                    options: FFButtonOptions(
-                      width: 200.0,
-                      height: 40.0,
-                      padding: const EdgeInsetsDirectional.fromSTEB(
-                          24.0, 0.0, 24.0, 0.0),
-                      iconPadding: const EdgeInsetsDirectional.fromSTEB(
-                          0.0, 0.0, 0.0, 0.0),
-                      color: const Color(0xFF05BD7B),
-                      textStyle:
-                          FlutterFlowTheme.of(context).titleSmall.override(
-                                fontFamily: 'Outfit',
-                                color: Colors.white,
-                                letterSpacing: 0.0,
-                              ),
-                      elevation: 3.0,
-                      borderSide: const BorderSide(
-                        color: Colors.transparent,
-                        width: 1.0,
-                      ),
-                      borderRadius: BorderRadius.circular(8.0),
-                    ),
-                  ),
-                ),
-              ],
-            ),
-          ],
-        ),
-      ),
-    );
+            ],
+          ),
+        ));
   }
 
   Widget _buildIconButton(IconData icon, VoidCallback onPressed) {
