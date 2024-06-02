@@ -56,9 +56,9 @@ class Profession {
     this.id,
     this.name,
     this.iconURL, {
-    this.valorDia = 10.0, // Valor padrão para valorDia
-    this.valorHora = 10.0, // Valor padrão para valorHora
-    this.experiencia = 10, // Valor padrão para experiencia
+    this.valorDia = 00.00, // Valor padrão para valorDia
+    this.valorHora = 00.00, // Valor padrão para valorHora
+    this.experiencia = 0, // Valor padrão para experiencia
   });
 
   @override
@@ -171,6 +171,40 @@ class _ProvideServicesPageWidgetState extends State<ProvideServicesPageWidget> {
     }
   }
 
+  Future<void> createProfessions(List<Profession> professions) async {
+    DatabaseHelper dbHelper = DatabaseHelper();
+    var tokenSQL = await dbHelper.getToken();
+    var url = Uri.parse(apiUrl + '/api/prestador/createProfession');
+
+    var headers = {
+      'Content-Type': 'application/json',
+      'Authorization': "Bearer $tokenSQL",
+    };
+
+    var body = json.encode({
+      'profession': professions.map((profession) {
+        return {
+          'prestador_id': 1, // Altere conforme necessário
+          'profissao_id': profession.id,
+          'valorDiaServicoProfissao': profession.valorDia,
+          'valorHoraServicoProfissao': profession.valorHora,
+          'tempoexperiencia': profession.experiencia,
+        };
+      }).toList(),
+    });
+
+    try {
+      final response = await http.post(url, headers: headers, body: body);
+      if (response.statusCode == 200) {
+        print('Dados enviados com sucesso');
+      } else {
+        print('Falha ao enviar dados. Código de status: ${response.body}');
+      }
+    } catch (e) {
+      print('Erro ao enviar dados: ${e}');
+    }
+  }
+
   List<Profession> professions = [];
   // List<Profession> selectedProfessions = [];
   late FormFieldController<List<String>> dropDownValueController2;
@@ -270,9 +304,7 @@ class _ProvideServicesPageWidgetState extends State<ProvideServicesPageWidget> {
             centerTitle: true,
             elevation: 2.0,
           ),
-          body: Column(
-            mainAxisSize: MainAxisSize.max,
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          body: ListView(
             children: [
               SingleChildScrollView(
                 child: Column(
@@ -430,53 +462,72 @@ class _ProvideServicesPageWidgetState extends State<ProvideServicesPageWidget> {
                               mainAxisSize: MainAxisSize.max,
                               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                               children: [
-                                // Imagem e nome da profissão
                                 Row(
                                   mainAxisSize: MainAxisSize.max,
-                                  mainAxisAlignment: MainAxisAlignment.start,
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
-                                    ClipRRect(
-                                      borderRadius: BorderRadius.circular(8),
-                                      child: Image.network(
-                                        profession
-                                            .iconURL, // Substitua pela URL real da imagem
-                                        width:
-                                            MediaQuery.of(context).size.width *
+                                    Row(
+                                      mainAxisSize: MainAxisSize.max,
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceEvenly,
+                                      children: [
+                                        ClipRRect(
+                                          borderRadius:
+                                              BorderRadius.circular(8),
+                                          child: Image.network(
+                                            profession
+                                                .iconURL, // Substitua pela URL real da imagem
+                                            width: MediaQuery.of(context)
+                                                    .size
+                                                    .width *
                                                 0.15,
-                                        height: 56,
-                                        fit: BoxFit.cover,
-                                      ),
+                                            height: 56,
+                                            fit: BoxFit.cover,
+                                          ),
+                                        ),
+                                        Padding(
+                                          padding:
+                                              EdgeInsetsDirectional.fromSTEB(
+                                                  10, 0, 0, 0),
+                                          child: Text(
+                                            profession.name,
+                                            style: FlutterFlowTheme.of(context)
+                                                .bodyMedium
+                                                .override(
+                                                  fontFamily: 'Outfit',
+                                                  letterSpacing: 0,
+                                                ),
+                                          ),
+                                        ),
+                                      ],
                                     ),
-                                    Padding(
-                                      padding: EdgeInsetsDirectional.fromSTEB(
-                                          10, 0, 0, 0),
-                                      child: Text(
-                                        profession.name,
-                                        style: FlutterFlowTheme.of(context)
-                                            .bodyMedium
-                                            .override(
-                                              fontFamily: 'Outfit',
-                                              letterSpacing: 0,
+                                    Row(
+                                      mainAxisSize: MainAxisSize.max,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        Positioned(
+                                          top: 8,
+                                          right: 8,
+                                          child: GestureDetector(
+                                            onTap: () {
+                                              // Função para deletar a profissão selecionada
+                                              setState(() {
+                                                selectedProfessions
+                                                    .remove(profession);
+                                              });
+                                            },
+                                            child: Icon(
+                                              Icons.delete,
+                                              color: Colors.red,
                                             ),
-                                      ),
+                                          ),
+                                        ),
+                                      ],
                                     ),
                                   ],
-                                ),
-                                Positioned(
-                                  top: 8,
-                                  right: 8,
-                                  child: GestureDetector(
-                                    onTap: () {
-                                      // Função para deletar a profissão selecionada
-                                      setState(() {
-                                        selectedProfessions.remove(profession);
-                                      });
-                                    },
-                                    child: Icon(
-                                      Icons.delete,
-                                      color: Colors.red,
-                                    ),
-                                  ),
                                 ),
                                 // Campo de Experiência
                                 Row(
@@ -595,7 +646,8 @@ class _ProvideServicesPageWidgetState extends State<ProvideServicesPageWidget> {
                     padding: EdgeInsetsDirectional.fromSTEB(95, 16, 0, 16),
                     child: FFButtonWidget(
                       onPressed: () async {
-                        print(selectedProfessions);
+                        createPrestador();
+                        createProfessions(selectedProfessions);
                       },
                       text: 'Cadastrar',
                       options: FFButtonOptions(
