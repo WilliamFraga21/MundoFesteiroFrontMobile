@@ -1,3 +1,5 @@
+import 'package:mundo_festeiro_mobile_app/profissional_events/profissional_events_widget.dart';
+
 import '/flutter_flow/flutter_flow_count_controller.dart';
 import '/flutter_flow/flutter_flow_drop_down.dart';
 import '/flutter_flow/flutter_flow_expanded_image_view.dart';
@@ -16,6 +18,7 @@ import '../select_edit_event/select_edit_event_widget.dart';
 import 'dart:convert';
 import '../Helper/helper.dart';
 import '../hamburger/hamburger.dart';
+import '../datas/eventoModel.dart';
 
 class EditEventPageWidget extends StatefulWidget {
   // const EditEventPageWidget({super.key});
@@ -1689,56 +1692,61 @@ class _EditEventPageWidgetState extends State<EditEventPageWidget> {
               Padding(
                 padding:
                     const EdgeInsetsDirectional.fromSTEB(8.0, 0.0, 8.0, 16.0),
-                child: Container(
-                  width: 100.0,
-                  height: 100.0,
-                  constraints: const BoxConstraints(
-                    maxHeight: 56.0,
-                  ),
-                  decoration: BoxDecoration(
-                    color: const Color(0xFF05BD7B),
-                    borderRadius: BorderRadius.circular(8.0),
-                    border: Border.all(
-                      color: const Color(0xFF05BD7B),
-                      width: 2.0,
+                child: GestureDetector(
+                  onTap: () async {
+                    verCandidaturas(widget.data);
+                  },
+                  child: Container(
+                    width: 100.0,
+                    height: 100.0,
+                    constraints: const BoxConstraints(
+                      maxHeight: 56.0,
                     ),
-                  ),
-                  child: Padding(
-                    padding: const EdgeInsetsDirectional.fromSTEB(
-                        8.0, 8.0, 12.0, 8.0),
-                    child: Row(
-                      mainAxisSize: MainAxisSize.max,
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        Align(
-                          alignment: const AlignmentDirectional(-1.0, 0.0),
-                          child: Padding(
-                            padding: const EdgeInsetsDirectional.fromSTEB(
-                                16.0, 0.0, 0.0, 0.0),
-                            child: Text(
-                              'Candidaturas',
-                              style: FlutterFlowTheme.of(context)
-                                  .titleLarge
-                                  .override(
-                                    fontFamily: 'Outfit',
-                                    color:
-                                        FlutterFlowTheme.of(context).alternate,
-                                    letterSpacing: 0.0,
-                                  ),
+                    decoration: BoxDecoration(
+                      color: const Color(0xFF05BD7B),
+                      borderRadius: BorderRadius.circular(8.0),
+                      border: Border.all(
+                        color: const Color(0xFF05BD7B),
+                        width: 2.0,
+                      ),
+                    ),
+                    child: Padding(
+                      padding: const EdgeInsetsDirectional.fromSTEB(
+                          8.0, 8.0, 12.0, 8.0),
+                      child: Row(
+                        mainAxisSize: MainAxisSize.max,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          Align(
+                            alignment: const AlignmentDirectional(-1.0, 0.0),
+                            child: Padding(
+                              padding: const EdgeInsetsDirectional.fromSTEB(
+                                  16.0, 0.0, 0.0, 0.0),
+                              child: Text(
+                                'Candidaturas',
+                                style: FlutterFlowTheme.of(context)
+                                    .titleLarge
+                                    .override(
+                                      fontFamily: 'Outfit',
+                                      color: FlutterFlowTheme.of(context)
+                                          .alternate,
+                                      letterSpacing: 0.0,
+                                    ),
+                              ),
                             ),
                           ),
-                        ),
-                        Flexible(
-                          child: Align(
-                            alignment: const AlignmentDirectional(1.0, 0.0),
-                            child: Icon(
-                              Icons.arrow_forward_ios,
-                              color: FlutterFlowTheme.of(context).alternate,
-                              size: 24.0,
+                          Flexible(
+                            child: Align(
+                              alignment: const AlignmentDirectional(1.0, 0.0),
+                              child: Icon(
+                                Icons.arrow_forward_ios,
+                                color: FlutterFlowTheme.of(context).alternate,
+                                size: 24.0,
+                              ),
                             ),
                           ),
-                        ),
-                      ],
+                        ],
+                      ),
                     ),
                   ),
                 ),
@@ -1838,5 +1846,15 @@ class _EditEventPageWidgetState extends State<EditEventPageWidget> {
         ),
       ),
     );
+  }
+
+  void verCandidaturas(eventoModel) {
+    print(eventoModel);
+    print('dwadwkkkkkkkkkkkkkkkkkkkkkkkkkkkk');
+
+    Navigator.push(
+        context,
+        MaterialPageRoute(
+            builder: (_) => ProfissionalEventsWidget(data: eventoModel)));
   }
 }

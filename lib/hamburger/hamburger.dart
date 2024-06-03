@@ -1,4 +1,6 @@
+import 'package:mundo_festeiro_mobile_app/applied_events/applied_events_widget.dart';
 import 'package:mundo_festeiro_mobile_app/edit_curriculum/edit_curriculum_widget.dart';
+import 'package:mundo_festeiro_mobile_app/job_proposals/job_proposals_widget.dart';
 import 'package:mundo_festeiro_mobile_app/perfil_page/perfil_page_widget.dart';
 import 'package:mundo_festeiro_mobile_app/provide_services_page/provide_services_page_widget.dart';
 import 'package:mundo_festeiro_mobile_app/search_event_page/search_event_page_widget.dart';
@@ -221,6 +223,136 @@ class HamburgerMenu extends StatelessWidget {
                                 20.0, 0.0, 0.0, 0.0),
                             child: Text(
                               'Editar Perfil',
+                              style: FlutterFlowTheme.of(context)
+                                  .bodyMedium
+                                  .override(
+                                    fontFamily: 'Outfit',
+                                    letterSpacing: 0.0,
+                                  ),
+                            ),
+                          ),
+                        ),
+                      ),
+                      const Icon(
+                        Icons.arrow_forward_ios,
+                        color: Color(0xFFB9BEC1),
+                        size: 20.0,
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ),
+            Padding(
+              padding:
+                  const EdgeInsetsDirectional.fromSTEB(0.0, 10.0, 0.0, 0.0),
+              child: InkWell(
+                splashColor: Colors.transparent,
+                focusColor: Colors.transparent,
+                hoverColor: Colors.transparent,
+                highlightColor: Colors.transparent,
+                onTap: () async {
+                  verPropostas(context);
+                },
+                child: Container(
+                  width: MediaQuery.sizeOf(context).width * 0.48,
+                  height: 55.0,
+                  decoration: BoxDecoration(
+                    color: FlutterFlowTheme.of(context).secondaryBackground,
+                    boxShadow: const [
+                      BoxShadow(
+                        blurRadius: 4.0,
+                        color: Color(0x33000000),
+                        offset: Offset(
+                          0.0,
+                          2.0,
+                        ),
+                        spreadRadius: 2.0,
+                      )
+                    ],
+                    borderRadius: BorderRadius.circular(6.0),
+                    border: Border.all(
+                      color: const Color(0xFF05BD7B),
+                      width: 2.0,
+                    ),
+                  ),
+                  child: Row(
+                    mainAxisSize: MainAxisSize.max,
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      Flexible(
+                        child: Align(
+                          alignment: const AlignmentDirectional(0.0, 0.0),
+                          child: Padding(
+                            padding: const EdgeInsetsDirectional.fromSTEB(
+                                20.0, 0.0, 0.0, 0.0),
+                            child: Text(
+                              'Ver Propostas',
+                              style: FlutterFlowTheme.of(context)
+                                  .bodyMedium
+                                  .override(
+                                    fontFamily: 'Outfit',
+                                    letterSpacing: 0.0,
+                                  ),
+                            ),
+                          ),
+                        ),
+                      ),
+                      const Icon(
+                        Icons.arrow_forward_ios,
+                        color: Color(0xFFB9BEC1),
+                        size: 20.0,
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ),
+            Padding(
+              padding:
+                  const EdgeInsetsDirectional.fromSTEB(0.0, 10.0, 0.0, 0.0),
+              child: InkWell(
+                splashColor: Colors.transparent,
+                focusColor: Colors.transparent,
+                hoverColor: Colors.transparent,
+                highlightColor: Colors.transparent,
+                onTap: () async {
+                  verEventosAplicados(context);
+                },
+                child: Container(
+                  width: MediaQuery.sizeOf(context).width * 0.48,
+                  height: 55.0,
+                  decoration: BoxDecoration(
+                    color: FlutterFlowTheme.of(context).secondaryBackground,
+                    boxShadow: const [
+                      BoxShadow(
+                        blurRadius: 4.0,
+                        color: Color(0x33000000),
+                        offset: Offset(
+                          0.0,
+                          2.0,
+                        ),
+                        spreadRadius: 2.0,
+                      )
+                    ],
+                    borderRadius: BorderRadius.circular(6.0),
+                    border: Border.all(
+                      color: const Color(0xFF05BD7B),
+                      width: 2.0,
+                    ),
+                  ),
+                  child: Row(
+                    mainAxisSize: MainAxisSize.max,
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      Flexible(
+                        child: Align(
+                          alignment: const AlignmentDirectional(0.0, 0.0),
+                          child: Padding(
+                            padding: const EdgeInsetsDirectional.fromSTEB(
+                                20.0, 0.0, 0.0, 0.0),
+                            child: Text(
+                              'Eventos Aplicados',
                               style: FlutterFlowTheme.of(context)
                                   .bodyMedium
                                   .override(
@@ -748,6 +880,24 @@ class HamburgerMenu extends StatelessWidget {
       context,
       MaterialPageRoute(
         builder: (context) => const EditCurriculumWidget(),
+      ),
+    );
+  }
+
+  void verPropostas(BuildContext context) {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => const JobProposalsWidget(),
+      ),
+    );
+  }
+
+  void verEventosAplicados(BuildContext context) {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => const AppliedEventsWidget(),
       ),
     );
   }

@@ -35,12 +35,9 @@ class Prestador {
   final String name;
   final String email;
   final String contactNo;
-  final String shippingAddress;
-  final String shippingState;
-  final String shippingCity;
   final String createdAt;
   final String curriculo;
-  final int localidadeId;
+
   final String? status;
 
   Prestador({
@@ -50,12 +47,8 @@ class Prestador {
     required this.name,
     required this.email,
     required this.contactNo,
-    required this.shippingAddress,
-    required this.shippingState,
-    required this.shippingCity,
     required this.createdAt,
     required this.curriculo,
-    required this.localidadeId,
     this.status,
   });
 
@@ -67,12 +60,8 @@ class Prestador {
       name: json['name'],
       email: json['email'],
       contactNo: json['contactno'].toString(),
-      shippingAddress: json['shippingAddress'],
-      shippingState: json['shippingState'],
-      shippingCity: json['shippingCity'],
       createdAt: json['created_at'],
       curriculo: json['curriculo'],
-      localidadeId: json['localidade_id'],
       status: json['Status'],
     );
   }
@@ -139,14 +128,13 @@ class LocalidadePrestador {
 class PrestadorModel {
   final Prestador prestador;
   final List<Profession2>? profession;
-  final LocalidadePrestador localidadePrestador;
   final String? photo;
-
+  final LocalidadePrestador localidadePrestador;
   PrestadorModel({
     required this.prestador,
     required this.profession,
-    required this.localidadePrestador,
     required this.photo,
+    required this.localidadePrestador,
   });
 
   factory PrestadorModel.fromJson(Map<String, dynamic> json) {
@@ -302,7 +290,7 @@ class _ProfissionalsPageWidgetState extends State<ProfissionalsPageWidget> {
                     if (snapshot.connectionState == ConnectionState.waiting) {
                       return Center(child: CircularProgressIndicator());
                     } else if (snapshot.hasError) {
-                      return Center(child: Text('Erro: ${snapshot.error}'));
+                      return Center(child: Text('Erro: ${snapshot}'));
                     } else if (snapshot.hasData) {
                       return ListView.builder(
                         padding: EdgeInsets.zero,
@@ -390,7 +378,7 @@ class _ProfissionalsPageWidgetState extends State<ProfissionalsPageWidget> {
                                             padding: const EdgeInsetsDirectional
                                                 .fromSTEB(16.0, 4.0, 0.0, 4.0),
                                             child: Text(
-                                              '${prestador.localidadePrestador.cidade} - ${prestador.localidadePrestador.estado}', // Use as propriedades de cidade e estado reais aqui
+                                              'dwadwadwadw', // Use as propriedades de cidade e estado reais aqui
                                               style:
                                                   FlutterFlowTheme.of(context)
                                                       .bodyMedium

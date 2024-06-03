@@ -16,6 +16,7 @@ export 'create_event_page_model.dart';
 import '../constants/constants.dart';
 import 'package:http/http.dart' as http;
 import '../hamburger/hamburger.dart';
+import '../Helper/helper.dart';
 
 class CreateEventPageWidget extends StatefulWidget {
   const CreateEventPageWidget({super.key});
@@ -104,11 +105,12 @@ class _CreateEventPageWidgetState extends State<CreateEventPageWidget> {
 
   Future<void> createEvent() async {
     var url = Uri.parse(apiUrl + '/api/evento/create');
-
+    final dbHelper = DatabaseHelper();
+    String? validToken = await DatabaseHelper().getToken();
     // Definindo os headers
     var headers = {
       'Content-Type': 'application/json',
-      'Authorization': "Bearer $token",
+      'Authorization': "Bearer $validToken",
     };
 
     final List<Map<String, dynamic>> selectedProfessionsData =

@@ -8,11 +8,18 @@ class ProfissionalEventsModel
 
   final unfocusNode = FocusNode();
 
+  FocusNode? textFieldFocusNode;
+  TextEditingController? textController;
+  String? Function(BuildContext, String?)? textControllerValidator;
+
   @override
   void initState(BuildContext context) {}
 
   @override
   void dispose() {
     unfocusNode.dispose();
+
+    textFieldFocusNode?.dispose();
+    textController?.dispose();
   }
 }
