@@ -11,7 +11,7 @@ export 'perfil_contractor_page_model.dart';
 import '../hamburger/hamburger.dart';
 
 class PerfilContractorPageWidget extends StatefulWidget {
-  PrestadorModel data;
+  PrestadorAceitarModel data;
 
   PerfilContractorPageWidget({Key? key, required this.data}) : super(key: key);
 
@@ -150,7 +150,7 @@ class _PerfilContractorPageWidgetState
                       mainAxisSize: MainAxisSize.max,
                       children: [
                         Text(
-                          'Orrganizador de Eventos ${widget.data.prestador.email}',
+                          widget.data.prestador.profissao,
                           style:
                               FlutterFlowTheme.of(context).bodyMedium.override(
                                     fontFamily: 'Outfit',

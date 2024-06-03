@@ -1,5 +1,6 @@
 import 'package:mundo_festeiro_mobile_app/constants/constants.dart';
 import 'package:mundo_festeiro_mobile_app/perfil_contractor_page/perfil_contractor_page_widget.dart';
+import 'package:mundo_festeiro_mobile_app/perfil_profissional_page/perfil_profissional_page_widget.dart';
 
 import '/flutter_flow/flutter_flow_expanded_image_view.dart';
 import '/flutter_flow/flutter_flow_icon_button.dart';
@@ -14,6 +15,7 @@ import '../hamburger/hamburger.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import '../Helper/helper.dart';
+import '../datas/prestadorModel.dart';
 
 class ProfissionalEventsWidget extends StatefulWidget {
   EventoModel data;
@@ -34,6 +36,7 @@ class Prestador {
   final String contactno;
   final String createdat;
   final String curriculo;
+  final String profissao;
 
   Prestador({
     required this.idProposta,
@@ -45,6 +48,7 @@ class Prestador {
     required this.contactno,
     required this.createdat,
     required this.curriculo,
+    required this.profissao,
   });
 
   factory Prestador.fromJson(Map<String, dynamic> json) {
@@ -58,6 +62,7 @@ class Prestador {
       contactno: json['contactno'].toString(),
       createdat: json['created_at'],
       curriculo: json['curriculo'],
+      profissao: json['profissao'],
     );
   }
 }
@@ -85,18 +90,18 @@ class Profession2 {
   }
 }
 
-class PrestadorModel {
+class PrestadorAceitarModel {
   final Prestador prestador;
   final List<Profession2>? profession;
   final String? photo;
 
-  PrestadorModel({
+  PrestadorAceitarModel({
     required this.prestador,
     required this.profession,
     required this.photo,
   });
 
-  factory PrestadorModel.fromJson(Map<String, dynamic> json) {
+  factory PrestadorAceitarModel.fromJson(Map<String, dynamic> json) {
     // Extrair dados do prestador
     final prestadorInfo = json['prestadorInfo'] as Map<String, dynamic>;
     final prestador = Prestador.fromJson(prestadorInfo);
@@ -116,7 +121,7 @@ class PrestadorModel {
     // Extrair dados da foto (se disponível)
     final photo = json['photo'] as String?;
 
-    return PrestadorModel(
+    return PrestadorAceitarModel(
       prestador: prestador,
       profession: profession,
       photo: photo,
@@ -128,16 +133,17 @@ class _ProfissionalEventsWidgetState extends State<ProfissionalEventsWidget> {
   late ProfissionalEventsModel _model;
   late String _message;
   bool isPropostaAceita = false;
-  late Future<List<PrestadorModel>> futurePrestadores;
+  late Future<List<PrestadorAceitarModel>> futurePrestadores;
 
   final scaffoldKey = GlobalKey<ScaffoldState>();
 
   @override
   void initState() {
     super.initState();
-    late Future<PrestadorModel> futurePrestadores;
+    late Future<PrestadorAceitarModel> futurePrestadores;
     _model = createModel(context, () => ProfissionalEventsModel());
     fetchPrestados();
+
     _model.textController ??= TextEditingController();
     _model.textFieldFocusNode ??= FocusNode();
 
@@ -210,7 +216,36 @@ class _ProfissionalEventsWidgetState extends State<ProfissionalEventsWidget> {
     }
   }
 
-  Future<List<PrestadorModel>> fetchPrestados() async {
+  Future<PrestadorModel> fetchPrestadoByID(int id) async {
+    var url = Uri.parse(apiUrl + '/prestador/id/$id');
+
+    var headers = {
+      'Content-Type': 'application/json',
+    };
+
+    var response = await http.get(url, headers: headers);
+
+    if (response.statusCode == 200) {
+      Map<String, dynamic> jsonResponse = json.decode(response.body);
+
+      if (jsonResponse['prestador'] != null) {
+        // Supondo que a resposta JSON contém uma lista de prestadores
+        List<dynamic> prestadorList = jsonResponse['prestador'];
+        if (prestadorList.isNotEmpty) {
+          return PrestadorModel.fromJson(prestadorList[0]);
+        } else {
+          throw Exception('Prestador não encontrado');
+        }
+      } else {
+        throw Exception('Prestador não encontrado');
+      }
+    } else {
+      print(response.body);
+      throw Exception('Falha ao carregar prestador');
+    }
+  }
+
+  Future<List<PrestadorAceitarModel>> fetchPrestados() async {
     var url = Uri.parse(apiUrl + '/api/evento/getprestadores/1');
     final dbHelper = DatabaseHelper();
     String? validToken = await dbHelper.getToken();
@@ -228,8 +263,9 @@ class _ProfissionalEventsWidgetState extends State<ProfissionalEventsWidget> {
       Map<String, dynamic> jsonResponse = json.decode(response.body);
       if (jsonResponse['prestadores'] != null) {
         List<dynamic> prestadoresData = jsonResponse['prestadores'];
-        List<PrestadorModel> prestadores = prestadoresData
-            .map((prestadorJson) => PrestadorModel.fromJson(prestadorJson))
+        List<PrestadorAceitarModel> prestadores = prestadoresData
+            .map((prestadorJson) =>
+                PrestadorAceitarModel.fromJson(prestadorJson))
             .toList();
         return prestadores;
       } else {
@@ -342,7 +378,7 @@ class _ProfissionalEventsWidgetState extends State<ProfissionalEventsWidget> {
                         ),
                   ),
                 ),
-                FutureBuilder<List<PrestadorModel>>(
+                FutureBuilder<List<PrestadorAceitarModel>>(
                   future: fetchPrestados(),
                   builder: (context, snapshot) {
                     if (snapshot.connectionState == ConnectionState.waiting) {
@@ -353,8 +389,8 @@ class _ProfissionalEventsWidgetState extends State<ProfissionalEventsWidget> {
                       final prestadores = snapshot.data!;
 
                       return Column(
-                        children: prestadores.map((prestadorModel) {
-                          final prestador = prestadorModel.prestador;
+                        children: prestadores.map((prestadorAcetiarModel) {
+                          final prestador = prestadorAcetiarModel.prestador;
 
                           return Padding(
                             padding: const EdgeInsetsDirectional.fromSTEB(
@@ -484,20 +520,40 @@ class _ProfissionalEventsWidgetState extends State<ProfissionalEventsWidget> {
                                                       0.0, 0.0, 0.0, 16.0),
                                               child: FFButtonWidget(
                                                 onPressed: () async {
-                                                  context.pushNamed(
-                                                    'PerfilProfissionalPage',
-                                                    extra: <String, dynamic>{
-                                                      kTransitionInfoKey:
-                                                          const TransitionInfo(
-                                                        hasTransition: true,
-                                                        transitionType:
-                                                            PageTransitionType
-                                                                .fade,
-                                                        duration: Duration(
-                                                            milliseconds: 0),
-                                                      ),
-                                                    },
-                                                  );
+                                                  try {
+                                                    PrestadorModel
+                                                        prestadorModel =
+                                                        await fetchPrestadoByID(
+                                                            prestador
+                                                                .idPrestador);
+                                                    verPrestador(
+                                                        prestadorModel);
+                                                  } catch (e) {
+                                                    print(
+                                                        'Erro ao buscar prestador: $e');
+                                                    // Exibir um aviso ao usuário
+                                                    showDialog(
+                                                      context: context,
+                                                      builder: (BuildContext
+                                                          context) {
+                                                        return AlertDialog(
+                                                          title: Text('Erro'),
+                                                          content: Text(
+                                                              'Erro ao carregar perfil do prestador.'),
+                                                          actions: [
+                                                            TextButton(
+                                                              onPressed: () {
+                                                                Navigator.of(
+                                                                        context)
+                                                                    .pop();
+                                                              },
+                                                              child: Text('OK'),
+                                                            ),
+                                                          ],
+                                                        );
+                                                      },
+                                                    );
+                                                  }
                                                 },
                                                 text: 'Perfil completo',
                                                 options: FFButtonOptions(
@@ -598,7 +654,7 @@ class _ProfissionalEventsWidgetState extends State<ProfissionalEventsWidget> {
                                                 child: FFButtonWidget(
                                                   onPressed: () {
                                                     verCandidaturas(
-                                                        prestadorModel);
+                                                        prestadorAcetiarModel);
                                                   },
                                                   text: 'Contato do Prestador',
                                                   options: FFButtonOptions(
@@ -655,10 +711,19 @@ class _ProfissionalEventsWidgetState extends State<ProfissionalEventsWidget> {
     );
   }
 
-  void verCandidaturas(PrestadorModel prestadorModel) {
+  void verCandidaturas(PrestadorAceitarModel prestadorAcetiarModel) {
     Navigator.push(
         context,
         MaterialPageRoute(
-            builder: (_) => PerfilContractorPageWidget(data: prestadorModel)));
+            builder: (_) =>
+                PerfilContractorPageWidget(data: prestadorAcetiarModel)));
+  }
+
+  verPrestador(PrestadorModel prestadorModel) {
+    Navigator.push(
+        context,
+        MaterialPageRoute(
+            builder: (_) =>
+                PerfilProfissionalPageWidget(data: prestadorModel)));
   }
 }

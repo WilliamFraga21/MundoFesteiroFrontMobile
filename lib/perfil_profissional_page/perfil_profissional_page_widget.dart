@@ -8,6 +8,7 @@ import 'perfil_profissional_page_model.dart';
 export 'perfil_profissional_page_model.dart';
 import '../profissionals_page/profissionals_page_widget.dart';
 import '../hamburger/hamburger.dart';
+import '../datas/prestadorModel.dart';
 
 class PerfilProfissionalPageWidget extends StatefulWidget {
   // const PerfilProfissionalPageWidget({super.key});
