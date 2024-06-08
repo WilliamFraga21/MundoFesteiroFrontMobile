@@ -1,4 +1,5 @@
 import 'package:mundo_festeiro_mobile_app/applied_events/applied_events_widget.dart';
+import 'package:mundo_festeiro_mobile_app/configuration_edits/configuration_edits_widget.dart';
 import 'package:mundo_festeiro_mobile_app/edit_curriculum/edit_curriculum_widget.dart';
 import 'package:mundo_festeiro_mobile_app/job_proposals/job_proposals_widget.dart';
 import 'package:mundo_festeiro_mobile_app/perfil_page/perfil_page_widget.dart';
@@ -84,9 +85,9 @@ class HamburgerMenu extends StatelessWidget {
                               shape: BoxShape.circle,
                             ),
                             child: Image.network(
-                              // photoUser ??
-                              // user?.photoUrl ??
-                              'https://cdn-icons-png.flaticon.com/512/4519/4519678.png',
+                              photoUser ??
+                                  user?.photoUrl ??
+                                  'https://cdn-icons-png.flaticon.com/512/4519/4519678.png',
                               fit: BoxFit.cover,
                             ),
                           ),
@@ -187,7 +188,7 @@ class HamburgerMenu extends StatelessWidget {
                 hoverColor: Colors.transparent,
                 highlightColor: Colors.transparent,
                 onTap: () async {
-                  editaPerfil(context);
+                  configuration(context);
                 },
                 child: Container(
                   width: MediaQuery.sizeOf(context).width * 0.48,
@@ -222,7 +223,7 @@ class HamburgerMenu extends StatelessWidget {
                             padding: const EdgeInsetsDirectional.fromSTEB(
                                 20.0, 0.0, 0.0, 0.0),
                             child: Text(
-                              'Editar Perfil',
+                              'Configuracoes',
                               style: FlutterFlowTheme.of(context)
                                   .bodyMedium
                                   .override(
@@ -875,11 +876,11 @@ class HamburgerMenu extends StatelessWidget {
     );
   }
 
-  void editaPerfil(BuildContext context) {
+  void configuration(BuildContext context) {
     Navigator.push(
       context,
       MaterialPageRoute(
-        builder: (context) => const EditCurriculumWidget(),
+        builder: (context) => const ConfigurationEditsWidget(),
       ),
     );
   }

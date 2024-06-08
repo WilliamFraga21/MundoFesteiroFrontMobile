@@ -62,16 +62,16 @@ class _HomePageWidgetState extends State<HomePageWidget> {
     if (response.statusCode == 200) {
       try {
         Map<String, dynamic> jsonResponse = json.decode(response.body);
-        if (jsonResponse.containsKey('user') &&
-            jsonResponse['user'] != null &&
-            jsonResponse['user'].containsKey('user') &&
-            jsonResponse['user']['user'] != null) {
-          Map<String, dynamic> userData = jsonResponse['user']['user'];
+        if (jsonResponse['userinfos'] != null) {
+          print(jsonResponse['userinfos']);
+          Map<String, dynamic> userData = jsonResponse['userinfos'][0]['user'];
+          print("bbbbbbbbbbbbbbbbbbbbbbbbbbbbb");
+          print(userData);
           int id = userData['id'] ?? 0;
           String name = userData['name'] ?? '';
           // Outros campos de usuário
-
-          String photo = jsonResponse['photo'] ?? '';
+          Map<String, dynamic> userData2 = jsonResponse['userinfos'][0];
+          String photo = userData2['photo'] ?? '';
 
           User user = User(id: id, name: name, photoUrl: photo);
 
@@ -82,6 +82,7 @@ class _HomePageWidgetState extends State<HomePageWidget> {
           Provider.of<UserProvider>(context, listen: false).setUser(user);
           print('Nome: $name');
           print('Photo: $photo');
+          // print(userData2["photo"]);
         } else {
           print('Erro: Estrutura de resposta JSON inesperada');
         }

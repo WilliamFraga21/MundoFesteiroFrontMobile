@@ -149,7 +149,8 @@ class EventoModel {
     var list = json['profissao'] as List;
     List<Profissao> profissaoList =
         list.map((i) => Profissao.fromJson(i)).toList();
-
+    print(json);
+    print('hhhhhhhhhhhhhhhhhhhhhhhhhh');
     final photo = json['photo'] as String?;
     return EventoModel(
       user: User.fromJson(json['user']),

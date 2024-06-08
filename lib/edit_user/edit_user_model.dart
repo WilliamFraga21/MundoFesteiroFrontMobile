@@ -1,26 +1,21 @@
 import '/flutter_flow/flutter_flow_util.dart';
-import '/flutter_flow/form_field_controller.dart';
-import 'edit_curriculum_widget.dart' show EditCurriculumWidget;
+import 'edit_user_widget.dart' show EditUserWidget;
 import 'package:flutter/material.dart';
 
-class EditCurriculumModel extends FlutterFlowModel<EditCurriculumWidget> {
+class EditUserModel extends FlutterFlowModel<EditUserWidget> {
   ///  State fields for stateful widgets in this page.
 
   final unfocusNode = FocusNode();
-  // State field(s) for TextField widget.
-  // FocusNode? textFieldFocusNode1;
-  // TextEditingController? textController1;
-  // String? Function(BuildContext, String?)? textController1Validator;
-  // bool isDataUploading = false;
-  // FFUploadedFile uploadedLocalFile =
-  //     FFUploadedFile(bytes: Uint8List.fromList([]));
-  bool? switchListTileValue;
-  FocusNode? textFieldFocusNode;
-  TextEditingController? textController;
-  String? Function(BuildContext, String?)? textControllerValidator;
   bool isDataUploading = false;
   FFUploadedFile uploadedLocalFile =
       FFUploadedFile(bytes: Uint8List.fromList([]));
+
+  // State field(s) for SwitchListTile widget.
+  bool? switchListTileValue;
+  // State field(s) for TextField widget.
+  FocusNode? textFieldFocusNode1;
+  TextEditingController? textController1;
+  String? Function(BuildContext, String?)? textController1Validator;
   // State field(s) for TextField widget.
   FocusNode? textFieldFocusNode2;
   TextEditingController? textController2;
@@ -41,10 +36,14 @@ class EditCurriculumModel extends FlutterFlowModel<EditCurriculumWidget> {
   FocusNode? textFieldFocusNode6;
   TextEditingController? textController6;
   String? Function(BuildContext, String?)? textController6Validator;
-  List<String>? dropDownValue2;
-  FormFieldController<List<String>>? dropDownValueController2;
-  // State field(s) for CountController widget.
-  int? countControllerValue;
+  // State field(s) for TextField widget.
+  FocusNode? textFieldFocusNode7;
+  TextEditingController? textController7;
+  String? Function(BuildContext, String?)? textController7Validator;
+  // State field(s) for TextField widget.
+  FocusNode? textFieldFocusNode8;
+  TextEditingController? textController8;
+  String? Function(BuildContext, String?)? textController8Validator;
 
   @override
   void initState(BuildContext context) {}
@@ -52,8 +51,8 @@ class EditCurriculumModel extends FlutterFlowModel<EditCurriculumWidget> {
   @override
   void dispose() {
     unfocusNode.dispose();
-    textFieldFocusNode?.dispose();
-    textController?.dispose();
+    textFieldFocusNode1?.dispose();
+    textController1?.dispose();
 
     textFieldFocusNode2?.dispose();
     textController2?.dispose();
@@ -69,5 +68,11 @@ class EditCurriculumModel extends FlutterFlowModel<EditCurriculumWidget> {
 
     textFieldFocusNode6?.dispose();
     textController6?.dispose();
+
+    textFieldFocusNode7?.dispose();
+    textController7?.dispose();
+
+    textFieldFocusNode8?.dispose();
+    textController8?.dispose();
   }
 }

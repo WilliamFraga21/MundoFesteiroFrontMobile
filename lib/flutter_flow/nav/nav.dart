@@ -97,11 +97,11 @@ GoRouter createRouter(AppStateNotifier appStateNotifier) => GoRouter(
             //   path: 'eventDetailsPage',
             //   builder: (context, params) => const EventDetailsPageWidget(),
             // ),
-            FFRoute(
-              name: 'EditCurriculum',
-              path: 'editCurriculum',
-              builder: (context, params) => const EditCurriculumWidget(),
-            ),
+            // FFRoute(
+            //   name: 'EditCurriculum',
+            //   path: 'editCurriculum',
+            //   builder: (context, params) => const EditCurriculumWidget(),
+            // ),
             // FFRoute(
             //   name: 'SearchEventPage',
             //   path: 'searchEventPage',
