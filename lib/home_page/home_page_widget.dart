@@ -32,6 +32,7 @@ class _HomePageWidgetState extends State<HomePageWidget> {
   @override
   void initState() {
     super.initState();
+
     _model = createModel(context, () => HomePageModel());
     fetchGetMe();
   }
@@ -63,10 +64,7 @@ class _HomePageWidgetState extends State<HomePageWidget> {
       try {
         Map<String, dynamic> jsonResponse = json.decode(response.body);
         if (jsonResponse['userinfos'] != null) {
-          print(jsonResponse['userinfos']);
           Map<String, dynamic> userData = jsonResponse['userinfos'][0]['user'];
-          print("bbbbbbbbbbbbbbbbbbbbbbbbbbbbb");
-          print(userData);
           int id = userData['id'] ?? 0;
           String name = userData['name'] ?? '';
           // Outros campos de usuário
@@ -91,8 +89,9 @@ class _HomePageWidgetState extends State<HomePageWidget> {
       }
     } else {
       print('Error: GetMeUser');
-      print('Status code: ${response.statusCode}');
-      print('Response body: ${response.body}');
+      final dbHelper = DatabaseHelper();
+      await dbHelper.deleteToken();
+      await dbHelper.deleteUser();
     }
   }
 
@@ -351,19 +350,25 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                   const EdgeInsetsDirectional.fromSTEB(0.0, 16.0, 0.0, 0.0),
               child: FFButtonWidget(
                 onPressed: () async {
-                  if (Navigator.of(context).canPop()) {
-                    context.pop();
+                  DatabaseHelper dbHelper = DatabaseHelper();
+                  var tokenSQL = await dbHelper.getToken();
+                  if (tokenSQL != null) {
+                    if (Navigator.of(context).canPop()) {
+                      context.pop();
+                    }
+                    context.pushNamed(
+                      'EditCurriculum',
+                      extra: <String, dynamic>{
+                        kTransitionInfoKey: const TransitionInfo(
+                          hasTransition: true,
+                          transitionType: PageTransitionType.fade,
+                          duration: Duration(milliseconds: 0),
+                        ),
+                      },
+                    );
+                  } else {
+                    GoRouter.of(context).go('/LoginPage');
                   }
-                  context.pushNamed(
-                    'EditCurriculum',
-                    extra: <String, dynamic>{
-                      kTransitionInfoKey: const TransitionInfo(
-                        hasTransition: true,
-                        transitionType: PageTransitionType.fade,
-                        duration: Duration(milliseconds: 0),
-                      ),
-                    },
-                  );
                 },
                 text: 'Cadastrar-se',
                 options: FFButtonOptions(

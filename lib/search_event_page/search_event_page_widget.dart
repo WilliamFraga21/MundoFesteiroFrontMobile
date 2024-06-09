@@ -79,6 +79,36 @@ class _SearchEventPageWidgetState extends State<SearchEventPageWidget> {
         drawer: HamburgerMenu(
           onProfileTap: _onProfileTap,
         ),
+        appBar: AppBar(
+          backgroundColor: Colors.black,
+          automaticallyImplyLeading: false,
+          leading: FlutterFlowIconButton(
+            borderColor: Colors.transparent,
+            borderRadius: 30.0,
+            borderWidth: 1.0,
+            buttonSize: 60.0,
+            icon: const Icon(
+              Icons.menu,
+              color: Colors.white,
+              size: 30.0,
+            ),
+            onPressed: () async {
+              scaffoldKey.currentState!.openDrawer();
+            },
+          ),
+          title: Text(
+            'Logo',
+            style: FlutterFlowTheme.of(context).headlineMedium.override(
+                  fontFamily: 'Outfit',
+                  color: Colors.white,
+                  fontSize: 22.0,
+                  letterSpacing: 0.0,
+                ),
+          ),
+          actions: const [],
+          centerTitle: true,
+          elevation: 2.0,
+        ),
         body: SafeArea(
           top: true,
           child: buildFutureEventos(),
@@ -94,7 +124,26 @@ class _SearchEventPageWidgetState extends State<SearchEventPageWidget> {
         if (snapshot.connectionState == ConnectionState.waiting) {
           return Center(child: CircularProgressIndicator());
         } else if (snapshot.hasError) {
-          return Center(child: Text('Erro: ${snapshot}'));
+          return const Center(
+            // child: Text('Erro: ${snapshot}')
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Icon(
+                  Icons.error,
+                  size: 100,
+                ),
+                SizedBox(height: 16),
+                Text(
+                  'Ocorreu um erro inesperado.',
+                  style: TextStyle(
+                    fontSize: 24,
+                  ),
+                  textAlign: TextAlign.center,
+                ),
+              ],
+            ),
+          );
         } else if (snapshot.hasData) {
           return ListView.builder(
             itemCount: snapshot.data!.length,
@@ -104,7 +153,26 @@ class _SearchEventPageWidgetState extends State<SearchEventPageWidget> {
             },
           );
         } else {
-          return Center(child: Text('Nenhum dado encontrado'));
+          return const Center(
+            // child: Text('Erro: ${snapshot}')
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Icon(
+                  Icons.error,
+                  size: 100,
+                ),
+                SizedBox(height: 16),
+                Text(
+                  'Ocorreu um erro inesperado.',
+                  style: TextStyle(
+                    fontSize: 24,
+                  ),
+                  textAlign: TextAlign.center,
+                ),
+              ],
+            ),
+          );
         }
       },
     );

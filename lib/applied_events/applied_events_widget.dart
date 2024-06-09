@@ -182,9 +182,26 @@ class _AppliedEventsWidgetState extends State<AppliedEventsWidget> {
                       return Center(child: CircularProgressIndicator());
                     } else if (snapshot.hasError) {
                       // Se ocorrer um erro, exiba uma mensagem de erro
-                      return Center(
-                          child: Text(
-                              'Erro ao carregar eventos: ${snapshot.error}'));
+                      return const Center(
+                        // child: Text('Erro: ${snapshot}')
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Icon(
+                              Icons.error,
+                              size: 100,
+                            ),
+                            SizedBox(height: 16),
+                            Text(
+                              'Ocorreu um erro inesperado.',
+                              style: TextStyle(
+                                fontSize: 24,
+                              ),
+                              textAlign: TextAlign.center,
+                            ),
+                          ],
+                        ),
+                      );
                     } else {
                       // Se a Future estiver concluída com sucesso, construa a lista de eventos
                       List<EventoAPModel> eventos = snapshot.data!;
@@ -224,8 +241,8 @@ class _AppliedEventsWidgetState extends State<AppliedEventsWidget> {
                                     topRight: Radius.circular(8.0),
                                   ),
                                   child: Image.network(
-                                    // evento.eventoAP.evento_imagem ??
-                                    'https://t.ctcdn.com.br/JlHwiRHyv0mTD7GfRkIlgO6eQX8=/640x360/smart/i257652.jpeg',
+                                    evento.eventoAP.evento_imagem ??
+                                        'https://t.ctcdn.com.br/JlHwiRHyv0mTD7GfRkIlgO6eQX8=/640x360/smart/i257652.jpeg',
                                     height: 179.0,
                                     fit: BoxFit.cover,
                                   ),
@@ -233,7 +250,7 @@ class _AppliedEventsWidgetState extends State<AppliedEventsWidget> {
                                 Padding(
                                   padding: const EdgeInsets.all(8.0),
                                   child: Text(
-                                    evento.eventoAP.descricaoEvento,
+                                    "${evento.eventoAP.nomeEvento}",
                                     textAlign: TextAlign.justify,
                                     style: FlutterFlowTheme.of(context)
                                         .bodyMedium
@@ -241,6 +258,8 @@ class _AppliedEventsWidgetState extends State<AppliedEventsWidget> {
                                           fontFamily: 'Outfit',
                                           letterSpacing: 0.0,
                                           fontWeight: FontWeight.w500,
+                                          color: Colors
+                                              .black, // Defina a cor do texto como preto
                                         ),
                                   ),
                                 ),

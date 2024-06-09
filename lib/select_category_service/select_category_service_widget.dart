@@ -134,7 +134,26 @@ class _SelectCategoryServiceWidgetState
                 if (snapshot.connectionState == ConnectionState.waiting) {
                   return Center(child: CircularProgressIndicator());
                 } else if (snapshot.hasError) {
-                  return Center(child: Text('Erro: ${snapshot.error}'));
+                  return const Center(
+                    // child: Text('Erro: ${snapshot}')
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Icon(
+                          Icons.error,
+                          size: 100,
+                        ),
+                        SizedBox(height: 16),
+                        Text(
+                          'Ocorreu um erro inesperado.',
+                          style: TextStyle(
+                            fontSize: 24,
+                          ),
+                          textAlign: TextAlign.center,
+                        ),
+                      ],
+                    ),
+                  );
                 } else if (snapshot.hasData) {
                   return ListView.builder(
                     padding: EdgeInsets.zero,
@@ -243,7 +262,26 @@ class _SelectCategoryServiceWidgetState
                     },
                   );
                 } else {
-                  return Center(child: Text('Nenhum dado encontrado'));
+                  return const Center(
+                    // child: Text('Erro: ${snapshot}')
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Icon(
+                          Icons.error,
+                          size: 100,
+                        ),
+                        SizedBox(height: 16),
+                        Text(
+                          'Ocorreu um erro inesperado.',
+                          style: TextStyle(
+                            fontSize: 24,
+                          ),
+                          textAlign: TextAlign.center,
+                        ),
+                      ],
+                    ),
+                  );
                 }
               },
             ),

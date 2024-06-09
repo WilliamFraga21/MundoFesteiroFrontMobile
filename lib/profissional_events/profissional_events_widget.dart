@@ -384,7 +384,26 @@ class _ProfissionalEventsWidgetState extends State<ProfissionalEventsWidget> {
                     if (snapshot.connectionState == ConnectionState.waiting) {
                       return const CircularProgressIndicator();
                     } else if (snapshot.hasError) {
-                      return Text('Erro: ${snapshot.error}');
+                      return const Center(
+                        // child: Text('Erro: ${snapshot}')
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Icon(
+                              Icons.error,
+                              size: 100,
+                            ),
+                            SizedBox(height: 16),
+                            Text(
+                              'Ocorreu um erro inesperado.',
+                              style: TextStyle(
+                                fontSize: 24,
+                              ),
+                              textAlign: TextAlign.center,
+                            ),
+                          ],
+                        ),
+                      );
                     } else {
                       final prestadores = snapshot.data!;
 

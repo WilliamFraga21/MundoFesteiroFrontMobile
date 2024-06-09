@@ -123,7 +123,13 @@ class HamburgerMenu extends StatelessWidget {
                 hoverColor: Colors.transparent,
                 highlightColor: Colors.transparent,
                 onTap: () async {
-                  perfilPage(context);
+                  DatabaseHelper dbHelper = DatabaseHelper();
+                  var tokenSQL = await dbHelper.getToken();
+                  if (tokenSQL != null) {
+                    perfilPage(context);
+                  } else {
+                    GoRouter.of(context).go('/LoginPage');
+                  }
                 },
                 child: Container(
                   width: MediaQuery.sizeOf(context).width * 0.48,
@@ -188,7 +194,13 @@ class HamburgerMenu extends StatelessWidget {
                 hoverColor: Colors.transparent,
                 highlightColor: Colors.transparent,
                 onTap: () async {
-                  configuration(context);
+                  DatabaseHelper dbHelper = DatabaseHelper();
+                  var tokenSQL = await dbHelper.getToken();
+                  if (tokenSQL != null) {
+                    configuration(context);
+                  } else {
+                    GoRouter.of(context).go('/LoginPage');
+                  }
                 },
                 child: Container(
                   width: MediaQuery.sizeOf(context).width * 0.48,
@@ -253,7 +265,13 @@ class HamburgerMenu extends StatelessWidget {
                 hoverColor: Colors.transparent,
                 highlightColor: Colors.transparent,
                 onTap: () async {
-                  verPropostas(context);
+                  DatabaseHelper dbHelper = DatabaseHelper();
+                  var tokenSQL = await dbHelper.getToken();
+                  if (tokenSQL != null) {
+                    verPropostas(context);
+                  } else {
+                    GoRouter.of(context).go('/LoginPage');
+                  }
                 },
                 child: Container(
                   width: MediaQuery.sizeOf(context).width * 0.48,
@@ -318,7 +336,13 @@ class HamburgerMenu extends StatelessWidget {
                 hoverColor: Colors.transparent,
                 highlightColor: Colors.transparent,
                 onTap: () async {
-                  verEventosAplicados(context);
+                  DatabaseHelper dbHelper = DatabaseHelper();
+                  var tokenSQL = await dbHelper.getToken();
+                  if (tokenSQL != null) {
+                    verEventosAplicados(context);
+                  } else {
+                    GoRouter.of(context).go('/LoginPage');
+                  }
                 },
                 child: Container(
                   width: MediaQuery.sizeOf(context).width * 0.48,
@@ -383,7 +407,13 @@ class HamburgerMenu extends StatelessWidget {
                 hoverColor: Colors.transparent,
                 highlightColor: Colors.transparent,
                 onTap: () async {
-                  gerenciarEvent(context);
+                  DatabaseHelper dbHelper = DatabaseHelper();
+                  var tokenSQL = await dbHelper.getToken();
+                  if (tokenSQL != null) {
+                    gerenciarEvent(context);
+                  } else {
+                    GoRouter.of(context).go('/LoginPage');
+                  }
                 },
                 child: Container(
                   width: MediaQuery.sizeOf(context).width * 0.48,
@@ -644,7 +674,13 @@ class HamburgerMenu extends StatelessWidget {
                 hoverColor: Colors.transparent,
                 highlightColor: Colors.transparent,
                 onTap: () async {
-                  createCurriculum(context);
+                  DatabaseHelper dbHelper = DatabaseHelper();
+                  var tokenSQL = await dbHelper.getToken();
+                  if (tokenSQL != null) {
+                    createCurriculum(context);
+                  } else {
+                    GoRouter.of(context).go('/LoginPage');
+                  }
                 },
                 child: Container(
                   width: MediaQuery.sizeOf(context).width * 0.48,

@@ -1,9 +1,5 @@
 flutter_native_splash:
   color: "#000000"
-  color_dark: "#000000"
-  android_12:
-    color: "#000000"
-    color_dark: "#000000"
+  image: "./assets/images/Captura_de_tela_2024-04-28_192632.png"
   android: true
   ios: true
-  web: false
