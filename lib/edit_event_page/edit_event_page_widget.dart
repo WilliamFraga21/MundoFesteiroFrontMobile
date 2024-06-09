@@ -167,11 +167,9 @@ class _EditEventPageWidgetState extends State<EditEventPageWidget> {
       headers: headers,
     );
 
-    if (response.statusCode == 201) {
-      setState(() {
-        _message = 'Evento criado com sucesso!';
-        GoRouter.of(context).go('/homePage');
-      });
+    if (response.statusCode == 201 || response.statusCode == 200) {
+      Navigator.push(context,
+          MaterialPageRoute(builder: (_) => const SelectEditEventWidget()));
     } else {
       // Exibir aviso com mensagem da API
       final responseData = jsonDecode(response.body);

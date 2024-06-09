@@ -1,5 +1,7 @@
 import 'dart:convert';
 
+import 'package:mundo_festeiro_mobile_app/select_edit_event/select_edit_event_widget.dart';
+
 import '/flutter_flow/flutter_flow_count_controller.dart';
 import '/flutter_flow/flutter_flow_drop_down.dart';
 import '/flutter_flow/flutter_flow_expanded_image_view.dart';
@@ -137,11 +139,9 @@ class _CreateEventPageWidgetState extends State<CreateEventPageWidget> {
       headers: headers,
     );
 
-    if (response.statusCode == 201) {
-      setState(() {
-        _message = 'Evento criado com sucesso!';
-        GoRouter.of(context).go('/homePage');
-      });
+    if (response.statusCode == 201 || response.statusCode == 200) {
+      Navigator.push(context,
+          MaterialPageRoute(builder: (_) => const SelectEditEventWidget()));
     } else {
       // Exibir aviso com mensagem da API
       final responseData = jsonDecode(response.body);
