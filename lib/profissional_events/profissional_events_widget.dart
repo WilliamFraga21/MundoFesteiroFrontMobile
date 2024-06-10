@@ -31,6 +31,9 @@ class Prestador {
   final int aceitarPrestador;
   final int idPrestador;
   final int idEvento;
+  final int idUser;
+  final int idade;
+  final int localidadeUser;
   final String userName;
   final String email;
   final String contactno;
@@ -40,7 +43,10 @@ class Prestador {
 
   Prestador({
     required this.idProposta,
+    required this.localidadeUser,
     required this.aceitarPrestador,
+    required this.idUser,
+    required this.idade,
     required this.idPrestador,
     required this.idEvento,
     required this.userName,
@@ -54,6 +60,9 @@ class Prestador {
   factory Prestador.fromJson(Map<String, dynamic> json) {
     return Prestador(
       idProposta: json['id_proposta'],
+      localidadeUser: json['localidadeUser'],
+      idUser: json['idUser'],
+      idade: json['idade'],
       aceitarPrestador: json['aceitarPrestador'],
       idPrestador: json['prestador_id'],
       idEvento: json['evento_id'],
@@ -63,6 +72,38 @@ class Prestador {
       createdat: json['created_at'],
       curriculo: json['curriculo'],
       profissao: json['profissao'],
+    );
+  }
+}
+
+class LocalidadePrestador {
+  final int id;
+  final String endereco;
+  final String bairro;
+  final String cidade;
+  final String estado;
+  final String created_at;
+  final String updated_at;
+
+  LocalidadePrestador({
+    required this.id,
+    required this.endereco,
+    required this.bairro,
+    required this.cidade,
+    required this.estado,
+    required this.created_at,
+    required this.updated_at,
+  });
+
+  factory LocalidadePrestador.fromJson(Map<String, dynamic> json) {
+    return LocalidadePrestador(
+      id: json['id'],
+      endereco: json['endereco'],
+      bairro: json['bairro'],
+      cidade: json['cidade'],
+      estado: json['estado'],
+      created_at: json['created_at'],
+      updated_at: json['updated_at'],
     );
   }
 }
@@ -93,18 +134,22 @@ class Profession2 {
 class PrestadorAceitarModel {
   final Prestador prestador;
   final List<Profession2>? profession;
+  final LocalidadePrestador localidade;
   final String? photo;
 
   PrestadorAceitarModel({
     required this.prestador,
     required this.profession,
+    required this.localidade,
     required this.photo,
   });
 
   factory PrestadorAceitarModel.fromJson(Map<String, dynamic> json) {
     // Extrair dados do prestador
     final prestadorInfo = json['prestadorInfo'] as Map<String, dynamic>;
+    final localidauser = json['localidade'] as Map<String, dynamic>;
     final prestador = Prestador.fromJson(prestadorInfo);
+    final localidadePrestador = LocalidadePrestador.fromJson(localidauser);
 
     // Extrair dados da localidade do prestador
 
@@ -124,6 +169,7 @@ class PrestadorAceitarModel {
     return PrestadorAceitarModel(
       prestador: prestador,
       profession: profession,
+      localidade: localidadePrestador,
       photo: photo,
     );
   }
@@ -157,8 +203,8 @@ class _ProfissionalEventsWidgetState extends State<ProfissionalEventsWidget> {
     super.dispose();
   }
 
-  Future<void> aceitaProposta() async {
-    var url = Uri.parse(apiUrl + '/api/evento/aceitarproposta/3');
+  Future<void> aceitaProposta(int id) async {
+    var url = Uri.parse(apiUrl + '/api/evento/aceitarproposta/$id');
     final dbHelper = DatabaseHelper();
     String? validToken = await dbHelper.getToken();
     // Definindo os headers
@@ -188,7 +234,10 @@ class _ProfissionalEventsWidgetState extends State<ProfissionalEventsWidget> {
       // fetchPrestados();
       setState(() {
         _message = 'Proposta aceita!';
-        isPropostaAceita = true; // Altera a visibilidade dos botões
+        setState(() {
+          futurePrestadores =
+              fetchPrestados(); // Recarregue a lista de propostas
+        });
       });
     } else {
       // Exibir aviso com mensagem da API
@@ -237,6 +286,7 @@ class _ProfissionalEventsWidgetState extends State<ProfissionalEventsWidget> {
           throw Exception('Prestador não encontrado');
         }
       } else {
+        print(response.body);
         throw Exception('Prestador não encontrado');
       }
     } else {
@@ -246,7 +296,8 @@ class _ProfissionalEventsWidgetState extends State<ProfissionalEventsWidget> {
   }
 
   Future<List<PrestadorAceitarModel>> fetchPrestados() async {
-    var url = Uri.parse(apiUrl + '/api/evento/getprestadores/1');
+    var url = Uri.parse(
+        apiUrl + '/api/evento/getprestadores/${widget.data.evento.id}');
     final dbHelper = DatabaseHelper();
     String? validToken = await dbHelper.getToken();
 
@@ -269,10 +320,10 @@ class _ProfissionalEventsWidgetState extends State<ProfissionalEventsWidget> {
             .toList();
         return prestadores;
       } else {
-        throw Exception(response.body);
+        return [];
       }
     } else {
-      throw Exception(response.body);
+      return [];
     }
   }
 
@@ -356,7 +407,7 @@ class _ProfissionalEventsWidgetState extends State<ProfissionalEventsWidget> {
                   child: ClipRRect(
                     borderRadius: BorderRadius.circular(8.0),
                     child: Image.network(
-                      'https://picsum.photos/seed/614/600',
+                      widget.data.photo ?? 'https://picsum.photos/seed/614/600',
                       width: 300.0,
                       height: 200.0,
                       fit: BoxFit.cover,
@@ -371,7 +422,7 @@ class _ProfissionalEventsWidgetState extends State<ProfissionalEventsWidget> {
                     textAlign: TextAlign.start,
                     style: FlutterFlowTheme.of(context).bodyMedium.override(
                           fontFamily: 'Outfit',
-                          color: Colors.black,
+                          // color: Colors.black,
                           fontSize: 25.0,
                           letterSpacing: 0.0,
                           fontWeight: FontWeight.w900,
@@ -409,7 +460,7 @@ class _ProfissionalEventsWidgetState extends State<ProfissionalEventsWidget> {
 
                       return Column(
                         children: prestadores.map((prestadorAcetiarModel) {
-                          final prestador = prestadorAcetiarModel.prestador;
+                          final prestador = prestadorAcetiarModel;
 
                           return Padding(
                             padding: const EdgeInsetsDirectional.fromSTEB(
@@ -453,8 +504,8 @@ class _ProfissionalEventsWidgetState extends State<ProfissionalEventsWidget> {
                                         borderRadius:
                                             BorderRadius.circular(8.0),
                                         child: Image.network(
-                                          // widget.data.photo ??
-                                          'https://cdn-icons-png.flaticon.com/512/4519/4519678.png',
+                                          prestador.photo ??
+                                              'https://cdn-icons-png.flaticon.com/512/4519/4519678.png',
                                           width: 70.0,
                                           height: 70.0,
                                           fit: BoxFit.cover,
@@ -471,7 +522,7 @@ class _ProfissionalEventsWidgetState extends State<ProfissionalEventsWidget> {
                                             padding: const EdgeInsetsDirectional
                                                 .fromSTEB(16.0, 0.0, 0.0, 0.0),
                                             child: Text(
-                                              prestador.userName,
+                                              prestador.prestador.userName,
                                               style: FlutterFlowTheme.of(
                                                       context)
                                                   .bodyLarge
@@ -487,7 +538,7 @@ class _ProfissionalEventsWidgetState extends State<ProfissionalEventsWidget> {
                                             padding: const EdgeInsetsDirectional
                                                 .fromSTEB(16.0, 4.0, 0.0, 0.0),
                                             child: Text(
-                                              '21 anos',
+                                              '${prestador.prestador.idade} anos',
                                               style:
                                                   FlutterFlowTheme.of(context)
                                                       .bodyLarge
@@ -502,7 +553,7 @@ class _ProfissionalEventsWidgetState extends State<ProfissionalEventsWidget> {
                                             padding: const EdgeInsetsDirectional
                                                 .fromSTEB(16.0, 4.0, 0.0, 4.0),
                                             child: Text(
-                                              'São Paulo - SP',
+                                              '${prestador.localidade.cidade},${prestador.localidade.estado}',
                                               style:
                                                   FlutterFlowTheme.of(context)
                                                       .bodyMedium
@@ -513,21 +564,43 @@ class _ProfissionalEventsWidgetState extends State<ProfissionalEventsWidget> {
                                                       ),
                                             ),
                                           ),
-                                          Padding(
-                                            padding: const EdgeInsetsDirectional
-                                                .fromSTEB(16.0, 0.0, 0.0, 4.0),
-                                            child: Text(
-                                              'Garçom',
-                                              style:
-                                                  FlutterFlowTheme.of(context)
-                                                      .bodyMedium
-                                                      .override(
-                                                        fontFamily: 'Outfit',
-                                                        color: Colors.black,
-                                                        letterSpacing: 0.0,
-                                                      ),
+                                          if (prestador.profession != null)
+                                            Padding(
+                                              padding: EdgeInsetsDirectional
+                                                  .fromSTEB(
+                                                      16.0, 0.0, 0.0, 4.0),
+                                              child: Text(
+                                                prestador.profession!
+                                                    .map((profession) =>
+                                                        '${profession.nameProfession}')
+                                                    .join(', '),
+                                                style:
+                                                    FlutterFlowTheme.of(context)
+                                                        .bodyMedium
+                                                        .override(
+                                                          color: Colors.black,
+                                                          fontFamily: 'Outfit',
+                                                          letterSpacing: 0.0,
+                                                          fontWeight:
+                                                              FontWeight.w500,
+                                                        ),
+                                              ),
                                             ),
-                                          ),
+                                          // Padding(
+                                          //   padding: const EdgeInsetsDirectional
+                                          //       .fromSTEB(16.0, 0.0, 0.0, 4.0),
+                                          //   child: Text(
+                                          //     'Garçom',
+                                          //     style:
+                                          //         FlutterFlowTheme.of(context)
+                                          //             .bodyMedium
+                                          //             .override(
+                                          //               fontFamily: 'Outfit',
+                                          //               color: Colors.black,
+                                          //               letterSpacing: 0.0,
+                                          //             ),
+                                          //   ),
+                                          // ),
                                           Align(
                                             alignment:
                                                 const AlignmentDirectional(
@@ -543,7 +616,7 @@ class _ProfissionalEventsWidgetState extends State<ProfissionalEventsWidget> {
                                                     PrestadorModel
                                                         prestadorModel =
                                                         await fetchPrestadoByID(
-                                                            prestador
+                                                            prestador.prestador
                                                                 .idPrestador);
                                                     verPrestador(
                                                         prestadorModel);
@@ -608,105 +681,141 @@ class _ProfissionalEventsWidgetState extends State<ProfissionalEventsWidget> {
                                               ),
                                             ),
                                           ),
-                                          Visibility(
-                                            visible:
-                                                prestador.aceitarPrestador == 0,
-                                            child: Align(
-                                              alignment:
-                                                  const AlignmentDirectional(
-                                                      0.0, 0.0),
-                                              child: Padding(
-                                                padding:
-                                                    const EdgeInsetsDirectional
-                                                        .fromSTEB(
-                                                        0.0, 0.0, 0.0, 16.0),
-                                                child: FFButtonWidget(
-                                                  onPressed: () async {
-                                                    await aceitaProposta();
-                                                  },
-                                                  text: 'Aceitar Proposta',
-                                                  options: FFButtonOptions(
-                                                    width: 237.0,
-                                                    height: 35.0,
-                                                    padding:
-                                                        const EdgeInsetsDirectional
-                                                            .fromSTEB(
-                                                            0.0, 0.0, 0.0, 0.0),
-                                                    iconPadding:
-                                                        const EdgeInsetsDirectional
-                                                            .fromSTEB(
-                                                            0.0, 0.0, 0.0, 0.0),
-                                                    color:
-                                                        const Color(0xFF05BD7B),
-                                                    textStyle: FlutterFlowTheme
-                                                            .of(context)
-                                                        .titleSmall
-                                                        .override(
-                                                          fontFamily: 'Inter',
-                                                          color: Colors.white,
-                                                          fontSize: 16.0,
-                                                          letterSpacing: 0.0,
-                                                          fontWeight:
-                                                              FontWeight.w500,
-                                                        ),
-                                                    elevation: 3.0,
-                                                    borderRadius:
-                                                        BorderRadius.circular(
-                                                            40.0),
-                                                  ),
-                                                ),
-                                              ),
-                                            ),
-                                          ),
-                                          Visibility(
-                                            visible:
-                                                prestador.aceitarPrestador == 1,
-                                            child: Align(
-                                              alignment:
-                                                  const AlignmentDirectional(
-                                                      0.0, 0.0),
-                                              child: Padding(
-                                                padding:
-                                                    const EdgeInsetsDirectional
-                                                        .fromSTEB(
-                                                        0.0, 0.0, 0.0, 16.0),
-                                                child: FFButtonWidget(
-                                                  onPressed: () {
-                                                    verCandidaturas(
-                                                        prestadorAcetiarModel);
-                                                  },
-                                                  text: 'Contato do Prestador',
-                                                  options: FFButtonOptions(
-                                                    width: 237.0,
-                                                    height: 35.0,
-                                                    padding:
-                                                        const EdgeInsetsDirectional
-                                                            .fromSTEB(
-                                                            0.0, 0.0, 0.0, 0.0),
-                                                    iconPadding:
-                                                        const EdgeInsetsDirectional
-                                                            .fromSTEB(
-                                                            0.0, 0.0, 0.0, 0.0),
-                                                    color:
-                                                        const Color(0xFF05BD7B),
-                                                    textStyle: FlutterFlowTheme
-                                                            .of(context)
-                                                        .titleSmall
-                                                        .override(
-                                                          fontFamily: 'Inter',
-                                                          color: Colors.white,
-                                                          fontSize: 16.0,
-                                                          letterSpacing: 0.0,
-                                                          fontWeight:
-                                                              FontWeight.w500,
-                                                        ),
-                                                    elevation: 3.0,
-                                                    borderRadius:
-                                                        BorderRadius.circular(
-                                                            40.0),
-                                                  ),
-                                                ),
-                                              ),
+                                          Align(
+                                            alignment:
+                                                const AlignmentDirectional(
+                                                    0.0, 0.0),
+                                            child: Padding(
+                                              padding:
+                                                  const EdgeInsetsDirectional
+                                                      .fromSTEB(
+                                                      0.0, 0.0, 0.0, 16.0),
+                                              child: prestador.prestador
+                                                          .aceitarPrestador ==
+                                                      0
+                                                  ? FFButtonWidget(
+                                                      onPressed: () async {
+                                                        await aceitaProposta(
+                                                            prestador.prestador
+                                                                .idProposta);
+                                                      },
+                                                      text: 'Aceitar',
+                                                      options: FFButtonOptions(
+                                                        width: 237.0,
+                                                        height: 35.0,
+                                                        padding:
+                                                            const EdgeInsetsDirectional
+                                                                .fromSTEB(0.0,
+                                                                0.0, 0.0, 0.0),
+                                                        iconPadding:
+                                                            const EdgeInsetsDirectional
+                                                                .fromSTEB(0.0,
+                                                                0.0, 0.0, 0.0),
+                                                        color: const Color(
+                                                            0xFF05BD7B),
+                                                        textStyle:
+                                                            FlutterFlowTheme.of(
+                                                                    context)
+                                                                .titleSmall
+                                                                .override(
+                                                                  fontFamily:
+                                                                      'Inter',
+                                                                  color: Colors
+                                                                      .white,
+                                                                  fontSize:
+                                                                      16.0,
+                                                                  letterSpacing:
+                                                                      0.0,
+                                                                  fontWeight:
+                                                                      FontWeight
+                                                                          .w500,
+                                                                ),
+                                                        elevation: 3.0,
+                                                        borderRadius:
+                                                            BorderRadius
+                                                                .circular(40.0),
+                                                      ),
+                                                    )
+                                                  : FFButtonWidget(
+                                                      onPressed: () async {
+                                                        try {
+                                                          PrestadorModel
+                                                              prestadorModel =
+                                                              await fetchPrestadoByID(
+                                                                  prestador
+                                                                      .prestador
+                                                                      .idPrestador);
+                                                          verCandidaturas(
+                                                              prestadorModel);
+                                                        } catch (e) {
+                                                          print(
+                                                              'Erro ao buscar prestador: $e');
+                                                          // Exibir um aviso ao usuário
+                                                          showDialog(
+                                                            context: context,
+                                                            builder:
+                                                                (BuildContext
+                                                                    context) {
+                                                              return AlertDialog(
+                                                                title: Text(
+                                                                    'Erro'),
+                                                                content: Text(
+                                                                    'Erro ao carregar perfil do prestador.'),
+                                                                actions: [
+                                                                  TextButton(
+                                                                    onPressed:
+                                                                        () {
+                                                                      Navigator.of(
+                                                                              context)
+                                                                          .pop();
+                                                                    },
+                                                                    child: Text(
+                                                                        'OK'),
+                                                                  ),
+                                                                ],
+                                                              );
+                                                            },
+                                                          );
+                                                        }
+                                                      },
+                                                      text:
+                                                          'Proposta já foi aceita',
+                                                      options: FFButtonOptions(
+                                                        width: 237.0,
+                                                        height: 35.0,
+                                                        padding:
+                                                            const EdgeInsetsDirectional
+                                                                .fromSTEB(0.0,
+                                                                0.0, 0.0, 0.0),
+                                                        iconPadding:
+                                                            const EdgeInsetsDirectional
+                                                                .fromSTEB(0.0,
+                                                                0.0, 0.0, 0.0),
+                                                        color: const Color(
+                                                            0xFFCCCCCC),
+                                                        textStyle:
+                                                            FlutterFlowTheme.of(
+                                                                    context)
+                                                                .titleSmall
+                                                                .override(
+                                                                  fontFamily:
+                                                                      'Inter',
+                                                                  color: Colors
+                                                                      .white,
+                                                                  fontSize:
+                                                                      16.0,
+                                                                  letterSpacing:
+                                                                      0.0,
+                                                                  fontWeight:
+                                                                      FontWeight
+                                                                          .w500,
+                                                                ),
+                                                        elevation: 3.0,
+                                                        borderRadius:
+                                                            BorderRadius
+                                                                .circular(40.0),
+                                                      ),
+                                                    ),
                                             ),
                                           ),
                                         ],
@@ -730,12 +839,11 @@ class _ProfissionalEventsWidgetState extends State<ProfissionalEventsWidget> {
     );
   }
 
-  void verCandidaturas(PrestadorAceitarModel prestadorAcetiarModel) {
+  void verCandidaturas(PrestadorModel prestadorModel) {
     Navigator.push(
         context,
         MaterialPageRoute(
-            builder: (_) =>
-                PerfilContractorPageWidget(data: prestadorAcetiarModel)));
+            builder: (_) => PerfilContractorPageWidget(data: prestadorModel)));
   }
 
   verPrestador(PrestadorModel prestadorModel) {

@@ -1,17 +1,17 @@
-// import 'package:mundo_festeiro_mobile_app/profissionals_page/profissionals_page_widget.dart';
+import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
+import 'package:mundo_festeiro_mobile_app/datas/prestadorModel.dart';
 
 import '/flutter_flow/flutter_flow_expanded_image_view.dart';
 import '/flutter_flow/flutter_flow_icon_button.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
-import 'package:flutter/material.dart';
 import 'perfil_contractor_page_model.dart';
-import '../profissional_events/profissional_events_widget.dart';
 export 'perfil_contractor_page_model.dart';
 import '../hamburger/hamburger.dart';
 
 class PerfilContractorPageWidget extends StatefulWidget {
-  PrestadorAceitarModel data;
+  final PrestadorModel data;
 
   PerfilContractorPageWidget({Key? key, required this.data}) : super(key: key);
 
@@ -35,7 +35,6 @@ class _PerfilContractorPageWidgetState
   @override
   void dispose() {
     _model.dispose();
-
     super.dispose();
   }
 
@@ -48,6 +47,10 @@ class _PerfilContractorPageWidgetState
 
   @override
   Widget build(BuildContext context) {
+    // Convertendo a string 'createdAt' para DateTime e formatando a data
+    String formattedDate = DateFormat('dd/MM/yyyy')
+        .format(DateTime.parse(widget.data.prestador.createdAt));
+
     return GestureDetector(
       onTap: () => FocusScope.of(context).unfocus(),
       child: Scaffold(
@@ -107,7 +110,8 @@ class _PerfilContractorPageWidgetState
                         type: PageTransitionType.fade,
                         child: FlutterFlowExpandedImageView(
                           image: Image.network(
-                            'https://picsum.photos/seed/760/600',
+                            widget.data.photo ??
+                                'https://picsum.photos/seed/760/600',
                             fit: BoxFit.contain,
                           ),
                           allowRotation: false,
@@ -128,7 +132,8 @@ class _PerfilContractorPageWidgetState
                         shape: BoxShape.circle,
                       ),
                       child: Image.network(
-                        'https://picsum.photos/seed/760/600',
+                        widget.data.photo ??
+                            'https://picsum.photos/seed/760/600',
                         fit: BoxFit.cover,
                       ),
                     ),
@@ -149,19 +154,23 @@ class _PerfilContractorPageWidgetState
                     child: Column(
                       mainAxisSize: MainAxisSize.max,
                       children: [
-                        Text(
-                          widget.data.prestador.profissao,
-                          style:
-                              FlutterFlowTheme.of(context).bodyMedium.override(
+                        if (widget.data.profession != null)
+                          for (var profession in widget.data.profession!)
+                            Text(
+                              profession
+                                  .profissao, // Use o atributo correto da classe Profession2
+                              style: FlutterFlowTheme.of(context)
+                                  .bodyMedium
+                                  .override(
                                     fontFamily: 'Outfit',
                                     letterSpacing: 0.0,
                                   ),
-                        ),
+                            ),
                         Padding(
                           padding: const EdgeInsetsDirectional.fromSTEB(
                               0.0, 8.0, 0.0, 8.0),
                           child: Text(
-                            widget.data.prestador.userName,
+                            widget.data.prestador.name.toString(),
                             style: FlutterFlowTheme.of(context)
                                 .headlineMedium
                                 .override(
@@ -188,7 +197,7 @@ class _PerfilContractorPageWidgetState
                           padding: const EdgeInsetsDirectional.fromSTEB(
                               0.0, 0.0, 75.0, 4.0),
                           child: Text(
-                            'Contato: ${widget.data.prestador.contactno}',
+                            'Contato: ${widget.data.prestador.contactNo}',
                             style: FlutterFlowTheme.of(context)
                                 .bodyMedium
                                 .override(
@@ -201,7 +210,7 @@ class _PerfilContractorPageWidgetState
                           padding: const EdgeInsetsDirectional.fromSTEB(
                               0.0, 0.0, 0.0, 4.0),
                           child: Text(
-                            '${widget.data.prestador.curriculo}    ',
+                            'Promotor de Evento: ${widget.data.prestador.promotorEvento}',
                             style: FlutterFlowTheme.of(context)
                                 .bodyMedium
                                 .override(
@@ -214,7 +223,7 @@ class _PerfilContractorPageWidgetState
                           padding: const EdgeInsetsDirectional.fromSTEB(
                               0.0, 0.0, 0.0, 4.0),
                           child: Text(
-                            'Lorem Ipsum: Lorem Ipsum Lorem    ',
+                            'Cadastrado no Sistema desde: $formattedDate',
                             style: FlutterFlowTheme.of(context)
                                 .bodyMedium
                                 .override(
@@ -226,7 +235,7 @@ class _PerfilContractorPageWidgetState
                         Align(
                           alignment: const AlignmentDirectional(-1.0, 0.0),
                           child: Text(
-                            'Lorem Ipsum',
+                            'Curriculo',
                             style:
                                 FlutterFlowTheme.of(context).bodySmall.override(
                                       fontFamily: 'Outfit',
@@ -242,7 +251,7 @@ class _PerfilContractorPageWidgetState
                             padding: const EdgeInsetsDirectional.fromSTEB(
                                 0.0, 8.0, 0.0, 12.0),
                             child: Text(
-                              'Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum is simply dummy text of the printing and typesetting industry.',
+                              '${widget.data.prestador.curriculo}',
                               style: FlutterFlowTheme.of(context)
                                   .labelMedium
                                   .override(

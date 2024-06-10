@@ -24,8 +24,8 @@ class EventDetailsPageModel extends FlutterFlowModel<EventDetailsPageWidget> {
   TextEditingController? textController4;
   String? Function(BuildContext, String?)? textController4Validator;
   // State field(s) for DropDown widget.
-  List<String>? dropDownValue;
-  FormFieldController<List<String>>? dropDownValueController;
+  String? dropDownValue;
+  FormFieldController<String>? dropDownValueController;
 
   get pageViewController => null;
 

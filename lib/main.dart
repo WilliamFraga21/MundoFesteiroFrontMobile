@@ -150,10 +150,10 @@ class _NavBarPageState extends State<NavBarPage> {
 
     if (response.statusCode == 200) {
       // Navigate to the event management page
-      // setState(() {
-      //   _currentPage = SelectEditEventWidget();
-      //   _currentPageName = 'SelectEditEvent';
-      // });
+      setState(() {
+        _currentPage = SelectEditEventWidget();
+        _currentPageName = 'SelectEditEvent';
+      });
       print('Barra Menu Home');
     } else {
       // Navigate to the login page

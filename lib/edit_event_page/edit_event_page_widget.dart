@@ -181,7 +181,7 @@ class _EditEventPageWidgetState extends State<EditEventPageWidget> {
           return AlertDialog(
             title: Text('Erro'),
             content: Text(errorMessage ??
-                'Erro ao criar a conta. Status code: ${response.body}'),
+                'Erro ao editar evento. Status code: ${response.body}'),
             actions: [
               TextButton(
                 onPressed: () {
@@ -444,7 +444,7 @@ class _EditEventPageWidgetState extends State<EditEventPageWidget> {
               //             style:
               //                 FlutterFlowTheme.of(context).bodyMedium.override(
               //                       fontFamily: 'Outfit',
-              //                       color: Colors.black,
+              //
               //                       fontSize: 15.0,
               //                       letterSpacing: 0.0,
               //                       fontWeight: FontWeight.normal,
@@ -591,7 +591,7 @@ class _EditEventPageWidgetState extends State<EditEventPageWidget> {
                   ),
                   style: FlutterFlowTheme.of(context).bodyMedium.override(
                         fontFamily: 'Outfit',
-                        color: Colors.black,
+                        //
                         fontSize: 15.0,
                         letterSpacing: 0.0,
                         fontWeight: FontWeight.normal,
@@ -674,7 +674,6 @@ class _EditEventPageWidgetState extends State<EditEventPageWidget> {
                       ),
                       style: FlutterFlowTheme.of(context).bodyMedium.override(
                             fontFamily: 'Outfit',
-                            color: Colors.black,
                             fontSize: 15.0,
                             letterSpacing: 0.0,
                             fontWeight: FontWeight.normal,
@@ -751,7 +750,6 @@ class _EditEventPageWidgetState extends State<EditEventPageWidget> {
                   ),
                   style: FlutterFlowTheme.of(context).bodyMedium.override(
                         fontFamily: 'Outfit',
-                        color: Colors.black,
                         fontSize: 15.0,
                         letterSpacing: 0.0,
                         fontWeight: FontWeight.normal,
@@ -804,7 +802,6 @@ class _EditEventPageWidgetState extends State<EditEventPageWidget> {
                   labelTextStyle:
                       FlutterFlowTheme.of(context).labelMedium.override(
                             fontFamily: 'Outfit',
-                            color: Colors.black,
                             letterSpacing: 0.0,
                           ),
                 ),
@@ -864,7 +861,6 @@ class _EditEventPageWidgetState extends State<EditEventPageWidget> {
                   ),
                   style: FlutterFlowTheme.of(context).bodyMedium.override(
                         fontFamily: 'Outfit',
-                        color: Colors.black,
                         fontSize: 15.0,
                         letterSpacing: 0.0,
                         fontWeight: FontWeight.normal,
@@ -929,7 +925,6 @@ class _EditEventPageWidgetState extends State<EditEventPageWidget> {
                   ),
                   style: FlutterFlowTheme.of(context).bodyMedium.override(
                         fontFamily: 'Outfit',
-                        color: Colors.black,
                         fontSize: 15.0,
                         letterSpacing: 0.0,
                         fontWeight: FontWeight.normal,
@@ -993,7 +988,6 @@ class _EditEventPageWidgetState extends State<EditEventPageWidget> {
                   ),
                   style: FlutterFlowTheme.of(context).bodyMedium.override(
                         fontFamily: 'Outfit',
-                        color: Colors.black,
                         fontSize: 15.0,
                         letterSpacing: 0.0,
                         fontWeight: FontWeight.normal,
@@ -1057,7 +1051,6 @@ class _EditEventPageWidgetState extends State<EditEventPageWidget> {
                   ),
                   style: FlutterFlowTheme.of(context).bodyMedium.override(
                         fontFamily: 'Outfit',
-                        color: Colors.black,
                         fontSize: 15.0,
                         letterSpacing: 0.0,
                         fontWeight: FontWeight.normal,
@@ -1121,7 +1114,6 @@ class _EditEventPageWidgetState extends State<EditEventPageWidget> {
                   ),
                   style: FlutterFlowTheme.of(context).bodyMedium.override(
                         fontFamily: 'Outfit',
-                        color: Colors.black,
                         fontSize: 15.0,
                         letterSpacing: 0.0,
                         fontWeight: FontWeight.normal,
@@ -1185,7 +1177,6 @@ class _EditEventPageWidgetState extends State<EditEventPageWidget> {
                   ),
                   style: FlutterFlowTheme.of(context).bodyMedium.override(
                         fontFamily: 'Outfit',
-                        color: Colors.black,
                         fontSize: 15.0,
                         letterSpacing: 0.0,
                         fontWeight: FontWeight.normal,
@@ -1249,7 +1240,6 @@ class _EditEventPageWidgetState extends State<EditEventPageWidget> {
                   ),
                   style: FlutterFlowTheme.of(context).bodyMedium.override(
                         fontFamily: 'Outfit',
-                        color: Colors.black,
                         fontSize: 15.0,
                         letterSpacing: 0.0,
                         fontWeight: FontWeight.normal,
@@ -1312,7 +1302,7 @@ class _EditEventPageWidgetState extends State<EditEventPageWidget> {
               //     ),
               //     style: FlutterFlowTheme.of(context).bodyMedium.override(
               //           fontFamily: 'Outfit',
-              //           color: Colors.black,
+              //
               //           fontSize: 15.0,
               //           letterSpacing: 0.0,
               //           fontWeight: FontWeight.normal,
@@ -1376,7 +1366,6 @@ class _EditEventPageWidgetState extends State<EditEventPageWidget> {
                   ),
                   style: FlutterFlowTheme.of(context).bodyMedium.override(
                         fontFamily: 'Outfit',
-                        color: Colors.black,
                         fontSize: 15.0,
                         letterSpacing: 0.0,
                         fontWeight: FontWeight.normal,
@@ -1407,7 +1396,6 @@ class _EditEventPageWidgetState extends State<EditEventPageWidget> {
                     hintStyle:
                         FlutterFlowTheme.of(context).labelMedium.override(
                               fontFamily: 'Outfit',
-                              color: Colors.black,
                               letterSpacing: 0.0,
                             ),
                     enabledBorder: OutlineInputBorder(
@@ -1441,7 +1429,6 @@ class _EditEventPageWidgetState extends State<EditEventPageWidget> {
                   ),
                   style: FlutterFlowTheme.of(context).bodyMedium.override(
                         fontFamily: 'Outfit',
-                        color: Colors.black,
                         fontSize: 15.0,
                         letterSpacing: 0.0,
                         fontWeight: FontWeight.normal,
@@ -1505,7 +1492,6 @@ class _EditEventPageWidgetState extends State<EditEventPageWidget> {
                   ),
                   style: FlutterFlowTheme.of(context).bodyMedium.override(
                         fontFamily: 'Outfit',
-                        color: Colors.black,
                         fontSize: 15.0,
                         letterSpacing: 0.0,
                         fontWeight: FontWeight.normal,
@@ -1556,7 +1542,6 @@ class _EditEventPageWidgetState extends State<EditEventPageWidget> {
                   labelTextStyle:
                       FlutterFlowTheme.of(context).labelMedium.override(
                             fontFamily: 'Outfit',
-                            color: Colors.black,
                             letterSpacing: 0.0,
                           ),
                 ),

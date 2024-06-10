@@ -153,7 +153,7 @@ class _CreateEventPageWidgetState extends State<CreateEventPageWidget> {
           return AlertDialog(
             title: Text('Erro'),
             content: Text(errorMessage ??
-                'Erro ao criar a conta. Status code: ${response.body}'),
+                'Erro ao criar o Evento. Status code: ${response.body}'),
             actions: [
               TextButton(
                 onPressed: () {

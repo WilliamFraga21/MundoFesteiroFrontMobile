@@ -156,7 +156,7 @@ class _ProvideServicesPageWidgetState extends State<ProvideServicesPageWidget> {
           return AlertDialog(
             title: Text('Erro'),
             content: Text(errorMessage ??
-                'Erro ao criar a conta. Status code: ${response.body}'),
+                'Erro ao cadastrar curriculo. Status code: ${response.body}'),
             actions: [
               TextButton(
                 onPressed: () {

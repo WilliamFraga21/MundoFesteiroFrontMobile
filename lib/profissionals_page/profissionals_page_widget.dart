@@ -243,7 +243,7 @@ class _ProfissionalsPageWidgetState extends State<ProfissionalsPageWidget> {
                                             padding: const EdgeInsetsDirectional
                                                 .fromSTEB(16.0, 4.0, 0.0, 0.0),
                                             child: Text(
-                                              '${prestador.photo}', // Use a propriedade de idade real aqui
+                                              '${prestador.prestador.id} Anos', // Use a propriedade de idade real aqui
                                               style:
                                                   FlutterFlowTheme.of(context)
                                                       .bodyLarge
@@ -258,7 +258,7 @@ class _ProfissionalsPageWidgetState extends State<ProfissionalsPageWidget> {
                                             padding: const EdgeInsetsDirectional
                                                 .fromSTEB(16.0, 4.0, 0.0, 4.0),
                                             child: Text(
-                                              'dwadwadwadw', // Use as propriedades de cidade e estado reais aqui
+                                              '${prestador.localidadePrestador.estado},${prestador.localidadePrestador.cidade},${prestador.localidadePrestador.bairro}', // Use as propriedades de cidade e estado reais aqui
                                               style:
                                                   FlutterFlowTheme.of(context)
                                                       .bodyMedium

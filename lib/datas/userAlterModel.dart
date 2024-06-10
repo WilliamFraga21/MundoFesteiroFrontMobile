@@ -2,6 +2,7 @@ import 'package:flutter/foundation.dart';
 
 class UserModel {
   final int id;
+  final int idade;
   final String name;
   final String email;
   final String contactNo;
@@ -10,6 +11,7 @@ class UserModel {
 
   UserModel({
     required this.id,
+    required this.idade,
     required this.name,
     required this.email,
     required this.contactNo,
@@ -20,6 +22,7 @@ class UserModel {
   factory UserModel.fromJson(Map<String, dynamic> json) {
     return UserModel(
       id: json['id'],
+      idade: json['idade'],
       name: json['name'],
       email: json['email'],
       contactNo: json['contactno'].toString(),

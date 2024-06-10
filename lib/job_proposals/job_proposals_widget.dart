@@ -1,3 +1,6 @@
+import 'package:mundo_festeiro_mobile_app/index.dart';
+import 'package:mundo_festeiro_mobile_app/perfil_contractor_page/perfil_contractor_page_widget.dart';
+
 import '/flutter_flow/flutter_flow_expanded_image_view.dart';
 import '/flutter_flow/flutter_flow_icon_button.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
@@ -12,6 +15,7 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 import '../Helper/helper.dart';
 import "../datas/propostasModel.dart";
+import "../datas/prestadorModel.dart";
 
 class JobProposalsWidget extends StatefulWidget {
   const JobProposalsWidget({super.key});
@@ -36,6 +40,36 @@ class _JobProposalsWidgetState extends State<JobProposalsWidget> {
   void dispose() {
     _model.dispose();
     super.dispose();
+  }
+
+  Future<PrestadorModel> fetchPrestadoByID(int id) async {
+    var url = Uri.parse(apiUrl + '/prestador/id/$id');
+
+    var headers = {
+      'Content-Type': 'application/json',
+    };
+
+    var response = await http.get(url, headers: headers);
+
+    if (response.statusCode == 200) {
+      Map<String, dynamic> jsonResponse = json.decode(response.body);
+
+      if (jsonResponse['prestador'] != null) {
+        // Supondo que a resposta JSON contém uma lista de prestadores
+        List<dynamic> prestadorList = jsonResponse['prestador'];
+        if (prestadorList.isNotEmpty) {
+          return PrestadorModel.fromJson(prestadorList[0]);
+        } else {
+          throw Exception('Prestador não encontrado');
+        }
+      } else {
+        print(response.body);
+        throw Exception('Prestador não encontrado');
+      }
+    } else {
+      print(response.body);
+      throw Exception('Falha ao carregar prestador');
+    }
   }
 
   Future<void> acceptProposta(int propostaID) async {
@@ -215,7 +249,7 @@ class _JobProposalsWidgetState extends State<JobProposalsWidget> {
                                     hoverColor: Colors.transparent,
                                     highlightColor: Colors.transparent,
                                     onTap: () async {
-                                      context.pushNamed('PerfilContractorPage');
+                                      // context.pushNamed('PerfilContractorPage');
                                     },
                                     child: ClipRRect(
                                       borderRadius: BorderRadius.circular(8.0),
@@ -259,7 +293,8 @@ class _JobProposalsWidgetState extends State<JobProposalsWidget> {
                                           padding: const EdgeInsetsDirectional
                                               .fromSTEB(16.0, 4.0, 0.0, 4.0),
                                           child: Text(
-                                            proposta.infosUserProposta.email,
+                                            proposta
+                                                .infosUserProposta.dataProposta,
                                             style: FlutterFlowTheme.of(context)
                                                 .bodyMedium
                                                 .override(
@@ -335,9 +370,47 @@ class _JobProposalsWidgetState extends State<JobProposalsWidget> {
                                                     ),
                                                   )
                                                 : FFButtonWidget(
-                                                    onPressed: () {},
-                                                    text:
-                                                        'Proposta já foi aceita',
+                                                    onPressed: () async {
+                                                      try {
+                                                        PrestadorModel
+                                                            prestadorModel =
+                                                            await fetchPrestadoByID(
+                                                                proposta
+                                                                    .infosUserProposta
+                                                                    .prestadorId);
+                                                        verCandidaturas(
+                                                            prestadorModel);
+                                                      } catch (e) {
+                                                        print(
+                                                            'Erro ao buscar prestador: $e');
+                                                        // Exibir um aviso ao usuário
+                                                        showDialog(
+                                                          context: context,
+                                                          builder: (BuildContext
+                                                              context) {
+                                                            return AlertDialog(
+                                                              title:
+                                                                  Text('Erro'),
+                                                              content: Text(
+                                                                  'Erro ao carregar perfil do prestador.'),
+                                                              actions: [
+                                                                TextButton(
+                                                                  onPressed:
+                                                                      () {
+                                                                    Navigator.of(
+                                                                            context)
+                                                                        .pop();
+                                                                  },
+                                                                  child: Text(
+                                                                      'OK'),
+                                                                ),
+                                                              ],
+                                                            );
+                                                          },
+                                                        );
+                                                      }
+                                                    },
+                                                    text: 'Ver Perfil Completo',
                                                     options: FFButtonOptions(
                                                       width: 237.0,
                                                       height: 35.0,
@@ -391,5 +464,19 @@ class _JobProposalsWidgetState extends State<JobProposalsWidget> {
             ),
           ),
         ));
+  }
+
+  void verCandidaturas(PrestadorModel prestadorModel) {
+    Navigator.push(
+        context,
+        MaterialPageRoute(
+            builder: (_) => PerfilContractorPageWidget(data: prestadorModel)));
+  }
+
+  verPrestador(PrestadorModel prestadorModel) {
+    Navigator.push(
+        context,
+        MaterialPageRoute(
+            builder: (_) => PerfilContractorPageWidget(data: prestadorModel)));
   }
 }

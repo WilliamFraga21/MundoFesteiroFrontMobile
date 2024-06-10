@@ -190,15 +190,19 @@ class _EditCurriculumWidgetState extends State<EditCurriculumWidget> {
     } else {
       // Exibir aviso com mensagem da API
       final responseData = jsonDecode(response.body);
-      final errorMessage = responseData['message'];
+      final List<dynamic> errorMessages = responseData['error']['message'];
+
+      // Concatenar as mensagens de erro em uma única string
+      final errorMessage = errorMessages.join('\n');
 
       showDialog(
         context: context,
         builder: (BuildContext context) {
           return AlertDialog(
             title: Text('Erro'),
-            content: Text(errorMessage ??
-                'Erro ao criar a conta. Status code: ${response.body}'),
+            content: Text(errorMessage.isNotEmpty
+                ? errorMessage
+                : 'Erro ao Editar curriculo. Status code: ${response.statusCode}'),
             actions: [
               TextButton(
                 onPressed: () {
@@ -242,6 +246,14 @@ class _EditCurriculumWidgetState extends State<EditCurriculumWidget> {
       final response = await http.post(url, headers: headers, body: body);
       if (response.statusCode == 200) {
         print('Dados enviados com sucesso');
+        setState(() {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => const ConfigurationEditsWidget(),
+            ),
+          );
+        });
       } else {
         print('Falha ao enviar dados. Código de status: ${response.body}');
       }
@@ -276,8 +288,31 @@ class _EditCurriculumWidgetState extends State<EditCurriculumWidget> {
         // print(professions);
         // print("professionsssssssssssssssssssssssssssssssssssssssssss");
       } else {
-        print(
-            'Falha ao carregar profissões. Código de status: ${response.statusCode}');
+        final responseData = jsonDecode(response.body);
+        final List<dynamic> errorMessages = responseData['error']['message'];
+
+        // Concatenar as mensagens de erro em uma única string
+        final errorMessage = errorMessages.join('\n');
+
+        showDialog(
+          context: context,
+          builder: (BuildContext context) {
+            return AlertDialog(
+              title: Text('Erro'),
+              content: Text(errorMessage.isNotEmpty
+                  ? errorMessage
+                  : 'Erro ao fazer login. Status code: ${response.statusCode}'),
+              actions: [
+                TextButton(
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                  child: Text('OK'),
+                ),
+              ],
+            );
+          },
+        );
       }
     } catch (e) {
       print('Erro ao carregar profissões: $e');

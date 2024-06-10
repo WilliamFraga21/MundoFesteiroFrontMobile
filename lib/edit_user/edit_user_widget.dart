@@ -1,3 +1,4 @@
+import 'package:mundo_festeiro_mobile_app/configuration_edits/configuration_edits_widget.dart';
 import 'package:mundo_festeiro_mobile_app/datas/userModel.dart';
 
 import '/flutter_flow/flutter_flow_expanded_image_view.dart';
@@ -14,6 +15,9 @@ import '../Helper/helper.dart';
 import '../hamburger/hamburger.dart';
 import 'package:http/http.dart' as http;
 import '../constants/constants.dart';
+import '../datas/user_provider.dart';
+import 'package:provider/provider.dart';
+import 'package:mundo_festeiro_mobile_app/datas/user.dart' as UserData;
 
 // ignore: must_be_immutable
 class EditUserWidget extends StatefulWidget {
@@ -35,6 +39,7 @@ class _EditUserWidgetState extends State<EditUserWidget> {
   @override
   void initState() {
     super.initState();
+
     _model = createModel(context, () => EditUserModel());
 
     _model.textController1 ??=
@@ -96,6 +101,86 @@ class _EditUserWidgetState extends State<EditUserWidget> {
   //   }
   // }
 
+  Future<void> fetchGetMe() async {
+    DatabaseHelper dbHelper = DatabaseHelper();
+    var tokenSQL = await dbHelper.getToken();
+    print('validToken');
+    var url = Uri.parse(apiUrl + '/api/user/me');
+    var headers = {
+      'Content-Type': 'application/json',
+      'Authorization': "Bearer $tokenSQL",
+    };
+
+    var response = await http.get(url, headers: headers);
+
+    if (response.statusCode == 200 || response.statusCode == 201) {
+      try {
+        Map<String, dynamic> jsonResponse = json.decode(response.body);
+        if (jsonResponse['userinfos'] != null) {
+          Map<String, dynamic> userData = jsonResponse['userinfos'][0]['user'];
+          int id = userData['id'] ?? 0;
+          String name = userData['name'] ?? '';
+          // Outros campos de usuário
+          Map<String, dynamic> userData2 = jsonResponse['userinfos'][0];
+          String photo = userData2['photo'] ?? '';
+
+          UserData.User user =
+              UserData.User(id: id, name: name, photoUrl: photo);
+
+          DatabaseHelper dbHelper = DatabaseHelper();
+          await dbHelper
+              .insertUser(user); // Convertendo User para Map antes de inserir
+
+          Provider.of<UserProvider>(context, listen: false).setUser(user);
+          print('Nome: $name');
+          print('Photo: $photo');
+          // print(userData2["photo"]);
+        } else {
+          print('Erro: Estrutura de resposta JSON inesperada');
+        }
+      } catch (e) {
+        print('Erro ao decodificar JSON: $e');
+      }
+    } else {
+      print('Error: GetMeUser');
+    }
+  }
+
+  Future<void> uploadAvatar(FFUploadedFile file) async {
+    try {
+      var uri = Uri.parse(apiUrl + '/api/user/avatar/create');
+      final dbHelper = DatabaseHelper();
+      String? validToken = await dbHelper.getToken();
+      var request = http.MultipartRequest('POST', uri)
+        ..headers['Authorization'] =
+            'Bearer $validToken' // Adiciona o cabeçalho de autorização com o token
+        ..files.add(http.MultipartFile.fromBytes(
+          'avatar',
+          file.bytes!,
+          filename: file.name,
+        ));
+
+      var response = await request.send();
+
+      if (response.statusCode == 200 || response.statusCode == 201) {
+        print('Avatar uploaded successfully!');
+        await fetchGetMe();
+        setState(() {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => const ConfigurationEditsWidget(),
+            ),
+          );
+        });
+      } else {
+        print('Failed to upload avatar: ${response.reasonPhrase}');
+      }
+    } catch (e) {
+      print('Error uploading avatar: $e');
+    }
+  }
+
   Future<void> editUser() async {
     var url = Uri.parse(apiUrl + '/api/user/update');
     final dbHelper = DatabaseHelper();
@@ -123,23 +208,31 @@ class _EditUserWidgetState extends State<EditUserWidget> {
       headers: headers,
     );
 
-    if (response.statusCode == 201) {
+    if (response.statusCode == 201 || response.statusCode == 200) {
       setState(() {
-        _message = 'Evento criado com sucesso!';
-        GoRouter.of(context).go('/homePage');
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => const ConfigurationEditsWidget(),
+          ),
+        );
       });
     } else {
       // Exibir aviso com mensagem da API
       final responseData = jsonDecode(response.body);
-      final errorMessage = responseData['message'];
+      final List<dynamic> errorMessages = responseData['error']['message'];
+
+      // Concatenar as mensagens de erro em uma única string
+      final errorMessage = errorMessages.join('\n');
 
       showDialog(
         context: context,
         builder: (BuildContext context) {
           return AlertDialog(
             title: Text('Erro'),
-            content: Text(errorMessage ??
-                'Erro ao criar a conta. Status code: ${response.body}'),
+            content: Text(errorMessage.isNotEmpty
+                ? errorMessage
+                : 'Erro ao Editar User. Status code: ${response.statusCode}'),
             actions: [
               TextButton(
                 onPressed: () {
@@ -244,7 +337,8 @@ class _EditUserWidgetState extends State<EditUserWidget> {
                                   type: PageTransitionType.fade,
                                   child: FlutterFlowExpandedImageView(
                                     image: Image.network(
-                                      'https://images.unsplash.com/photo-1481819613568-3701cbc70156?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w0NTYyMDF8MHwxfHNlYXJjaHwxOXx8bmlnaHQlMjBza3l8ZW58MHx8fHwxNzE0NTU3MDA0fDA&ixlib=rb-4.0.3&q=80&w=1080',
+                                      widget.data.photo ??
+                                          'https://images.unsplash.com/photo-1481819613568-3701cbc70156?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w0NTYyMDF8MHwxfHNlYXJjaHwxOXx8bmlnaHQlMjBza3l8ZW58MHx8fHwxNzE0NTU3MDA0fDA&ixlib=rb-4.0.3&q=80&w=1080',
                                       fit: BoxFit.contain,
                                     ),
                                     allowRotation: false,
@@ -265,7 +359,8 @@ class _EditUserWidgetState extends State<EditUserWidget> {
                                   shape: BoxShape.circle,
                                 ),
                                 child: Image.network(
-                                  'https://images.unsplash.com/photo-1481819613568-3701cbc70156?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w0NTYyMDF8MHwxfHNlYXJjaHwxOXx8bmlnaHQlMjBza3l8ZW58MHx8fHwxNzE0NTU3MDA0fDA&ixlib=rb-4.0.3&q=80&w=1080',
+                                  widget.data.photo ??
+                                      'https://images.unsplash.com/photo-1481819613568-3701cbc70156?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w0NTYyMDF8MHwxfHNlYXJjaHwxOXx8bmlnaHQlMjBza3l8ZW58MHx8fHwxNzE0NTU3MDA0fDA&ixlib=rb-4.0.3&q=80&w=1080',
                                   fit: BoxFit.cover,
                                 ),
                               ),
@@ -293,11 +388,11 @@ class _EditUserWidgetState extends State<EditUserWidget> {
                                 mediaSource: MediaSource.photoGallery,
                                 multiImage: false,
                               );
+
                               if (selectedMedia != null &&
                                   selectedMedia.every((m) => validateFileFormat(
                                       m.storagePath, context))) {
                                 setState(() => _model.isDataUploading = true);
-                                var selectedUploadedFiles = <FFUploadedFile>[];
 
                                 try {
                                   showUploadMessage(
@@ -305,32 +400,33 @@ class _EditUserWidgetState extends State<EditUserWidget> {
                                     'Uploading file...',
                                     showLoading: true,
                                   );
-                                  selectedUploadedFiles = selectedMedia
-                                      .map((m) => FFUploadedFile(
-                                            name: m.storagePath.split('/').last,
-                                            bytes: m.bytes,
-                                            height: m.dimensions?.height,
-                                            width: m.dimensions?.width,
-                                            blurHash: m.blurHash,
-                                          ))
-                                      .toList();
+
+                                  // Apenas a primeira imagem é enviada
+                                  final firstImage = selectedMedia.first;
+
+                                  // Converte a imagem selecionada em FFUploadedFile
+                                  final uploadedFile = FFUploadedFile(
+                                    name:
+                                        firstImage.storagePath.split('/').last,
+                                    bytes: firstImage.bytes,
+                                    height: firstImage.dimensions?.height,
+                                    width: firstImage.dimensions?.width,
+                                    blurHash: firstImage.blurHash,
+                                  );
+
+                                  // Envia a imagem para o backend
+                                  await uploadAvatar(uploadedFile);
+
+                                  showUploadMessage(context, 'Success!');
+                                } catch (e) {
+                                  print('Error uploading file: $e');
+                                  showUploadMessage(
+                                      context, 'Failed to upload file');
                                 } finally {
+                                  setState(
+                                      () => _model.isDataUploading = false);
                                   ScaffoldMessenger.of(context)
                                       .hideCurrentSnackBar();
-                                  _model.isDataUploading = false;
-                                }
-                                if (selectedUploadedFiles.length ==
-                                    selectedMedia.length) {
-                                  setState(() {
-                                    _model.uploadedLocalFile =
-                                        selectedUploadedFiles.first;
-                                  });
-                                  showUploadMessage(context, 'Success!');
-                                } else {
-                                  setState(() {});
-                                  showUploadMessage(
-                                      context, 'Failed to upload data');
-                                  return;
                                 }
                               }
                             },

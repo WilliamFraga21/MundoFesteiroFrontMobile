@@ -128,7 +128,8 @@ class _PerfilProfissionalPageWidgetState
                         type: PageTransitionType.fade,
                         child: FlutterFlowExpandedImageView(
                           image: Image.network(
-                            'https://picsum.photos/seed/760/600',
+                            widget.data.photo ??
+                                'https://picsum.photos/seed/760/600',
                             fit: BoxFit.contain,
                           ),
                           allowRotation: false,
@@ -149,7 +150,8 @@ class _PerfilProfissionalPageWidgetState
                         shape: BoxShape.circle,
                       ),
                       child: Image.network(
-                        'https://picsum.photos/seed/760/600',
+                        widget.data.photo ??
+                            'https://picsum.photos/seed/760/600',
                         fit: BoxFit.cover,
                       ),
                     ),
@@ -170,14 +172,18 @@ class _PerfilProfissionalPageWidgetState
                     child: Column(
                       mainAxisSize: MainAxisSize.max,
                       children: [
-                        Text(
-                          '${widget.data.profession}',
-                          style:
-                              FlutterFlowTheme.of(context).bodyMedium.override(
+                        if (widget.data.profession != null)
+                          for (var profession in widget.data.profession!)
+                            Text(
+                              profession
+                                  .profissao, // Use o atributo correto da classe Profession2
+                              style: FlutterFlowTheme.of(context)
+                                  .bodyMedium
+                                  .override(
                                     fontFamily: 'Outfit',
                                     letterSpacing: 0.0,
                                   ),
-                        ),
+                            ),
                         Padding(
                           padding: const EdgeInsetsDirectional.fromSTEB(
                               0.0, 8.0, 0.0, 8.0),
@@ -205,62 +211,95 @@ class _PerfilProfissionalPageWidgetState
                                 ),
                           ),
                         ),
-                        Padding(
-                          padding: const EdgeInsetsDirectional.fromSTEB(
-                              0.0, 0.0, 75.0, 4.0),
-                          child: Text(
-                            'Valor da hora R\$ ${widget.data.profession}',
-                            style: FlutterFlowTheme.of(context)
-                                .bodyMedium
-                                .override(
-                                  fontFamily: 'Outfit',
-                                  letterSpacing: 0.0,
+                        if (widget.data.profession != null)
+                          Wrap(
+                            spacing:
+                                8.0, // Espaçamento horizontal entre os itens
+                            runSpacing:
+                                8.0, // Espaçamento vertical entre as linhas
+                            children: widget.data.profession!.map((profession) {
+                              return Container(
+                                padding: const EdgeInsets.all(8.0),
+                                decoration: BoxDecoration(
+                                  color: FlutterFlowTheme.of(context)
+                                      .secondaryBackground,
+                                  borderRadius: BorderRadius.circular(8.0),
                                 ),
-                          ),
-                        ),
-                        Padding(
-                          padding: const EdgeInsetsDirectional.fromSTEB(
-                              0.0, 0.0, 150.0, 0.0),
-                          child: Text(
-                            'Diária: 500',
-                            style: FlutterFlowTheme.of(context)
-                                .bodyMedium
-                                .override(
-                                  fontFamily: 'Outfit',
-                                  letterSpacing: 0.0,
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      profession.profissao,
+                                      style: FlutterFlowTheme.of(context)
+                                          .bodyMedium
+                                          .override(
+                                            fontFamily: 'Outfit',
+                                            letterSpacing: 0.0,
+                                          ),
+                                    ),
+                                    Padding(
+                                      padding:
+                                          const EdgeInsetsDirectional.fromSTEB(
+                                              0.0, 0.0, 75.0, 4.0),
+                                      child: Text(
+                                        'Valor da hora R\$ ${profession.valorHoraServicoProfissao}',
+                                        style: FlutterFlowTheme.of(context)
+                                            .bodyMedium
+                                            .override(
+                                              fontFamily: 'Outfit',
+                                              letterSpacing: 0.0,
+                                            ),
+                                      ),
+                                    ),
+                                    Padding(
+                                      padding:
+                                          const EdgeInsetsDirectional.fromSTEB(
+                                              0.0, 0.0, 150.0, 0.0),
+                                      child: Text(
+                                        'Diária: ${profession.valorDiaServicoProfissao}',
+                                        style: FlutterFlowTheme.of(context)
+                                            .bodyMedium
+                                            .override(
+                                              fontFamily: 'Outfit',
+                                              letterSpacing: 0.0,
+                                            ),
+                                      ),
+                                    ),
+                                  ],
                                 ),
+                              );
+                            }).toList(),
                           ),
-                        ),
-                        Padding(
-                          padding: const EdgeInsetsDirectional.fromSTEB(
-                              0.0, 0.0, 0.0, 4.0),
-                          child: Text(
-                            'Lorem Ipsum: Lorem Ipsum Lorem    ',
-                            style: FlutterFlowTheme.of(context)
-                                .bodyMedium
-                                .override(
-                                  fontFamily: 'Outfit',
-                                  letterSpacing: 0.0,
-                                ),
-                          ),
-                        ),
-                        Padding(
-                          padding: const EdgeInsetsDirectional.fromSTEB(
-                              0.0, 0.0, 0.0, 4.0),
-                          child: Text(
-                            'Lorem Ipsum: Lorem Ipsum Lorem    ',
-                            style: FlutterFlowTheme.of(context)
-                                .bodyMedium
-                                .override(
-                                  fontFamily: 'Outfit',
-                                  letterSpacing: 0.0,
-                                ),
-                          ),
-                        ),
+                        // Padding(
+                        //   padding: const EdgeInsetsDirectional.fromSTEB(
+                        //       0.0, 0.0, 0.0, 4.0),
+                        //   child: Text(
+                        //     'Lorem Ipsum: Lorem Ipsum Lorem    ',
+                        //     style: FlutterFlowTheme.of(context)
+                        //         .bodyMedium
+                        //         .override(
+                        //           fontFamily: 'Outfit',
+                        //           letterSpacing: 0.0,
+                        //         ),
+                        //   ),
+                        // ),
+                        // Padding(
+                        //   padding: const EdgeInsetsDirectional.fromSTEB(
+                        //       0.0, 0.0, 0.0, 4.0),
+                        //   child: Text(
+                        //     'Lorem Ipsum: Lorem Ipsum Lorem    ',
+                        //     style: FlutterFlowTheme.of(context)
+                        //         .bodyMedium
+                        //         .override(
+                        //           fontFamily: 'Outfit',
+                        //           letterSpacing: 0.0,
+                        //         ),
+                        //   ),
+                        // ),
                         Align(
                           alignment: const AlignmentDirectional(-1.0, 0.0),
                           child: Text(
-                            'Lorem Ipsum',
+                            'Curriculo',
                             style:
                                 FlutterFlowTheme.of(context).bodySmall.override(
                                       fontFamily: 'Outfit',
@@ -276,7 +315,7 @@ class _PerfilProfissionalPageWidgetState
                             padding: const EdgeInsetsDirectional.fromSTEB(
                                 0.0, 8.0, 0.0, 12.0),
                             child: Text(
-                              'Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum is simply dummy text of the printing and typesetting industry.',
+                              '${widget.data.prestador.curriculo}',
                               style: FlutterFlowTheme.of(context)
                                   .labelMedium
                                   .override(

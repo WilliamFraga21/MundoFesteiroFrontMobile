@@ -71,15 +71,27 @@ class _HomePageWidgetState extends State<HomePageWidget> {
           Map<String, dynamic> userData2 = jsonResponse['userinfos'][0];
           String photo = userData2['photo'] ?? '';
 
-          User user = User(id: id, name: name, photoUrl: photo);
+          if (photo.isEmpty) {
+            var photo2 = null;
+            User user = User(id: id, name: name, photoUrl: photo2);
+            DatabaseHelper dbHelper = DatabaseHelper();
+            await dbHelper
+                .insertUser(user); // Convertendo User para Map antes de inserir
 
-          DatabaseHelper dbHelper = DatabaseHelper();
-          await dbHelper
-              .insertUser(user); // Convertendo User para Map antes de inserir
+            Provider.of<UserProvider>(context, listen: false).setUser(user);
+            print('Nome: $name');
+            print('Photo1: ${photo}');
+          } else {
+            User user = User(id: id, name: name, photoUrl: photo);
 
-          Provider.of<UserProvider>(context, listen: false).setUser(user);
-          print('Nome: $name');
-          print('Photo: $photo');
+            DatabaseHelper dbHelper = DatabaseHelper();
+            await dbHelper
+                .insertUser(user); // Convertendo User para Map antes de inserir
+
+            Provider.of<UserProvider>(context, listen: false).setUser(user);
+            print('Nome: $name');
+            print('Photo2: ${photo}');
+          }
           // print(userData2["photo"]);
         } else {
           print('Erro: Estrutura de resposta JSON inesperada');

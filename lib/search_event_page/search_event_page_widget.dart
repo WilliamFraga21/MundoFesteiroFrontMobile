@@ -224,11 +224,23 @@ class _SearchEventPageWidgetState extends State<SearchEventPageWidget> {
                     ),
               ),
             ),
+            if (eventoModel.profissao != null)
+              Text(
+                eventoModel.profissao!
+                    .map((profession) => '${profession.profissao}')
+                    .join(', '),
+                style: FlutterFlowTheme.of(context).bodyMedium.override(
+                      color: Colors.black,
+                      fontFamily: 'Outfit',
+                      letterSpacing: 0.0,
+                      fontWeight: FontWeight.w500,
+                    ),
+              ),
             Padding(
               padding:
                   const EdgeInsetsDirectional.fromSTEB(13.0, 4.0, 5.0, 4.0),
               child: Text(
-                eventoModel.profissao.toString(),
+                '${eventoModel.localidadeEvento.estado},${eventoModel.localidadeEvento.cidade},${eventoModel.localidadeEvento.bairro}',
                 style: FlutterFlowTheme.of(context).bodyMedium.override(
                       color: Colors.black,
                       fontFamily: 'Outfit',

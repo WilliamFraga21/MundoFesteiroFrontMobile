@@ -55,7 +55,7 @@ class _ConfigurationEditsWidgetState extends State<ConfigurationEditsWidget> {
 
     var response = await http.get(url, headers: headers);
 
-    if (response.statusCode == 200) {
+    if (response.statusCode == 200 || response.statusCode == 201) {
       print(response.body);
 
       Map<String, dynamic> jsonResponse = json.decode(response.body);
@@ -85,7 +85,7 @@ class _ConfigurationEditsWidgetState extends State<ConfigurationEditsWidget> {
 
     var response = await http.get(url, headers: headers);
 
-    if (response.statusCode == 200) {
+    if (response.statusCode == 200 || response.statusCode == 201) {
       print(response.body);
 
       Map<String, dynamic> jsonResponse = json.decode(response.body);

@@ -113,11 +113,13 @@ class LocalidadeEvento {
 
 class Profissao {
   final String profissao;
+  final String iconURL;
   final int profissaoId;
   final int quantidade;
 
   Profissao({
     required this.profissao,
+    required this.iconURL,
     required this.profissaoId,
     required this.quantidade,
   });
@@ -125,6 +127,7 @@ class Profissao {
   factory Profissao.fromJson(Map<String, dynamic> json) {
     return Profissao(
       profissao: json['profissao'],
+      iconURL: json['iconURL'],
       profissaoId: json['profissao_id'],
       quantidade: json['quantidade'],
     );
