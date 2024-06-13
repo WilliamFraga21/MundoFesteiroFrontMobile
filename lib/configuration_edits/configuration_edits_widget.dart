@@ -120,27 +120,6 @@ class _ConfigurationEditsWidgetState extends State<ConfigurationEditsWidget> {
       child: Scaffold(
         key: scaffoldKey,
         backgroundColor: FlutterFlowTheme.of(context).primaryBackground,
-        floatingActionButton: FloatingActionButton(
-          onPressed: () async {
-            context.pushNamed(
-              'CreateEventPage',
-              extra: <String, dynamic>{
-                kTransitionInfoKey: const TransitionInfo(
-                  hasTransition: true,
-                  transitionType: PageTransitionType.fade,
-                  duration: Duration(milliseconds: 0),
-                ),
-              },
-            );
-          },
-          backgroundColor: Color(0xFF018959),
-          elevation: 8,
-          child: Icon(
-            Icons.add,
-            color: FlutterFlowTheme.of(context).alternate,
-            size: 24,
-          ),
-        ),
         drawer: HamburgerMenu(
           onProfileTap: _onProfileTap,
         ),
