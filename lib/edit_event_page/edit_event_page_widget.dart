@@ -134,7 +134,7 @@ class _EditEventPageWidgetState extends State<EditEventPageWidget> {
   }
 
   Future<void> editEvent() async {
-    var url = Uri.parse(apiUrl + '/api/evento/update/6');
+    var url = Uri.parse(apiUrl + '/api/evento/update/${widget.data.evento.id}');
     final dbHelper = DatabaseHelper();
     String? validToken = await dbHelper.getToken();
     // Definindo os headers

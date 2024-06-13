@@ -44,7 +44,7 @@ class _SearchEventPageWidgetState extends State<SearchEventPageWidget> {
   }
 
   Future<List<EventoModel>> fetchEventos() async {
-    var url = Uri.parse(apiUrl + '/evento/${widget.data.id}');
+    var url = Uri.parse(apiUrl + '/evento/${widget.data.idProfessionEvento}');
     var headers = {'Content-Type': 'application/json'};
     var response = await http.get(url, headers: headers);
 
@@ -227,7 +227,7 @@ class _SearchEventPageWidgetState extends State<SearchEventPageWidget> {
             if (eventoModel.profissao != null)
               Text(
                 eventoModel.profissao!
-                    .map((profession) => '${profession.profissao}')
+                    .map((profession) => profession.profissao)
                     .join(', '),
                 style: FlutterFlowTheme.of(context).bodyMedium.override(
                       color: Colors.black,

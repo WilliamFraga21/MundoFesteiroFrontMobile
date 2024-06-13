@@ -272,7 +272,7 @@ class _SelectEditEventWidgetState extends State<SelectEditEventWidget> {
                                           padding: const EdgeInsetsDirectional
                                               .fromSTEB(13.0, 4.0, 5.0, 4.0),
                                           child: Text(
-                                            eventoModel.evento.nomeEvento,
+                                            eventoModel.evento.descricaoEvento,
                                             textAlign: TextAlign.justify,
                                             style: FlutterFlowTheme.of(context)
                                                 .bodyMedium

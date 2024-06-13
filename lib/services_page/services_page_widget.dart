@@ -19,21 +19,24 @@ class ServicesPageWidget extends StatefulWidget {
 }
 
 class Profession {
-  final int id;
+  final int idProfessionPrestador;
   final String name;
   final String iconURL;
+  final int quantidade;
 
   Profession({
-    required this.id,
+    required this.idProfessionPrestador,
     required this.name,
     required this.iconURL,
+    required this.quantidade,
   });
 
   factory Profession.fromJson(Map<String, dynamic> json) {
     return Profession(
-      id: json['id'] ?? 0,
+      idProfessionPrestador: json['idProfessionPrestador'] ?? 0,
       name: json['name'] ?? 'Unknown', // Valor padrão se name for null
       iconURL: json['iconURL'] ?? '', // Valor padrão se iconURL for null
+      quantidade: json['quantidade'] ?? '',
     );
   }
 }
@@ -51,7 +54,7 @@ class _ServicesPageWidgetState extends State<ServicesPageWidget> {
   }
 
   Future<List<Profession>> fetchProfessions() async {
-    var url = Uri.parse(apiUrl + '/profissao/getALL2');
+    var url = Uri.parse(apiUrl + '/profissao/getALLPrestadores');
 
     var headers = {
       'Content-Type': 'application/json',
@@ -228,7 +231,7 @@ class _ServicesPageWidgetState extends State<ServicesPageWidget> {
                                               EdgeInsetsDirectional.fromSTEB(
                                                   16, 4, 0, 0),
                                           child: Text(
-                                            'Número de Prestadores   service page', // Substitua por número real de prestadores
+                                            'Número de Prestadores: ${profession.quantidade}', // Substitua por número real de prestadores
                                             style: TextStyle(
                                               fontFamily: 'Outfit',
                                               color: Color(0xFF05BD7B),

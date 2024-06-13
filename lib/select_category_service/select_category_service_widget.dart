@@ -21,21 +21,24 @@ class SelectCategoryServiceWidget extends StatefulWidget {
 }
 
 class Profession {
-  final int id;
+  final int idProfessionEvento;
   final String name;
   final String iconURL;
+  final int quantidade;
 
   Profession({
-    required this.id,
+    required this.idProfessionEvento,
     required this.name,
     required this.iconURL,
+    required this.quantidade,
   });
 
   factory Profession.fromJson(Map<String, dynamic> json) {
     return Profession(
-      id: json['id'] ?? 0,
+      idProfessionEvento: json['idProfessionEvento'] ?? 0,
       name: json['name'] ?? 'Unknown', // Valor padrão se name for null
       iconURL: json['iconURL'] ?? '', // Valor padrão se iconURL for null
+      quantidade: json['quantidade'] ?? '',
     );
   }
 }
@@ -55,7 +58,7 @@ class _SelectCategoryServiceWidgetState
   }
 
   Future<List<Profession>> fetchProfessions() async {
-    var url = Uri.parse(apiUrl + '/profissao/getALL2');
+    var url = Uri.parse(apiUrl + '/profissao/getALLEventos');
 
     var headers = {
       'Content-Type': 'application/json',
@@ -232,7 +235,7 @@ class _SelectCategoryServiceWidgetState
                                               EdgeInsetsDirectional.fromSTEB(
                                                   16, 4, 0, 0),
                                           child: Text(
-                                            'Número de prestadores', // Substitua por número real de prestadores
+                                            'Número de vagas: ${profession.quantidade}', // Substitua por número real de prestadores
                                             style: TextStyle(
                                               fontFamily: 'Outfit',
                                               color: Color(0xFF05BD7B),

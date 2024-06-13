@@ -1,3 +1,6 @@
+import 'package:mundo_festeiro_mobile_app/flutter_flow/flutter_flow_drop_down.dart';
+import 'package:mundo_festeiro_mobile_app/flutter_flow/form_field_controller.dart';
+
 import '/flutter_flow/flutter_flow_expanded_image_view.dart';
 import '/flutter_flow/flutter_flow_icon_button.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
@@ -9,14 +12,17 @@ export 'perfil_profissional_page_model.dart';
 import '../profissionals_page/profissionals_page_widget.dart';
 import '../hamburger/hamburger.dart';
 import '../datas/prestadorModel.dart';
+import '../constants/constants.dart';
+import 'dart:convert';
+import 'package:http/http.dart' as http;
+import '../Helper/helper.dart';
 
 class PerfilProfissionalPageWidget extends StatefulWidget {
-  // const PerfilProfissionalPageWidget({super.key});
-
-  PrestadorModel data;
+  final PrestadorModel data;
 
   PerfilProfissionalPageWidget({Key? key, required this.data})
       : super(key: key);
+
   @override
   State<PerfilProfissionalPageWidget> createState() =>
       _PerfilProfissionalPageWidgetState();
@@ -25,7 +31,9 @@ class PerfilProfissionalPageWidget extends StatefulWidget {
 class _PerfilProfissionalPageWidgetState
     extends State<PerfilProfissionalPageWidget> {
   late PerfilProfissionalPageModel _model;
-
+  String? _selectedProfession;
+  bool _showFinalizaPropostaModal = false;
+  bool _showContratarButton = true;
   final scaffoldKey = GlobalKey<ScaffoldState>();
 
   @override
@@ -37,10 +45,95 @@ class _PerfilProfissionalPageWidgetState
   @override
   void dispose() {
     _model.dispose();
-
     super.dispose();
   }
-  // final scaffoldKey = GlobalKey<ScaffoldState>();
+
+  Future<void> contrataPrestador() async {
+    if (_selectedProfession == null) {
+      showDialog(
+        context: context,
+        builder: (BuildContext context) => AlertDialog(
+          title: Text('Erro'),
+          content:
+              Text('Selecione uma profissão antes de finalizar a contratação.'),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.of(context).pop(),
+              child: Text('OK'),
+            ),
+          ],
+        ),
+      );
+      return;
+    }
+
+    final dbHelper = DatabaseHelper();
+    String? validToken = await dbHelper.getToken();
+    var url = Uri.parse(apiUrl + '/api/prestador/contratar');
+
+    // Definindo os headers
+    var headers = {
+      'Content-Type': 'application/json',
+      'Authorization': "Bearer $validToken",
+    };
+
+    var body = json.encode({
+      "profession": _selectedProfession,
+      "idprestador": widget.data.prestador.id,
+    });
+
+    var response = await http.post(
+      url,
+      body: body,
+      headers: headers,
+    );
+
+    if (response.statusCode == 201 || response.statusCode == 200) {
+      showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: Text('Sucesso'),
+            content: const Text('Proposta Enviada'),
+            actions: [
+              TextButton(
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+                child: Text('OK'),
+              ),
+            ],
+          );
+        },
+      );
+    } else {
+      // Exibir aviso com mensagem da API
+      final responseData = jsonDecode(response.body);
+      final List<dynamic> errorMessages = responseData['error']['message'];
+
+      // Concatenar as mensagens de erro em uma única string
+      final errorMessage = errorMessages.join('\n');
+      showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: Text('Erro'),
+            content: Text(errorMessage.isNotEmpty
+                ? errorMessage
+                : 'Erro ao enviar proposta. Status code: ${response.statusCode}'),
+            actions: [
+              TextButton(
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+                child: Text('OK'),
+              ),
+            ],
+          );
+        },
+      );
+    }
+  }
 
   void _onProfileTap() {
     // Lógica para quando o perfil for clicado
@@ -51,6 +144,9 @@ class _PerfilProfissionalPageWidgetState
 
   @override
   Widget build(BuildContext context) {
+    List<String> professionOptions = widget.data.profession!
+        .map((profissao) => profissao.profissao)
+        .toList();
     return GestureDetector(
       onTap: () => FocusScope.of(context).unfocus(),
       child: Scaffold(
@@ -325,34 +421,232 @@ class _PerfilProfissionalPageWidgetState
                             ),
                           ),
                         ),
-                        Padding(
-                          padding: const EdgeInsetsDirectional.fromSTEB(
-                              0.0, 0.0, 0.0, 12.0),
-                          child: FFButtonWidget(
-                            onPressed: () {
-                              print('Button pressed ...');
-                            },
-                            text: 'Contratar',
-                            options: FFButtonOptions(
-                              width: double.infinity,
-                              height: 48.0,
-                              padding: const EdgeInsetsDirectional.fromSTEB(
-                                  0.0, 0.0, 0.0, 0.0),
-                              iconPadding: const EdgeInsetsDirectional.fromSTEB(
-                                  0.0, 0.0, 0.0, 0.0),
-                              color: const Color(0xFF05BD7B),
-                              textStyle: FlutterFlowTheme.of(context)
-                                  .titleSmall
-                                  .override(
-                                    fontFamily: 'Outfit',
-                                    color: Colors.white,
-                                    letterSpacing: 0.0,
-                                  ),
-                              borderSide: const BorderSide(
-                                color: Colors.transparent,
-                                width: 1.0,
+                        Visibility(
+                          visible:
+                              _showContratarButton, // Mostra o botão "Contratar" se verdadeiro
+                          child: Padding(
+                            padding: const EdgeInsetsDirectional.fromSTEB(
+                                0.0, 0.0, 0.0, 12.0),
+                            child: FFButtonWidget(
+                              onPressed: () {
+                                setState(() {
+                                  _showFinalizaPropostaModal =
+                                      true; // Mostra o modal ao clicar em Contratar
+                                  _showContratarButton =
+                                      false; // Oculta o botão "Contratar" após clicar
+                                });
+                              },
+                              text: 'Contratar',
+                              options: FFButtonOptions(
+                                width: double.infinity,
+                                height: 48.0,
+                                padding: const EdgeInsetsDirectional.fromSTEB(
+                                    0.0, 0.0, 0.0, 0.0),
+                                iconPadding:
+                                    const EdgeInsetsDirectional.fromSTEB(
+                                        0.0, 0.0, 0.0, 0.0),
+                                color: const Color(0xFF05BD7B),
+                                textStyle: FlutterFlowTheme.of(context)
+                                    .titleSmall
+                                    .override(
+                                      fontFamily: 'Outfit',
+                                      color: Colors.white,
+                                      letterSpacing: 0.0,
+                                    ),
+                                borderSide: const BorderSide(
+                                  color: Colors.transparent,
+                                  width: 1.0,
+                                ),
+                                borderRadius: BorderRadius.circular(8.0),
                               ),
-                              borderRadius: BorderRadius.circular(8.0),
+                            ),
+                          ),
+                        ),
+
+                        // Modal "Finaliza Proposta"
+                        Visibility(
+                          visible:
+                              _showFinalizaPropostaModal, // Mostra o modal se verdadeiro
+                          child: Padding(
+                            padding: EdgeInsetsDirectional.fromSTEB(8, 0, 8, 8),
+                            child: Container(
+                              width: double.infinity,
+                              decoration: BoxDecoration(
+                                color: FlutterFlowTheme.of(context)
+                                    .secondaryBackground,
+                                borderRadius: BorderRadius.circular(8),
+                              ),
+                              alignment: AlignmentDirectional(0, 0),
+                              child: Padding(
+                                padding: EdgeInsets.all(12),
+                                child: Column(
+                                  mainAxisSize: MainAxisSize.max,
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceEvenly,
+                                  children: [
+                                    Row(
+                                      mainAxisSize: MainAxisSize.max,
+                                      children: [
+                                        Padding(
+                                          padding:
+                                              EdgeInsetsDirectional.fromSTEB(
+                                                  0, 0, 0, 12),
+                                          child: Text(
+                                            'Escolha a profissão para qual deseja contratá-lo(a):',
+                                            style: FlutterFlowTheme.of(context)
+                                                .bodyMedium
+                                                .override(
+                                                  fontFamily: 'Outfit',
+                                                  fontSize: 14,
+                                                  letterSpacing: 0,
+                                                ),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                    if (widget.data.profession != null)
+                                      Align(
+                                        alignment: AlignmentDirectional(0, 0),
+                                        child: Padding(
+                                          padding:
+                                              EdgeInsetsDirectional.fromSTEB(
+                                                  0, 0, 0, 12),
+                                          child: FlutterFlowDropDown<String>(
+                                            controller: _model
+                                                    .dropDownValueController ??=
+                                                FormFieldController<String>(
+                                                    _model.dropDownValue ??=
+                                                        ''),
+                                            options: professionOptions,
+                                            onChanged: (val) {
+                                              setState(() {
+                                                _selectedProfession =
+                                                    val; // Atualiza a profissão selecionada
+                                              });
+                                            },
+                                            width: double.infinity,
+                                            height: 56,
+                                            textStyle:
+                                                FlutterFlowTheme.of(context)
+                                                    .bodyMedium
+                                                    .override(
+                                                      fontFamily: 'Outfit',
+                                                      letterSpacing: 0,
+                                                    ),
+                                            hintText: 'Selecione',
+                                            icon: Icon(
+                                              Icons.keyboard_arrow_down_rounded,
+                                              color:
+                                                  FlutterFlowTheme.of(context)
+                                                      .secondaryText,
+                                              size: 24,
+                                            ),
+                                            fillColor:
+                                                FlutterFlowTheme.of(context)
+                                                    .secondaryBackground,
+                                            elevation: 2,
+                                            borderColor:
+                                                FlutterFlowTheme.of(context)
+                                                    .alternate,
+                                            borderWidth: 2,
+                                            borderRadius: 8,
+                                            margin:
+                                                EdgeInsetsDirectional.fromSTEB(
+                                                    16, 4, 16, 4),
+                                            hidesUnderline: true,
+                                            isOverButton: true,
+                                            isSearchable: false,
+                                            isMultiSelect: false,
+                                            labelText: '',
+                                            labelTextStyle:
+                                                FlutterFlowTheme.of(context)
+                                                    .labelMedium
+                                                    .override(
+                                                      fontFamily: 'Outfit',
+                                                      letterSpacing: 0,
+                                                    ),
+                                            multiSelectController: null,
+                                            onMultiSelectChanged: null,
+                                          ),
+                                        ),
+                                      ),
+                                    Padding(
+                                      padding: EdgeInsetsDirectional.fromSTEB(
+                                          0, 0, 0, 12),
+                                      child: _selectedProfession != null
+                                          ? Padding(
+                                              padding: EdgeInsetsDirectional
+                                                  .fromSTEB(0, 0, 0, 12),
+                                              child: Row(
+                                                mainAxisSize: MainAxisSize.max,
+                                                crossAxisAlignment:
+                                                    CrossAxisAlignment.center,
+                                                children: [
+                                                  Align(
+                                                    alignment:
+                                                        AlignmentDirectional
+                                                            .centerStart,
+                                                    child: Text(
+                                                      "Finalizar contratação como: $_selectedProfession",
+                                                      style: FlutterFlowTheme
+                                                              .of(context)
+                                                          .bodyLarge
+                                                          .override(
+                                                            fontFamily:
+                                                                'Outfit',
+                                                            letterSpacing: 0,
+                                                          ),
+                                                    ),
+                                                  ),
+                                                ],
+                                              ),
+                                            )
+                                          : Center(
+                                              child: Text(
+                                                'Nenhuma profissão selecionada',
+                                                style: TextStyle(
+                                                    color: Colors.red),
+                                              ),
+                                            ),
+                                    ),
+                                    Padding(
+                                      padding: EdgeInsetsDirectional.fromSTEB(
+                                          0, 0, 0, 12),
+                                      child: FFButtonWidget(
+                                        onPressed: () {
+                                          contrataPrestador();
+                                        },
+                                        text: 'Finalizar contratação',
+                                        options: FFButtonOptions(
+                                          width: double.infinity,
+                                          height: 48,
+                                          padding:
+                                              EdgeInsetsDirectional.fromSTEB(
+                                                  0, 0, 0, 0),
+                                          iconPadding:
+                                              EdgeInsetsDirectional.fromSTEB(
+                                                  0, 0, 0, 0),
+                                          color: Color(0xFF05BD7B),
+                                          textStyle:
+                                              FlutterFlowTheme.of(context)
+                                                  .titleSmall
+                                                  .override(
+                                                    fontFamily: 'Outfit',
+                                                    color: Colors.white,
+                                                    letterSpacing: 0,
+                                                  ),
+                                          borderSide: BorderSide(
+                                            color: Colors.transparent,
+                                            width: 1,
+                                          ),
+                                          borderRadius:
+                                              BorderRadius.circular(8),
+                                        ),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
                             ),
                           ),
                         ),

@@ -553,7 +553,8 @@ class _ProfissionalEventsWidgetState extends State<ProfissionalEventsWidget> {
                                             padding: const EdgeInsetsDirectional
                                                 .fromSTEB(16.0, 4.0, 0.0, 4.0),
                                             child: Text(
-                                              '${prestador.localidade.cidade},${prestador.localidade.estado}',
+                                              // '${prestador.localidade.cidade},${prestador.localidade.estado}',
+                                              '${prestador.prestador.profissao}',
                                               style:
                                                   FlutterFlowTheme.of(context)
                                                       .bodyMedium

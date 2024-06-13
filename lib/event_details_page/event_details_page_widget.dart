@@ -179,7 +179,7 @@ class _EventDetailsPageWidgetState extends State<EventDetailsPageWidget> {
 
     var body = json.encode({
       "evento_id": data,
-      "profissao": "Bartende2r",
+      "profissao": _model.dropDownValue,
     });
 
     var response = await http.post(
@@ -240,6 +240,8 @@ class _EventDetailsPageWidgetState extends State<EventDetailsPageWidget> {
     List<String> professionOptions =
         widget.data.profissao.map((profissao) => profissao.profissao).toList();
 
+    print('estou AQUIIIIIII');
+    print(professionOptions);
     return GestureDetector(
       onTap: () => FocusScope.of(context).unfocus(),
       child: Scaffold(
@@ -701,9 +703,7 @@ class _EventDetailsPageWidgetState extends State<EventDetailsPageWidget> {
                     const EdgeInsetsDirectional.fromSTEB(8.0, 16.0, 8.0, 0.0),
                 child: FlutterFlowDropDown<String>(
                   controller: _model.dropDownValueController ??=
-                      FormFieldController<String>(
-                    _model.dropDownValue ??= '',
-                  ),
+                      FormFieldController<String>(_model.dropDownValue ??= ''),
                   options: professionOptions,
                   onChanged: (val) =>
                       setState(() => _model.dropDownValue = val),
@@ -753,7 +753,6 @@ class _EventDetailsPageWidgetState extends State<EventDetailsPageWidget> {
                           0.0, 16.0, 0.0, 0.0),
                       child: FFButtonWidget(
                         onPressed: () {
-                          print(_model.dropDownValue);
                           createProposta(widget.data.evento.id);
                         },
                         text: 'Canditatar-se',
@@ -779,74 +778,76 @@ class _EventDetailsPageWidgetState extends State<EventDetailsPageWidget> {
                         ),
                       ),
                     ),
-                  ],
-                ),
-              ),
-              Padding(
-                padding:
-                    const EdgeInsetsDirectional.fromSTEB(0.0, 16.0, 0.0, 0.0),
-                child: Row(
-                  mainAxisSize: MainAxisSize.max,
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: [
-                    FFButtonWidget(
-                      onPressed: () async {
-                        await _model.pageViewController?.previousPage(
-                          duration: const Duration(milliseconds: 300),
-                          curve: Curves.ease,
-                        );
-                      },
-                      text: 'Cancelar',
-                      options: FFButtonOptions(
-                        width: 150.0,
-                        height: 40.0,
-                        padding: const EdgeInsetsDirectional.fromSTEB(
-                            24.0, 0.0, 24.0, 0.0),
-                        iconPadding: const EdgeInsetsDirectional.fromSTEB(
-                            0.0, 0.0, 0.0, 0.0),
-                        color: const Color(0xFFFF1418),
-                        textStyle:
-                            FlutterFlowTheme.of(context).titleSmall.override(
-                                  fontFamily: 'Outfit',
-                                  color: Colors.white,
-                                  letterSpacing: 0.0,
-                                ),
-                        elevation: 3.0,
-                        borderSide: const BorderSide(
-                          color: Colors.transparent,
-                          width: 1.0,
-                        ),
-                        borderRadius: BorderRadius.circular(8.0),
-                      ),
-                    ),
-                    FFButtonWidget(
-                      onPressed: () async {
-                        await _model.pageViewController?.nextPage(
-                          duration: const Duration(milliseconds: 300),
-                          curve: Curves.ease,
-                        );
-                      },
-                      text: 'Confirmar\n',
-                      options: FFButtonOptions(
-                        width: 150.0,
-                        height: 40.0,
-                        padding: const EdgeInsetsDirectional.fromSTEB(
-                            24.0, 0.0, 24.0, 0.0),
-                        iconPadding: const EdgeInsetsDirectional.fromSTEB(
-                            0.0, 0.0, 0.0, 0.0),
-                        color: const Color(0xFF0BD83E),
-                        textStyle:
-                            FlutterFlowTheme.of(context).titleSmall.override(
-                                  fontFamily: 'Outfit',
-                                  color: Colors.white,
-                                  letterSpacing: 0.0,
-                                ),
-                        elevation: 3.0,
-                        borderSide: const BorderSide(
-                          color: Colors.transparent,
-                          width: 1.0,
-                        ),
-                        borderRadius: BorderRadius.circular(8.0),
+                    Padding(
+                      padding: const EdgeInsetsDirectional.fromSTEB(
+                          0.0, 16.0, 0.0, 0.0),
+                      child: Row(
+                        mainAxisSize: MainAxisSize.max,
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: [
+                          FFButtonWidget(
+                            onPressed: () async {
+                              await _model.pageViewController?.previousPage(
+                                duration: const Duration(milliseconds: 300),
+                                curve: Curves.ease,
+                              );
+                            },
+                            text: 'Cancelar',
+                            options: FFButtonOptions(
+                              width: 150.0,
+                              height: 40.0,
+                              padding: const EdgeInsetsDirectional.fromSTEB(
+                                  24.0, 0.0, 24.0, 0.0),
+                              iconPadding: const EdgeInsetsDirectional.fromSTEB(
+                                  0.0, 0.0, 0.0, 0.0),
+                              color: const Color(0xFFFF1418),
+                              textStyle: FlutterFlowTheme.of(context)
+                                  .titleSmall
+                                  .override(
+                                    fontFamily: 'Outfit',
+                                    color: Colors.white,
+                                    letterSpacing: 0.0,
+                                  ),
+                              elevation: 3.0,
+                              borderSide: const BorderSide(
+                                color: Colors.transparent,
+                                width: 1.0,
+                              ),
+                              borderRadius: BorderRadius.circular(8.0),
+                            ),
+                          ),
+                          FFButtonWidget(
+                            onPressed: () async {
+                              await _model.pageViewController?.nextPage(
+                                duration: const Duration(milliseconds: 300),
+                                curve: Curves.ease,
+                              );
+                            },
+                            text: 'Confirmar\n',
+                            options: FFButtonOptions(
+                              width: 150.0,
+                              height: 40.0,
+                              padding: const EdgeInsetsDirectional.fromSTEB(
+                                  24.0, 0.0, 24.0, 0.0),
+                              iconPadding: const EdgeInsetsDirectional.fromSTEB(
+                                  0.0, 0.0, 0.0, 0.0),
+                              color: const Color(0xFF0BD83E),
+                              textStyle: FlutterFlowTheme.of(context)
+                                  .titleSmall
+                                  .override(
+                                    fontFamily: 'Outfit',
+                                    color: Colors.white,
+                                    letterSpacing: 0.0,
+                                  ),
+                              elevation: 3.0,
+                              borderSide: const BorderSide(
+                                color: Colors.transparent,
+                                width: 1.0,
+                              ),
+                              borderRadius: BorderRadius.circular(8.0),
+                            ),
+                          ),
+                        ],
                       ),
                     ),
                   ],

@@ -49,8 +49,8 @@ class _ProfissionalsPageWidgetState extends State<ProfissionalsPageWidget> {
   }
 
   Future<List<PrestadorModel>> fetchPrestados() async {
-    var url = Uri.parse(apiUrl + '/prestador/getALL/${widget.data.id}');
-
+    var url = Uri.parse(
+        apiUrl + '/prestador/getALL/${widget.data.idProfessionPrestador}');
     var headers = {
       'Content-Type': 'application/json',
     };
@@ -210,8 +210,8 @@ class _ProfissionalsPageWidgetState extends State<ProfissionalsPageWidget> {
                                     ClipRRect(
                                       borderRadius: BorderRadius.circular(8.0),
                                       child: Image.network(
-                                        prestador.photo ??
-                                            'https://cdn-icons-png.flaticon.com/512/4519/4519678.png',
+                                        // prestador.photo ??
+                                        'https://cdn-icons-png.flaticon.com/512/4519/4519678.png',
                                         width: 70.0,
                                         height: 70.0,
                                         fit: BoxFit.cover,
