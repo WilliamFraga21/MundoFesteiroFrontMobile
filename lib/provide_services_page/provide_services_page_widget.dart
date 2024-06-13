@@ -148,15 +148,19 @@ class _ProvideServicesPageWidgetState extends State<ProvideServicesPageWidget> {
     } else {
       // Exibir aviso com mensagem da API
       final responseData = jsonDecode(response.body);
-      final errorMessage = responseData['message'];
+      final List<dynamic> errorMessages = responseData['error']['message'];
+
+      // Concatenar as mensagens de erro em uma única string
+      final errorMessage = errorMessages.join('\n');
 
       showDialog(
         context: context,
         builder: (BuildContext context) {
           return AlertDialog(
             title: Text('Erro'),
-            content: Text(errorMessage ??
-                'Erro ao cadastrar curriculo. Status code: ${response.body}'),
+            content: Text(errorMessage.isNotEmpty
+                ? errorMessage
+                : 'Erro ao Cadastrar curriculo. Status code: ${response.statusCode}'),
             actions: [
               TextButton(
                 onPressed: () {
@@ -396,7 +400,6 @@ class _ProvideServicesPageWidgetState extends State<ProvideServicesPageWidget> {
                                   .bodyMedium
                                   .override(
                                     fontFamily: 'Outfit',
-                                    color: Colors.black,
                                     fontSize: 15,
                                     letterSpacing: 0,
                                     fontWeight: FontWeight.normal,
@@ -496,6 +499,7 @@ class _ProvideServicesPageWidgetState extends State<ProvideServicesPageWidget> {
                                             style: FlutterFlowTheme.of(context)
                                                 .bodyMedium
                                                 .override(
+                                                  color: Color(0xFF05BD7B),
                                                   fontFamily: 'Outfit',
                                                   letterSpacing: 0,
                                                 ),

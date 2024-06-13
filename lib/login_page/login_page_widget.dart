@@ -207,8 +207,6 @@ class _LoginPageWidgetState extends State<LoginPageWidget> {
                                   .displaySmall
                                   .override(
                                     fontFamily: 'Readex Pro',
-                                    color: FlutterFlowTheme.of(context)
-                                        .primaryBackground,
                                     fontSize: 36.0,
                                     letterSpacing: 0.0,
                                     fontWeight: FontWeight.w500,
@@ -224,8 +222,6 @@ class _LoginPageWidgetState extends State<LoginPageWidget> {
                                     .labelMedium
                                     .override(
                                       fontFamily: 'Inter',
-                                      color: FlutterFlowTheme.of(context)
-                                          .primaryBackground,
                                       fontSize: 14.0,
                                       letterSpacing: 0.0,
                                       fontWeight: FontWeight.w500,
@@ -491,8 +487,6 @@ class _LoginPageWidgetState extends State<LoginPageWidget> {
                                         .bodyMedium
                                         .override(
                                           fontFamily: 'Inter',
-                                          color: FlutterFlowTheme.of(context)
-                                              .primaryBackground,
                                           fontSize: 14.0,
                                           letterSpacing: 0.0,
                                           fontWeight: FontWeight.normal,

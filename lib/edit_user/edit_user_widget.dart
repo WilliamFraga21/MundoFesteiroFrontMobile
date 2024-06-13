@@ -524,7 +524,6 @@ class _EditUserWidgetState extends State<EditUserWidget> {
                         ),
                         style: FlutterFlowTheme.of(context).bodyMedium.override(
                               fontFamily: 'Outfit',
-                              color: Colors.black,
                               fontSize: 15.0,
                               letterSpacing: 0.0,
                               fontWeight: FontWeight.normal,
@@ -588,7 +587,6 @@ class _EditUserWidgetState extends State<EditUserWidget> {
                         ),
                         style: FlutterFlowTheme.of(context).bodyMedium.override(
                               fontFamily: 'Outfit',
-                              color: Colors.black,
                               fontSize: 15.0,
                               letterSpacing: 0.0,
                               fontWeight: FontWeight.normal,
@@ -652,7 +650,6 @@ class _EditUserWidgetState extends State<EditUserWidget> {
                         ),
                         style: FlutterFlowTheme.of(context).bodyMedium.override(
                               fontFamily: 'Outfit',
-                              color: Colors.black,
                               fontSize: 15.0,
                               letterSpacing: 0.0,
                               fontWeight: FontWeight.normal,
@@ -716,7 +713,6 @@ class _EditUserWidgetState extends State<EditUserWidget> {
                         ),
                         style: FlutterFlowTheme.of(context).bodyMedium.override(
                               fontFamily: 'Outfit',
-                              color: Colors.black,
                               fontSize: 15.0,
                               letterSpacing: 0.0,
                               fontWeight: FontWeight.normal,
@@ -780,7 +776,6 @@ class _EditUserWidgetState extends State<EditUserWidget> {
                         ),
                         style: FlutterFlowTheme.of(context).bodyMedium.override(
                               fontFamily: 'Outfit',
-                              color: Colors.black,
                               fontSize: 15.0,
                               letterSpacing: 0.0,
                               fontWeight: FontWeight.normal,
@@ -844,7 +839,6 @@ class _EditUserWidgetState extends State<EditUserWidget> {
                         ),
                         style: FlutterFlowTheme.of(context).bodyMedium.override(
                               fontFamily: 'Outfit',
-                              color: Colors.black,
                               fontSize: 15.0,
                               letterSpacing: 0.0,
                               fontWeight: FontWeight.normal,
@@ -908,7 +902,6 @@ class _EditUserWidgetState extends State<EditUserWidget> {
                         ),
                         style: FlutterFlowTheme.of(context).bodyMedium.override(
                               fontFamily: 'Outfit',
-                              color: Colors.black,
                               fontSize: 15.0,
                               letterSpacing: 0.0,
                               fontWeight: FontWeight.normal,
@@ -972,7 +965,6 @@ class _EditUserWidgetState extends State<EditUserWidget> {
                         ),
                         style: FlutterFlowTheme.of(context).bodyMedium.override(
                               fontFamily: 'Outfit',
-                              color: Colors.black,
                               fontSize: 15.0,
                               letterSpacing: 0.0,
                               fontWeight: FontWeight.normal,

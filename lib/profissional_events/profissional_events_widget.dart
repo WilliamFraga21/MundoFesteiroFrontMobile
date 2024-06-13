@@ -407,7 +407,7 @@ class _ProfissionalEventsWidgetState extends State<ProfissionalEventsWidget> {
                   child: ClipRRect(
                     borderRadius: BorderRadius.circular(8.0),
                     child: Image.network(
-                      widget.data.photo ?? 'https://picsum.photos/seed/614/600',
+                      widget.data.photo ?? imgEvent,
                       width: 300.0,
                       height: 200.0,
                       fit: BoxFit.cover,
@@ -780,7 +780,7 @@ class _ProfissionalEventsWidgetState extends State<ProfissionalEventsWidget> {
                                                         }
                                                       },
                                                       text:
-                                                          'Proposta já foi aceita',
+                                                          'Contato do prestador',
                                                       options: FFButtonOptions(
                                                         width: 237.0,
                                                         height: 35.0,

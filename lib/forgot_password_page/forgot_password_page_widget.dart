@@ -52,8 +52,8 @@ class _ForgotPasswordPageWidgetState extends State<ForgotPasswordPageWidget> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Padding(
-                  padding:
-                      const EdgeInsetsDirectional.fromSTEB(12.0, 12.0, 12.0, 12.0),
+                  padding: const EdgeInsetsDirectional.fromSTEB(
+                      12.0, 12.0, 12.0, 12.0),
                   child: Container(
                     width: double.infinity,
                     decoration: BoxDecoration(
@@ -80,8 +80,6 @@ class _ForgotPasswordPageWidgetState extends State<ForgotPasswordPageWidget> {
                                   .displaySmall
                                   .override(
                                     fontFamily: 'Readex Pro',
-                                    color: FlutterFlowTheme.of(context)
-                                        .primaryBackground,
                                     fontSize: 36.0,
                                     letterSpacing: 0.0,
                                     fontWeight: FontWeight.w500,
@@ -179,10 +177,12 @@ class _ForgotPasswordPageWidgetState extends State<ForgotPasswordPageWidget> {
                                   options: FFButtonOptions(
                                     width: 230.0,
                                     height: 52.0,
-                                    padding: const EdgeInsetsDirectional.fromSTEB(
-                                        0.0, 0.0, 0.0, 0.0),
-                                    iconPadding: const EdgeInsetsDirectional.fromSTEB(
-                                        0.0, 0.0, 0.0, 0.0),
+                                    padding:
+                                        const EdgeInsetsDirectional.fromSTEB(
+                                            0.0, 0.0, 0.0, 0.0),
+                                    iconPadding:
+                                        const EdgeInsetsDirectional.fromSTEB(
+                                            0.0, 0.0, 0.0, 0.0),
                                     color: const Color(0xFF05BD7B),
                                     textStyle: FlutterFlowTheme.of(context)
                                         .titleSmall

@@ -1,3 +1,4 @@
+import 'package:mundo_festeiro_mobile_app/provide_services_page/provide_services_page_widget.dart';
 import 'package:mundo_festeiro_mobile_app/select_category_service/select_category_service_widget.dart';
 import 'package:mundo_festeiro_mobile_app/services_page/services_page_widget.dart';
 import '../perfil_page/perfil_page_widget.dart';
@@ -368,16 +369,7 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                     if (Navigator.of(context).canPop()) {
                       context.pop();
                     }
-                    context.pushNamed(
-                      'EditCurriculum',
-                      extra: <String, dynamic>{
-                        kTransitionInfoKey: const TransitionInfo(
-                          hasTransition: true,
-                          transitionType: PageTransitionType.fade,
-                          duration: Duration(milliseconds: 0),
-                        ),
-                      },
-                    );
+                    createCurriculum(context);
                   } else {
                     GoRouter.of(context).go('/LoginPage');
                   }
@@ -418,5 +410,14 @@ class _HomePageWidgetState extends State<HomePageWidget> {
   void procurarPrestador() {
     Navigator.push(
         context, MaterialPageRoute(builder: (_) => const ServicesPageWidget()));
+  }
+
+  void createCurriculum(BuildContext context) {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => const ProvideServicesPageWidget(),
+      ),
+    );
   }
 }

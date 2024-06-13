@@ -101,17 +101,20 @@ class _SignInPageWidgetState extends State<SignInPageWidget> {
         GoRouter.of(context).go('/LoginPage');
       });
     } else {
-      // Exibir aviso com mensagem da API
       final responseData = jsonDecode(response.body);
-      final errorMessage = responseData['message'];
+      final List<dynamic> errorMessages = responseData['error']['message'];
+
+      // Concatenar as mensagens de erro em uma única string
+      final errorMessage = errorMessages.join('\n');
 
       showDialog(
         context: context,
         builder: (BuildContext context) {
           return AlertDialog(
             title: Text('Erro'),
-            content: Text(errorMessage ??
-                'Erro ao criar a conta. Status code: ${response.body}'),
+            content: Text(errorMessage.isNotEmpty
+                ? errorMessage
+                : 'Erro ao realizar cadastro. Status code: ${response.statusCode}'),
             actions: [
               TextButton(
                 onPressed: () {
@@ -173,8 +176,6 @@ class _SignInPageWidgetState extends State<SignInPageWidget> {
                                   .displaySmall
                                   .override(
                                     fontFamily: 'Readex Pro',
-                                    color: FlutterFlowTheme.of(context)
-                                        .primaryBackground,
                                     fontSize: 36.0,
                                     letterSpacing: 0.0,
                                     fontWeight: FontWeight.w500,
@@ -581,6 +582,85 @@ class _SignInPageWidgetState extends State<SignInPageWidget> {
                               child: SizedBox(
                                 width: double.infinity,
                                 child: TextFormField(
+                                  controller: _model.textController6,
+                                  focusNode: _model.textFieldFocusNode6,
+                                  autofocus: false,
+                                  obscureText: false,
+                                  decoration: InputDecoration(
+                                    labelText: 'Bairro',
+                                    labelStyle: FlutterFlowTheme.of(context)
+                                        .titleMedium
+                                        .override(
+                                          fontFamily: 'Inter',
+                                          color: const Color(0xFF57636C),
+                                          fontSize: 18.0,
+                                          letterSpacing: 0.0,
+                                          fontWeight: FontWeight.w500,
+                                        ),
+                                    hintStyle: FlutterFlowTheme.of(context)
+                                        .bodyLarge
+                                        .override(
+                                          fontFamily: 'Inter',
+                                          color: const Color(0xFF101518),
+                                          fontSize: 16.0,
+                                          letterSpacing: 0.0,
+                                          fontWeight: FontWeight.normal,
+                                        ),
+                                    enabledBorder: OutlineInputBorder(
+                                      borderSide: const BorderSide(
+                                        color: Color(0xFFF5FBFB),
+                                        width: 2.0,
+                                      ),
+                                      borderRadius: BorderRadius.circular(40.0),
+                                    ),
+                                    focusedBorder: OutlineInputBorder(
+                                      borderSide: const BorderSide(
+                                        color: Color(0x00000000),
+                                        width: 2.0,
+                                      ),
+                                      borderRadius: BorderRadius.circular(40.0),
+                                    ),
+                                    errorBorder: OutlineInputBorder(
+                                      borderSide: const BorderSide(
+                                        color: Color(0x00000000),
+                                        width: 2.0,
+                                      ),
+                                      borderRadius: BorderRadius.circular(40.0),
+                                    ),
+                                    focusedErrorBorder: OutlineInputBorder(
+                                      borderSide: const BorderSide(
+                                        color: Color(0x00000000),
+                                        width: 2.0,
+                                      ),
+                                      borderRadius: BorderRadius.circular(40.0),
+                                    ),
+                                    filled: true,
+                                    fillColor: Colors.white,
+                                    contentPadding:
+                                        const EdgeInsetsDirectional.fromSTEB(
+                                            24.0, 24.0, 24.0, 24.0),
+                                  ),
+                                  style: FlutterFlowTheme.of(context)
+                                      .bodyLarge
+                                      .override(
+                                        fontFamily: 'Inter',
+                                        color: const Color(0xFF101518),
+                                        fontSize: 16.0,
+                                        letterSpacing: 0.0,
+                                        fontWeight: FontWeight.normal,
+                                      ),
+                                  keyboardType: TextInputType.streetAddress,
+                                  validator: _model.textController6Validator
+                                      .asValidator(context),
+                                ),
+                              ),
+                            ),
+                            Padding(
+                              padding: const EdgeInsetsDirectional.fromSTEB(
+                                  0.0, 0.0, 0.0, 16.0),
+                              child: SizedBox(
+                                width: double.infinity,
+                                child: TextFormField(
                                   controller: _model.textController7,
                                   focusNode: _model.textFieldFocusNode7,
                                   autofocus: false,
@@ -659,8 +739,8 @@ class _SignInPageWidgetState extends State<SignInPageWidget> {
                               child: SizedBox(
                                 width: double.infinity,
                                 child: TextFormField(
-                                  controller: _model.textController6,
-                                  focusNode: _model.textFieldFocusNode6,
+                                  controller: _model.textController8,
+                                  focusNode: _model.textFieldFocusNode8,
                                   autofocus: false,
                                   obscureText: false,
                                   decoration: InputDecoration(
@@ -726,7 +806,7 @@ class _SignInPageWidgetState extends State<SignInPageWidget> {
                                         letterSpacing: 0.0,
                                         fontWeight: FontWeight.normal,
                                       ),
-                                  validator: _model.textController7Validator
+                                  validator: _model.textController8Validator
                                       .asValidator(context),
                                 ),
                               ),
@@ -842,7 +922,8 @@ class _SignInPageWidgetState extends State<SignInPageWidget> {
                                           .bodyMedium
                                           .override(
                                             fontFamily: 'Inter',
-                                            color: const Color(0xFF57636C),
+                                            color: const Color.fromARGB(
+                                                255, 175, 193, 206),
                                             fontSize: 14.0,
                                             fontWeight: FontWeight.w500,
                                           ),
@@ -862,7 +943,8 @@ class _SignInPageWidgetState extends State<SignInPageWidget> {
                                               .bodySmall
                                               .override(
                                                 fontFamily: 'Inter',
-                                                color: const Color(0xFF57636C),
+                                                color: const Color.fromARGB(
+                                                    255, 175, 193, 206),
                                                 fontSize: 12.0,
                                                 fontWeight: FontWeight.normal,
                                               ),
@@ -873,7 +955,8 @@ class _SignInPageWidgetState extends State<SignInPageWidget> {
                                               .bodySmall
                                               .override(
                                                 fontFamily: 'Inter',
-                                                color: const Color(0xFF57636C),
+                                                color: const Color.fromARGB(
+                                                    255, 175, 193, 206),
                                                 fontSize: 12.0,
                                                 fontWeight: FontWeight.normal,
                                               ),
@@ -884,7 +967,8 @@ class _SignInPageWidgetState extends State<SignInPageWidget> {
                                               .bodySmall
                                               .override(
                                                 fontFamily: 'Inter',
-                                                color: const Color(0xFF57636C),
+                                                color: const Color.fromARGB(
+                                                    255, 175, 193, 206),
                                                 fontSize: 12.0,
                                                 fontWeight: FontWeight.normal,
                                               ),
@@ -895,7 +979,8 @@ class _SignInPageWidgetState extends State<SignInPageWidget> {
                                               .bodySmall
                                               .override(
                                                 fontFamily: 'Inter',
-                                                color: const Color(0xFF57636C),
+                                                color: const Color.fromARGB(
+                                                    255, 175, 193, 206),
                                                 fontSize: 12.0,
                                                 fontWeight: FontWeight.normal,
                                               ),
@@ -906,7 +991,8 @@ class _SignInPageWidgetState extends State<SignInPageWidget> {
                                               .bodySmall
                                               .override(
                                                 fontFamily: 'Inter',
-                                                color: const Color(0xFF57636C),
+                                                color: const Color.fromARGB(
+                                                    255, 175, 193, 206),
                                                 fontSize: 12.0,
                                                 fontWeight: FontWeight.normal,
                                               ),
@@ -941,8 +1027,6 @@ class _SignInPageWidgetState extends State<SignInPageWidget> {
                                         .titleSmall
                                         .override(
                                           fontFamily: 'Inter',
-                                          color: FlutterFlowTheme.of(context)
-                                              .black600,
                                           fontSize: 16.0,
                                           letterSpacing: 0.0,
                                           fontWeight: FontWeight.w500,
@@ -966,8 +1050,6 @@ class _SignInPageWidgetState extends State<SignInPageWidget> {
                                         .bodyMedium
                                         .override(
                                           fontFamily: 'Inter',
-                                          color: FlutterFlowTheme.of(context)
-                                              .primaryBackground,
                                           fontSize: 14.0,
                                           letterSpacing: 0.0,
                                           fontWeight: FontWeight.normal,
@@ -981,7 +1063,8 @@ class _SignInPageWidgetState extends State<SignInPageWidget> {
                                     splashColor: Colors.transparent,
                                     focusColor: Colors.transparent,
                                     hoverColor: Colors.transparent,
-                                    highlightColor: Colors.transparent,
+                                    highlightColor:
+                                        Color.fromRGBO(255, 255, 255, 0),
                                     onTap: () async {
                                       if (Navigator.of(context).canPop()) {
                                         context.pop();

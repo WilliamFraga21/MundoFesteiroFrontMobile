@@ -137,7 +137,6 @@ class _ProfissionalsPageWidgetState extends State<ProfissionalsPageWidget> {
                   textAlign: TextAlign.start,
                   style: FlutterFlowTheme.of(context).bodyMedium.override(
                         fontFamily: 'Outfit',
-                        color: Colors.black,
                         fontSize: 35.0,
                         letterSpacing: 0.0,
                         fontWeight: FontWeight.w900,
@@ -210,8 +209,8 @@ class _ProfissionalsPageWidgetState extends State<ProfissionalsPageWidget> {
                                     ClipRRect(
                                       borderRadius: BorderRadius.circular(8.0),
                                       child: Image.network(
-                                        // prestador.photo ??
-                                        'https://cdn-icons-png.flaticon.com/512/4519/4519678.png',
+                                        prestador.photo ??
+                                            'https://cdn-icons-png.flaticon.com/512/4519/4519678.png',
                                         width: 70.0,
                                         height: 70.0,
                                         fit: BoxFit.cover,

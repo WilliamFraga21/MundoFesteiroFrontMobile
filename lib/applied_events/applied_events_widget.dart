@@ -241,8 +241,7 @@ class _AppliedEventsWidgetState extends State<AppliedEventsWidget> {
                                     topRight: Radius.circular(8.0),
                                   ),
                                   child: Image.network(
-                                    evento.eventoAP.evento_imagem ??
-                                        'https://t.ctcdn.com.br/JlHwiRHyv0mTD7GfRkIlgO6eQX8=/640x360/smart/i257652.jpeg',
+                                    evento.eventoAP.evento_imagem ?? imgEvent,
                                     height: 179.0,
                                     fit: BoxFit.cover,
                                   ),
@@ -263,58 +262,86 @@ class _AppliedEventsWidgetState extends State<AppliedEventsWidget> {
                                         ),
                                   ),
                                 ),
-                                Padding(
-                                  padding: const EdgeInsets.symmetric(
-                                      horizontal: 8.0),
-                                  child: FFButtonWidget(
-                                    onPressed: () async {
-                                      // Navegue para a página de detalhes do evento
-                                      try {
-                                        EventoModel prestadorModel =
-                                            await fetchPrestadoByID(
-                                                evento.eventoAP.evento_id);
-                                        verEvento(prestadorModel);
-                                      } catch (e) {
-                                        print('Erro ao buscar prestador: $e');
-                                        // Exibir um aviso ao usuário
-                                        showDialog(
-                                          context: context,
-                                          builder: (BuildContext context) {
-                                            return AlertDialog(
-                                              title: Text('Erro'),
-                                              content: Text(
-                                                  'Erro ao carregar perfil do prestador.'),
-                                              actions: [
-                                                TextButton(
-                                                  onPressed: () {
-                                                    Navigator.of(context).pop();
+                                Row(
+                                  mainAxisSize: MainAxisSize.max,
+                                  mainAxisAlignment: MainAxisAlignment.start,
+                                  children: [
+                                    Flexible(
+                                      child: Align(
+                                        alignment: const AlignmentDirectional(
+                                            0.0, 1.0),
+                                        child: Padding(
+                                          padding: const EdgeInsetsDirectional
+                                              .fromSTEB(0.0, 10.0, 0.0, 20.0),
+                                          child: FFButtonWidget(
+                                            onPressed: () async {
+                                              // Navegue para a página de detalhes do evento
+                                              try {
+                                                EventoModel prestadorModel =
+                                                    await fetchPrestadoByID(
+                                                        evento.eventoAP
+                                                            .evento_id);
+                                                verEvento(prestadorModel);
+                                              } catch (e) {
+                                                print(
+                                                    'Erro ao buscar prestador: $e');
+                                                // Exibir um aviso ao usuário
+                                                showDialog(
+                                                  context: context,
+                                                  builder:
+                                                      (BuildContext context) {
+                                                    return AlertDialog(
+                                                      title: Text('Erro'),
+                                                      content: Text(
+                                                          'Erro ao carregar perfil do prestador.'),
+                                                      actions: [
+                                                        TextButton(
+                                                          onPressed: () {
+                                                            Navigator.of(
+                                                                    context)
+                                                                .pop();
+                                                          },
+                                                          child: Text('OK'),
+                                                        ),
+                                                      ],
+                                                    );
                                                   },
-                                                  child: Text('OK'),
-                                                ),
-                                              ],
-                                            );
-                                          },
-                                        );
-                                      }
-                                    },
-                                    text: 'Acessar detalhes do evento',
-                                    options: FFButtonOptions(
-                                      height: 40.0,
-                                      padding: const EdgeInsets.symmetric(
-                                          horizontal: 24.0),
-                                      color: const Color(0xFF05BD7B),
-                                      textStyle: FlutterFlowTheme.of(context)
-                                          .titleSmall
-                                          .override(
-                                            fontFamily: 'Outfit',
-                                            color: Colors.white,
-                                            letterSpacing: 0.0,
+                                                );
+                                              }
+                                            },
+                                            text: 'Acessar detalhes do evento',
+                                            options: FFButtonOptions(
+                                              height: 40.0,
+                                              padding:
+                                                  const EdgeInsetsDirectional
+                                                      .fromSTEB(
+                                                      24.0, 0.0, 24.0, 0.0),
+                                              iconPadding:
+                                                  const EdgeInsetsDirectional
+                                                      .fromSTEB(
+                                                      0.0, 0.0, 0.0, 0.0),
+                                              color: const Color(0xFF05BD7B),
+                                              textStyle:
+                                                  FlutterFlowTheme.of(context)
+                                                      .titleSmall
+                                                      .override(
+                                                        fontFamily: 'Outfit',
+                                                        color: Colors.white,
+                                                        letterSpacing: 0.0,
+                                                      ),
+                                              elevation: 3.0,
+                                              borderSide: const BorderSide(
+                                                color: Colors.transparent,
+                                                width: 1.0,
+                                              ),
+                                              borderRadius:
+                                                  BorderRadius.circular(6.0),
+                                            ),
                                           ),
-                                      elevation: 3.0,
-                                      borderSide: BorderSide.none,
-                                      borderRadius: BorderRadius.circular(6.0),
+                                        ),
+                                      ),
                                     ),
-                                  ),
+                                  ],
                                 ),
                               ],
                             ),

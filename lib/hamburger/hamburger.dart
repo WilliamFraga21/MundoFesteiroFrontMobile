@@ -1,6 +1,7 @@
 import 'package:mundo_festeiro_mobile_app/applied_events/applied_events_widget.dart';
 import 'package:mundo_festeiro_mobile_app/configuration_edits/configuration_edits_widget.dart';
 import 'package:mundo_festeiro_mobile_app/edit_curriculum/edit_curriculum_widget.dart';
+import 'package:mundo_festeiro_mobile_app/home_page/home_page_widget.dart';
 import 'package:mundo_festeiro_mobile_app/job_proposals/job_proposals_widget.dart';
 import 'package:mundo_festeiro_mobile_app/perfil_page/perfil_page_widget.dart';
 import 'package:mundo_festeiro_mobile_app/provide_services_page/provide_services_page_widget.dart';
@@ -167,7 +168,7 @@ class HamburgerMenu extends StatelessWidget {
                                 padding: const EdgeInsetsDirectional.fromSTEB(
                                     20.0, 0.0, 0.0, 0.0),
                                 child: Text(
-                                  'Perfil',
+                                  'Home',
                                   style: FlutterFlowTheme.of(context)
                                       .bodyMedium
                                       .override(
@@ -949,7 +950,7 @@ class HamburgerMenu extends StatelessWidget {
     Navigator.push(
       context,
       MaterialPageRoute(
-        builder: (context) => const PerfilPageWidget(),
+        builder: (context) => const HomePageWidget(),
       ),
     );
   }

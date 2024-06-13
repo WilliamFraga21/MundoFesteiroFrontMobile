@@ -1,3 +1,5 @@
 // constants.dart
-const String apiUrl = 'http://192.168.15.98:8000';
+const String apiUrl = 'http://192.168.72.182:8000';
 var token = '';
+const String imgEvent =
+    'https://media-public.canva.com/Pb8JY/MADsXaPb8JY/1/screen.jpg';
