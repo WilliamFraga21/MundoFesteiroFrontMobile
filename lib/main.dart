@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_web_plugins/url_strategy.dart';
 // import 'backend/firebase/firebase_config.dart';
@@ -21,6 +22,12 @@ void main() async {
   // await initFirebase();
 
   await FlutterFlowTheme.initialize();
+
+  // Definindo a orientação para retrato antes de rodar o app
+  await SystemChrome.setPreferredOrientations([
+    DeviceOrientation.portraitUp,
+    DeviceOrientation.portraitDown,
+  ]);
 
   runApp(
     MultiProvider(
@@ -96,12 +103,12 @@ class NavBarPage extends StatefulWidget {
   _NavBarPageState createState() => _NavBarPageState();
 }
 
-/// This is the private State class that goes with NavBarPage.
 class _NavBarPageState extends State<NavBarPage> {
   String _currentPageName = 'HomePage';
   late Widget? _currentPage;
   late Future futureToken;
   bool iftoken = false;
+
   @override
   void initState() {
     super.initState();
@@ -109,32 +116,6 @@ class _NavBarPageState extends State<NavBarPage> {
     _currentPage = widget.page;
     // futureToken = fetchToken();
   }
-
-  // Future fetchToken() async {
-  //   final dbHelper = DatabaseHelper();
-  //   String? validToken = await DatabaseHelper().getToken();
-  //   print(validToken);
-  //   print('validToken');
-  //   var url = Uri.parse(apiUrl + '/api/profile');
-
-  //   var headers = {
-  //     'Content-Type': 'application/json',
-  //     'Authorization': "Bearer $validToken",
-  //   };
-
-  //   var response = await http.get(url, headers: headers);
-
-  //   if (response.statusCode == 200) {
-  //     iftoken = true;
-  //   } else {
-  //     print(response.statusCode);
-  //     final dbHelper = DatabaseHelper();
-  //     await dbHelper.deleteToken();
-  //     setState(() {
-  //       GoRouter.of(context).go('/LoginPage');
-  //     });
-  //   }
-  // }
 
   Future<void> handleEventManagementNavigation() async {
     final dbHelper = DatabaseHelper();
@@ -151,13 +132,11 @@ class _NavBarPageState extends State<NavBarPage> {
     if (response.statusCode == 200) {
       // Navigate to the event management page
       setState(() {
-        _currentPage = SelectEditEventWidget();
+        _currentPage = const SelectEditEventWidget();
         _currentPageName = 'SelectEditEvent';
       });
-      print('Barra Menu Home');
     } else {
       // Navigate to the login page
-      final dbHelper = DatabaseHelper();
       await dbHelper.deleteToken();
       setState(() {
         GoRouter.of(context).go('/LoginPage');

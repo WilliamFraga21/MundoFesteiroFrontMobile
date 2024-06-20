@@ -47,23 +47,18 @@ class _EvendCandidacyWidgetState extends State<EvendCandidacyWidget> {
             borderRadius: 30.0,
             borderWidth: 1.0,
             buttonSize: 60.0,
-            icon: Icon(
+            icon: const Icon(
               Icons.menu,
-              color: FlutterFlowTheme.of(context).secondaryText,
+              color: Colors.white,
               size: 30.0,
             ),
             onPressed: () async {
-              context.pop();
+              scaffoldKey.currentState!.openDrawer();
             },
           ),
-          title: Text(
-            'Page Title',
-            style: FlutterFlowTheme.of(context).headlineMedium.override(
-                  fontFamily: 'Outfit',
-                  color: Colors.white,
-                  fontSize: 22.0,
-                  letterSpacing: 0.0,
-                ),
+          title: Image.network(
+            'https://media.canva.com/v2/image-resize/format:PNG/height:352/quality:100/uri:s3%3A%2F%2Fmedia-private.canva.com%2FvV_9Y%2FMAGIsDvV_9Y%2F1%2Fp.png/watermark:F/width:548?csig=AAAAAAAAAAAAAAAAAAAAAB7HIj0Zqe08fwl-4Wc73k15xXTVYta-i3G8Kcqfc_dN&exp=1718916484&osig=AAAAAAAAAAAAAAAAAAAAAFhQof94P7h-FOvazjHveb-AkmxHsc8OyR2uVlMU2loF&signer=media-rpc&x-canva-quality=thumbnail_large',
+            height: 40.0, // Ajuste a altura conforme necessário
           ),
           actions: const [],
           centerTitle: true,
@@ -187,9 +182,8 @@ class _EvendCandidacyWidgetState extends State<EvendCandidacyWidget> {
                                           CrossAxisAlignment.start,
                                       children: [
                                         Padding(
-                                          padding:
-                                              const EdgeInsetsDirectional.fromSTEB(
-                                                  16.0, 0.0, 0.0, 0.0),
+                                          padding: const EdgeInsetsDirectional
+                                              .fromSTEB(16.0, 0.0, 0.0, 0.0),
                                           child: Text(
                                             'Bartender',
                                             style: FlutterFlowTheme.of(context)
@@ -285,9 +279,8 @@ class _EvendCandidacyWidgetState extends State<EvendCandidacyWidget> {
                                           CrossAxisAlignment.start,
                                       children: [
                                         Padding(
-                                          padding:
-                                              const EdgeInsetsDirectional.fromSTEB(
-                                                  16.0, 0.0, 0.0, 0.0),
+                                          padding: const EdgeInsetsDirectional
+                                              .fromSTEB(16.0, 0.0, 0.0, 0.0),
                                           child: Text(
                                             'Servidor',
                                             style: FlutterFlowTheme.of(context)
@@ -383,9 +376,8 @@ class _EvendCandidacyWidgetState extends State<EvendCandidacyWidget> {
                                           CrossAxisAlignment.start,
                                       children: [
                                         Padding(
-                                          padding:
-                                              const EdgeInsetsDirectional.fromSTEB(
-                                                  16.0, 0.0, 0.0, 0.0),
+                                          padding: const EdgeInsetsDirectional
+                                              .fromSTEB(16.0, 0.0, 0.0, 0.0),
                                           child: Text(
                                             'Recepcionista',
                                             style: FlutterFlowTheme.of(context)
@@ -481,9 +473,8 @@ class _EvendCandidacyWidgetState extends State<EvendCandidacyWidget> {
                                           CrossAxisAlignment.start,
                                       children: [
                                         Padding(
-                                          padding:
-                                              const EdgeInsetsDirectional.fromSTEB(
-                                                  16.0, 0.0, 0.0, 0.0),
+                                          padding: const EdgeInsetsDirectional
+                                              .fromSTEB(16.0, 0.0, 0.0, 0.0),
                                           child: Text(
                                             'Músico/Dj',
                                             style: FlutterFlowTheme.of(context)
@@ -579,9 +570,8 @@ class _EvendCandidacyWidgetState extends State<EvendCandidacyWidget> {
                                           CrossAxisAlignment.start,
                                       children: [
                                         Padding(
-                                          padding:
-                                              const EdgeInsetsDirectional.fromSTEB(
-                                                  16.0, 0.0, 0.0, 0.0),
+                                          padding: const EdgeInsetsDirectional
+                                              .fromSTEB(16.0, 0.0, 0.0, 0.0),
                                           child: Text(
                                             'Artista',
                                             style: FlutterFlowTheme.of(context)
@@ -677,9 +667,8 @@ class _EvendCandidacyWidgetState extends State<EvendCandidacyWidget> {
                                           CrossAxisAlignment.start,
                                       children: [
                                         Padding(
-                                          padding:
-                                              const EdgeInsetsDirectional.fromSTEB(
-                                                  16.0, 0.0, 0.0, 0.0),
+                                          padding: const EdgeInsetsDirectional
+                                              .fromSTEB(16.0, 0.0, 0.0, 0.0),
                                           child: Text(
                                             'Artista',
                                             style: FlutterFlowTheme.of(context)
@@ -775,9 +764,8 @@ class _EvendCandidacyWidgetState extends State<EvendCandidacyWidget> {
                                           CrossAxisAlignment.start,
                                       children: [
                                         Padding(
-                                          padding:
-                                              const EdgeInsetsDirectional.fromSTEB(
-                                                  16.0, 0.0, 0.0, 0.0),
+                                          padding: const EdgeInsetsDirectional
+                                              .fromSTEB(16.0, 0.0, 0.0, 0.0),
                                           child: Text(
                                             'Artista',
                                             style: FlutterFlowTheme.of(context)

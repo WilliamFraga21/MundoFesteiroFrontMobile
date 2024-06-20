@@ -128,6 +128,7 @@ class _LoginPageWidgetState extends State<LoginPageWidget> {
       // await fetchGetMe(token);
       DatabaseHelper dbHelper = DatabaseHelper();
       await dbHelper.insertToken(token);
+      token2 = false;
       setState(() {
         GoRouter.of(context).go('/homePage');
       });
